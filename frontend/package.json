@@ -1,0 +1,25 @@
+{
+  "name": "maghrebpass-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "axios": "^1.13.2",
+    "i18next": "^25.7.2",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "react-i18next": "^16.5.0",
+    "vite": "^7.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}
