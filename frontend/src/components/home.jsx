@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarCheck, Globe2, Heart, Hotel, MapPin, ShieldCheck, Sparkles, Trophy, Utensils } from 'lucide-react';
+import { ArrowRight, CalendarCheck, CalendarDays, Globe2, Heart, Hotel, MapPin, Search, ShieldCheck, Sparkles, Trophy, Users, Utensils } from 'lucide-react';
 import { CardFacts, Media } from './common.jsx';
 import { descriptionFor, modules, titleFor } from '../lib/catalog.js';
 
@@ -15,6 +15,7 @@ export function HomePage({ catalog, language, loading, navigate, onAddFavorite, 
   return (
     <section className="home-page">
       <HomeHero navigate={navigate} t={t} />
+      <HomeSearchBar t={t} />
       <HomeModuleTiles navigate={navigate} t={t} />
       <WhyChoose t={t} />
       {modules.map((module) => (
@@ -48,10 +49,35 @@ function HomeHero({ navigate, t }) {
         </div>
       </div>
       <div className="home-hero-visual" aria-hidden="true">
-        <div className="hero-stadium" />
-        <div className="hero-landmark" />
+        <div className="hero-ribbon" />
       </div>
     </section>
+  );
+}
+
+function HomeSearchBar({ t }) {
+  const fields = [
+    { icon: MapPin, title: t('catalog.city'), value: t('catalog.allCities') },
+    { icon: CalendarDays, title: t('catalog.date'), value: 'Selectionner' },
+    { icon: Utensils, title: t('catalog.category'), value: 'Hotels, Restos, etc.' },
+    { icon: Users, title: 'Invites', value: '2 adultes' },
+  ];
+
+  return (
+    <div className="home-search-shell" aria-label={t('catalog.filters')}>
+      {fields.map(({ icon: Icon, title, value }) => (
+        <div className="home-search-field" key={title}>
+          <span><Icon size={22} /></span>
+          <div>
+            <strong>{title}</strong>
+            <small>{value}</small>
+          </div>
+        </div>
+      ))}
+      <div className="home-search-submit" aria-label={t('catalog.search')}>
+        <Search size={23} />
+      </div>
+    </div>
   );
 }
 
