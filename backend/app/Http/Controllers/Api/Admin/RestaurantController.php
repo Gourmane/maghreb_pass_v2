@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\Concerns\HandlesPhotoUploads;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpsertRestaurantRequest;
 use App\Http\Resources\RestaurantResource;
+use App\Models\PackageItem;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -46,6 +47,12 @@ class RestaurantController extends Controller
 
     public function destroy(Restaurant $restaurant): Response
     {
+        abort_if(
+            PackageItem::where('item_type', 'restaurant')->where('item_id', $restaurant->id)->exists(),
+            409,
+            'Ce restaurant est utilise dans un package.'
+        );
+
         $restaurant->delete();
 
         return response()->noContent();

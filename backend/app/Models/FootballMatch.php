@@ -23,6 +23,9 @@ class FootballMatch extends Model
         'match_date',
         'match_time',
         'stadium',
+        'stadium_latitude',
+        'stadium_longitude',
+        'map_url',
         'city',
         'group_name',
         'phase',
@@ -35,6 +38,8 @@ class FootballMatch extends Model
             'score_home' => 'integer',
             'score_away' => 'integer',
             'match_date' => 'date',
+            'stadium_latitude' => 'decimal:7',
+            'stadium_longitude' => 'decimal:7',
         ];
     }
 }

@@ -22,7 +22,22 @@ class RestaurantSeeder extends Seeder
             ['Cafe Clock Fes', 'Lieu culturel et restaurant dans la medina de Fes.', 'Cultural venue and restaurant in the Fes medina.', 'Fes', 'Medina', 'Marocaine', 'budget', ['https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg', 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg']],
         ];
 
+        $geo = [
+            'Rick s Cafe' => [33.6034, -7.6196, 4.5, true],
+            'La Sqala' => [33.6022, -7.6202, 4.4, true],
+            'Nomad Marrakech' => [31.6305, -7.9875, 4.4, true],
+            'Al Fassia Gueliz' => [31.6366, -8.0130, 4.6, true],
+            'Le Dhow' => [34.0272, -6.8245, 4.2, false],
+            'Ty Potes' => [34.0038, -6.8486, 4.3, false],
+            'El Morocco Club' => [35.7898, -5.8137, 4.5, true],
+            'Le Saveur du Poisson' => [35.7801, -5.8130, 4.4, false],
+            'Pure Passion' => [30.4212, -9.6177, 4.5, true],
+            'Cafe Clock Fes' => [34.0612, -4.9816, 4.3, true],
+        ];
+
         foreach ($restaurants as [$name, $descriptionFr, $descriptionEn, $city, $address, $cuisineType, $priceRange, $photos]) {
+            [$latitude, $longitude, $rating, $isFeatured] = $geo[$name];
+
             Restaurant::updateOrCreate(
                 ['name' => $name],
                 [
@@ -34,6 +49,13 @@ class RestaurantSeeder extends Seeder
                     'price_range' => $priceRange,
                     'phone' => '+212 500 000 001',
                     'whatsapp' => '+212 600 000 001',
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'map_url' => "https://www.openstreetmap.org/?mlat={$latitude}&mlon={$longitude}#map=16/{$latitude}/{$longitude}",
+                    'is_featured' => $isFeatured,
+                    'rating' => $rating,
+                    'opening_hours' => 'Lun-Dim : 09:00 - 23:00',
+                    'image_url' => $photos[0],
                     'photos' => $photos,
                 ],
             );

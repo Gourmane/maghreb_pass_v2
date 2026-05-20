@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpsertHotelRequest;
 use App\Http\Resources\HotelResource;
 use App\Models\Hotel;
+use App\Models\PackageItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -49,6 +50,12 @@ class HotelController extends Controller
 
     public function destroy(Hotel $hotel): Response
     {
+        abort_if(
+            PackageItem::where('item_type', 'hotel')->where('item_id', $hotel->id)->exists(),
+            409,
+            'Cet hotel est utilise dans un package.'
+        );
+
         $hotel->delete();
 
         return response()->noContent();

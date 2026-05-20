@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Hotel extends Model
@@ -23,6 +24,13 @@ class Hotel extends Model
         'website_url',
         'phone',
         'email',
+        'latitude',
+        'longitude',
+        'map_url',
+        'is_featured',
+        'rating',
+        'amenities',
+        'image_url',
         'photos',
     ];
 
@@ -32,6 +40,11 @@ class Hotel extends Model
             'stars' => 'integer',
             'price_min' => 'decimal:2',
             'price_max' => 'decimal:2',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+            'is_featured' => 'boolean',
+            'rating' => 'decimal:1',
+            'amenities' => 'array',
             'photos' => 'array',
         ];
     }
@@ -39,5 +52,10 @@ class Hotel extends Model
     public function favorites(): MorphMany
     {
         return $this->morphMany(Favorite::class, 'favoriteable');
+    }
+
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(HotelReservation::class);
     }
 }

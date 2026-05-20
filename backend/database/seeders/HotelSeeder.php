@@ -22,7 +22,22 @@ class HotelSeeder extends Seeder
             ['Palais Faraj Suites & Spa', 'Maison d hotes de charme avec vues sur la medina de Fes.', 'Charming boutique hotel with views over the Fes medina.', 'Fes', 'Medina', 5, 1700, 3400, 'https://www.palaisfaraj.com/', ['https://upload.wikimedia.org/wikipedia/commons/1/1e/A%C3%AFt_Benhaddou.jpg', 'https://upload.wikimedia.org/wikipedia/commons/2/24/Ouzoud_Waterfalls_Morocco.jpg']],
         ];
 
+        $geo = [
+            'Four Seasons Hotel Casablanca' => [33.5983, -7.6642, 4.8, true],
+            'Barcelo Anfa Casablanca' => [33.5907, -7.6338, 4.5, true],
+            'La Mamounia' => [31.6216, -7.9972, 4.9, true],
+            'Movenpick Mansour Eddahbi Marrakech' => [31.6243, -8.0167, 4.4, false],
+            'Sofitel Rabat Jardin des Roses' => [33.9904, -6.8468, 4.6, true],
+            'ONOMO Hotel Rabat Terminus' => [34.0178, -6.8359, 4.1, false],
+            'Hilton Tangier City Center' => [35.7673, -5.8016, 4.5, true],
+            'Marina Bay City Center Tangier' => [35.7797, -5.8125, 4.2, false],
+            'Hotel Riu Tikida Beach' => [30.4022, -9.6017, 4.3, true],
+            'Palais Faraj Suites & Spa' => [34.0576, -4.9781, 4.7, true],
+        ];
+
         foreach ($hotels as [$name, $descriptionFr, $descriptionEn, $city, $district, $stars, $priceMin, $priceMax, $websiteUrl, $photos]) {
+            [$latitude, $longitude, $rating, $isFeatured] = $geo[$name];
+
             Hotel::updateOrCreate(
                 ['name' => $name],
                 [
@@ -37,6 +52,13 @@ class HotelSeeder extends Seeder
                     'website_url' => $websiteUrl,
                     'phone' => '+212 500 000 000',
                     'email' => 'contact@example.test',
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'map_url' => "https://www.openstreetmap.org/?mlat={$latitude}&mlon={$longitude}#map=16/{$latitude}/{$longitude}",
+                    'is_featured' => $isFeatured,
+                    'rating' => $rating,
+                    'amenities' => ['Wi-Fi', 'Climatisation', 'Restaurant', 'Reception 24h/24'],
+                    'image_url' => $photos[0],
                     'photos' => $photos,
                 ],
             );

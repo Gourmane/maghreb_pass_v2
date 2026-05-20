@@ -1,6 +1,7 @@
 import { ExternalLink, Heart, MapPin, Phone, Trash2 } from 'lucide-react';
 import { CardFacts, EmptyState, Field, Media, ModuleRail } from './common.jsx';
 import { descriptionFor, titleFor } from '../lib/catalog.js';
+import { ReservationForm } from './reservation-form.jsx';
 
 export function PublicCatalog({ activeModule, catalog, cities, currentModule, filters, language, loading, modules, onAddFavorite, onFilterChange, onLoad, onModuleChange, onOpenDetail, t }) {
   const items = catalog[activeModule] || [];
@@ -64,11 +65,11 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
           <Field id="filter-phase" label={t('catalog.phase')} compact>
             <select id="filter-phase" value={filters.phase} onChange={(event) => onChange((current) => ({ ...current, phase: event.target.value }))}>
               <option value="">{t('catalog.phase')}</option>
-              <option value="group">group</option>
-              <option value="round_of_16">round_of_16</option>
-              <option value="quarter">quarter</option>
-              <option value="semi">semi</option>
-              <option value="final">final</option>
+              <option value="group">{t('options.phase.group')}</option>
+              <option value="round_of_16">{t('options.phase.round_of_16')}</option>
+              <option value="quarter">{t('options.phase.quarter')}</option>
+              <option value="semi">{t('options.phase.semi')}</option>
+              <option value="final">{t('options.phase.final')}</option>
             </select>
           </Field>
           <Field id="filter-date" label={t('catalog.date')} compact>
@@ -97,9 +98,9 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
           <Field id="filter-price-range" label={t('catalog.priceRange')} compact>
             <select id="filter-price-range" value={filters.price_range} onChange={(event) => onChange((current) => ({ ...current, price_range: event.target.value }))}>
               <option value="">{t('catalog.priceRange')}</option>
-              <option value="budget">budget</option>
-              <option value="moyen">moyen</option>
-              <option value="gastronomique">gastronomique</option>
+              <option value="budget">{t('options.priceRange.budget')}</option>
+              <option value="moyen">{t('options.priceRange.moyen')}</option>
+              <option value="gastronomique">{t('options.priceRange.gastronomique')}</option>
             </select>
           </Field>
         </>
@@ -109,12 +110,17 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
           <input id="filter-category" value={filters.category} onChange={(event) => onChange((current) => ({ ...current, category: event.target.value }))} placeholder={t('catalog.category')} />
         </Field>
       )}
+      {activeModule === 'packages' && (
+        <Field id="filter-search" label={t('catalog.search')} compact>
+          <input id="filter-search" value={filters.search} onChange={(event) => onChange((current) => ({ ...current, search: event.target.value }))} placeholder={t('catalog.search')} />
+        </Field>
+      )}
       <button aria-busy={loading} className="primary-button" disabled={loading} onClick={onLoad} type="button">{loading ? t('messages.loading') : t('catalog.load')}</button>
     </div>
   );
 }
 
-export function DetailView({ item, language, loading, moduleKey, onAddFavorite, onBack, t }) {
+export function DetailView({ item, language, loading, matchNearby, moduleKey, onAddFavorite, onBack, onOpenNearby, session, t }) {
   if (loading && !item) return <section className="content-panel"><EmptyState text={t('messages.loading')} /></section>;
   if (!item) return <section className="content-panel"><EmptyState text={t('catalog.empty')} /></section>;
 
@@ -131,6 +137,91 @@ export function DetailView({ item, language, loading, moduleKey, onAddFavorite, 
         <CardFacts item={item} moduleKey={moduleKey} t={t} />
         <DetailActions item={item} moduleKey={moduleKey} onAddFavorite={onAddFavorite} t={t} />
       </article>
+      {moduleKey === 'packages' && <PackageTimeline item={item} language={language} t={t} />}
+      {moduleKey === 'matches' && <MatchNearby nearby={matchNearby} language={language} onOpenNearby={onOpenNearby} t={t} />}
+      <ReservationForm item={item} moduleKey={moduleKey} session={session} t={t} />
+    </section>
+  );
+}
+
+function MatchNearby({ language, nearby, onOpenNearby, t }) {
+  const groups = [
+    ['hotels', nearby?.hotels || []],
+    ['restaurants', nearby?.restaurants || []],
+    ['attractions', nearby?.attractions || []],
+    ['packages', nearby?.packages || []],
+  ];
+  const hasItems = groups.some(([, items]) => items.length);
+
+  return (
+    <section className="content-panel match-nearby">
+      <div className="panel-head">
+        <div>
+          <p className="section-kicker">{nearby?.city || t('catalog.city')}</p>
+          <h2>{t('nearby.title')}</h2>
+        </div>
+      </div>
+      {hasItems ? (
+        <div className="nearby-grid">
+          {groups.map(([group, items]) => (
+            <div className="nearby-column" key={group}>
+              <h3>{t(`catalog.${group}`)}</h3>
+              <div className="table-list">
+                {items.map((nearbyItem) => (
+                  <div className="list-row nearby-row" key={`${group}-${nearbyItem.id}`}>
+                    <div>
+                      <strong>{titleFor(nearbyItem, group)}</strong>
+                      <span>{descriptionFor(nearbyItem, group, language) || nearbyItem.city}</span>
+                    </div>
+                    <button className="secondary-button" onClick={() => onOpenNearby(group, nearbyItem)} type="button">
+                      {t('catalog.details')}
+                    </button>
+                  </div>
+                ))}
+                {!items.length && <EmptyState text={t('catalog.empty')} />}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <EmptyState text={t('nearby.empty')} />
+      )}
+    </section>
+  );
+}
+
+function PackageTimeline({ item, language, t }) {
+  const grouped = (item.items || []).reduce((days, packageItem) => {
+    const day = packageItem.day_number || 1;
+    days[day] ||= [];
+    days[day].push(packageItem);
+    return days;
+  }, {});
+
+  return (
+    <section className="content-panel package-timeline">
+      <div className="panel-head"><h2>{t('packages.timeline')}</h2></div>
+      {Object.entries(grouped).map(([day, items]) => (
+        <div className="package-day" key={day}>
+          <strong>{t('packages.day')} {day}</strong>
+          <div className="table-list">
+            {items.map((packageItem) => {
+              const summary = packageItem.item || {};
+              const title = summary.title || packageItem.custom_title || t('catalog.empty');
+              const description = language === 'en' ? summary.description_en : summary.description_fr;
+              return (
+                <div className="list-row" key={packageItem.id}>
+                  <div>
+                    <strong>{title}</strong>
+                    <span>{t(`options.itemType.${packageItem.item_type}`, { defaultValue: packageItem.item_type })} - {description || summary.description || packageItem.custom_description || ''}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      {!item.items?.length && <EmptyState text={t('catalog.empty')} />}
     </section>
   );
 }

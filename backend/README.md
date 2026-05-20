@@ -30,7 +30,7 @@ Configuration MySQL par defaut:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=maghreb_pass
+DB_DATABASE=advenced_maghrebpass_v2
 DB_USERNAME=root
 DB_PASSWORD=
 ```

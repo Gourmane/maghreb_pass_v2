@@ -6,6 +6,7 @@ use App\Models\Attraction;
 use App\Models\FootballMatch;
 use App\Models\Hotel;
 use App\Models\Restaurant;
+use App\Models\TravelPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -71,6 +72,88 @@ class PublicCatalogApiTest extends TestCase
             ->assertJsonPath('data.0.category', 'historique');
     }
 
+    public function test_map_items_returns_geolocated_items_for_selected_city(): void
+    {
+        Hotel::create($this->hotelPayload([
+            'city' => 'Casablanca',
+            'latitude' => 33.5983,
+            'longitude' => -7.6642,
+            'image_url' => 'https://example.test/hotel.jpg',
+            'rating' => 4.8,
+        ]));
+        Hotel::create($this->hotelPayload([
+            'name' => 'Hotel Without GPS',
+            'city' => 'Casablanca',
+        ]));
+        Restaurant::create($this->restaurantPayload([
+            'city' => 'Casablanca',
+            'latitude' => 33.6034,
+            'longitude' => -7.6196,
+        ]));
+        Attraction::create($this->attractionPayload([
+            'city' => 'Casablanca',
+            'latitude' => 33.6084,
+            'longitude' => -7.6326,
+        ]));
+        FootballMatch::create($this->matchPayload([
+            'city' => 'Casablanca',
+            'stadium_latitude' => 33.5248,
+            'stadium_longitude' => -7.6501,
+        ]));
+
+        $this->getJson('/api/map-items?city=Casablanca&type=all')
+            ->assertOk()
+            ->assertJsonPath('city', 'Casablanca')
+            ->assertJsonCount(1, 'hotels')
+            ->assertJsonCount(1, 'restaurants')
+            ->assertJsonCount(1, 'attractions')
+            ->assertJsonCount(1, 'matches')
+            ->assertJsonPath('hotels.0.type', 'hotel')
+            ->assertJsonPath('hotels.0.detail_url', '/hotels/1');
+    }
+
+    public function test_map_items_can_filter_by_type(): void
+    {
+        Hotel::create($this->hotelPayload([
+            'city' => 'Casablanca',
+            'latitude' => 33.5983,
+            'longitude' => -7.6642,
+        ]));
+        Restaurant::create($this->restaurantPayload([
+            'city' => 'Casablanca',
+            'latitude' => 33.6034,
+            'longitude' => -7.6196,
+        ]));
+
+        $this->getJson('/api/map-items?city=Casablanca&type=restaurant')
+            ->assertOk()
+            ->assertJsonCount(0, 'hotels')
+            ->assertJsonCount(1, 'restaurants')
+            ->assertJsonPath('restaurants.0.type', 'restaurant');
+    }
+
+    public function test_match_nearby_returns_same_city_catalog_sections(): void
+    {
+        $match = FootballMatch::create($this->matchPayload(['city' => 'Casablanca']));
+        Hotel::create($this->hotelPayload(['city' => 'Casablanca']));
+        Hotel::create($this->hotelPayload(['name' => 'Rabat Hotel', 'city' => 'Rabat']));
+        Restaurant::create($this->restaurantPayload(['city' => 'Casablanca']));
+        Attraction::create($this->attractionPayload(['city' => 'Casablanca']));
+        TravelPackage::create($this->packagePayload(['city' => 'Casablanca']));
+        TravelPackage::create($this->packagePayload(['title' => 'Hidden Plan', 'city' => 'Casablanca', 'is_active' => false]));
+
+        $this->getJson("/api/matches/{$match->id}/nearby")
+            ->assertOk()
+            ->assertJsonPath('match_id', $match->id)
+            ->assertJsonPath('city', 'Casablanca')
+            ->assertJsonCount(1, 'hotels')
+            ->assertJsonCount(1, 'restaurants')
+            ->assertJsonCount(1, 'attractions')
+            ->assertJsonCount(1, 'packages')
+            ->assertJsonPath('hotels.0.city', 'Casablanca')
+            ->assertJsonPath('packages.0.is_active', true);
+    }
+
     private function matchPayload(array $overrides = []): array
     {
         return array_merge([
@@ -124,6 +207,20 @@ class PublicCatalogApiTest extends TestCase
             'address' => 'Ancienne Medina',
             'category' => 'historique',
             'entry_price' => 0,
+        ], $overrides);
+    }
+
+    private function packagePayload(array $overrides = []): array
+    {
+        return array_merge([
+            'title' => 'Casablanca Weekend',
+            'description_fr' => 'Programme touristique.',
+            'description_en' => 'Travel program.',
+            'city' => 'Casablanca',
+            'price_min' => 1200,
+            'price_max' => 2400,
+            'currency' => 'MAD',
+            'is_active' => true,
         ], $overrides);
     }
 }

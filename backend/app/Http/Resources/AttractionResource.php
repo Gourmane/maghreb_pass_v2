@@ -19,6 +19,13 @@ class AttractionResource extends JsonResource
             'category' => $this->category,
             'entry_price' => $this->entry_price,
             'opening_hours' => $this->opening_hours,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'map_url' => $this->map_url,
+            'is_featured' => $this->is_featured,
+            'rating' => $this->rating,
+            'recommended_duration_minutes' => $this->recommended_duration_minutes,
+            'image_url' => $this->image_url,
             'photos' => $this->photos ?? [],
         ];
     }

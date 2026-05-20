@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpsertAttractionRequest;
 use App\Http\Resources\AttractionResource;
 use App\Models\Attraction;
+use App\Models\PackageItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -46,6 +47,12 @@ class AttractionController extends Controller
 
     public function destroy(Attraction $attraction): Response
     {
+        abort_if(
+            PackageItem::where('item_type', 'attraction')->where('item_id', $attraction->id)->exists(),
+            409,
+            'Cette attraction est utilisee dans un package.'
+        );
+
         $attraction->delete();
 
         return response()->noContent();

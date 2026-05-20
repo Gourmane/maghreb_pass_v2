@@ -23,6 +23,13 @@ class HotelResource extends JsonResource
             'website_url' => $this->website_url,
             'phone' => $this->phone,
             'email' => $this->email,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'map_url' => $this->map_url,
+            'is_featured' => $this->is_featured,
+            'rating' => $this->rating,
+            'amenities' => $this->amenities ?? [],
+            'image_url' => $this->image_url,
             'photos' => $this->photos ?? [],
         ];
     }

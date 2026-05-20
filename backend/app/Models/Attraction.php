@@ -19,6 +19,13 @@ class Attraction extends Model
         'category',
         'entry_price',
         'opening_hours',
+        'latitude',
+        'longitude',
+        'map_url',
+        'is_featured',
+        'rating',
+        'recommended_duration_minutes',
+        'image_url',
         'photos',
     ];
 
@@ -26,6 +33,11 @@ class Attraction extends Model
     {
         return [
             'entry_price' => 'decimal:2',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+            'is_featured' => 'boolean',
+            'rating' => 'decimal:1',
+            'recommended_duration_minutes' => 'integer',
             'photos' => 'array',
         ];
     }

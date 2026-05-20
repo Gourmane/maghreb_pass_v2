@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             HotelSeeder::class,
             RestaurantSeeder::class,
             AttractionSeeder::class,
+            PackageSeeder::class,
+            ReservationSeeder::class,
         ]);
     }
 }

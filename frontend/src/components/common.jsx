@@ -16,7 +16,7 @@ export function ModuleRail({ activeModule, modules, onModuleChange, t }) {
 }
 
 export function Media({ item, moduleKey }) {
-  const image = item.photos?.[0];
+  const image = item.image_url || item.photos?.[0];
   if (image) return <img className="media" src={image} alt={titleFor(item, moduleKey)} decoding="async" loading="lazy" />;
   if (moduleKey === 'matches' && (item.team_home_flag_url || item.team_away_flag_url)) {
     return (
@@ -47,9 +47,10 @@ function TeamFlag({ src, code, name }) {
 
 export function CardFacts({ item, moduleKey, t }) {
   if (moduleKey === 'matches') return <div className="facts"><span>{item.match_date}</span><span>{item.match_time}</span><span>{t(`status.${item.status}`)}</span></div>;
-  if (moduleKey === 'hotels') return <div className="facts"><span>{item.stars} stars</span><span>{item.price_min}-{item.price_max} {item.currency}</span></div>;
-  if (moduleKey === 'restaurants') return <div className="facts"><span>{item.cuisine_type}</span><span>{item.price_range}</span></div>;
-  return <div className="facts"><span>{item.category}</span><span>{item.entry_price ?? 0} MAD</span></div>;
+  if (moduleKey === 'hotels') return <div className="facts"><span>{item.stars} {t('common.stars')}</span><span>{item.price_min}-{item.price_max} {item.currency}</span>{item.rating && <span>{item.rating}/5</span>}</div>;
+  if (moduleKey === 'restaurants') return <div className="facts"><span>{item.cuisine_type}</span><span>{item.price_range}</span>{item.rating && <span>{item.rating}/5</span>}</div>;
+  if (moduleKey === 'packages') return <div className="facts"><span>{item.price_min ?? 0}-{item.price_max ?? 0} {item.currency}</span><span>{item.items_count ?? item.items?.length ?? 0} {t('common.items')}</span><span>{item.is_active ? t('common.active') : t('common.inactive')}</span></div>;
+  return <div className="facts"><span>{item.category}</span><span>{item.entry_price ?? 0} MAD</span>{item.rating && <span>{item.rating}/5</span>}</div>;
 }
 
 export function EmptyState({ text }) {

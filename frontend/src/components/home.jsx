@@ -7,6 +7,7 @@ const sectionConfig = {
   hotels: { limit: 4, className: 'home-card-grid' },
   restaurants: { limit: 4, className: 'home-card-grid' },
   attractions: { limit: 4, className: 'home-card-grid' },
+  packages: { limit: 4, className: 'home-card-grid' },
 };
 
 const reasonIcons = [ShieldCheck, Globe2, Heart, Trophy];
@@ -58,9 +59,9 @@ function HomeHero({ navigate, t }) {
 function HomeSearchBar({ t }) {
   const fields = [
     { icon: MapPin, title: t('catalog.city'), value: t('catalog.allCities') },
-    { icon: CalendarDays, title: t('catalog.date'), value: 'Selectionner' },
-    { icon: Utensils, title: t('catalog.category'), value: 'Hotels, Restos, etc.' },
-    { icon: Users, title: 'Invites', value: '2 adultes' },
+    { icon: CalendarDays, title: t('catalog.date'), value: t('home.search.selectDate') },
+    { icon: Utensils, title: t('catalog.category'), value: t('home.search.categories') },
+    { icon: Users, title: t('home.search.guests'), value: t('home.search.adults') },
   ];
 
   return (
@@ -118,7 +119,8 @@ function WhyChoose({ t }) {
 }
 
 function HomePreviewSection({ catalog, language, loading, module, navigate, onAddFavorite, t }) {
-  const items = (catalog[module.key] || []).slice(0, sectionConfig[module.key].limit);
+  const config = sectionConfig[module.key] || { limit: 4, className: 'home-card-grid' };
+  const items = (catalog[module.key] || []).slice(0, config.limit);
   const isMatches = module.key === 'matches';
 
   return (
@@ -131,7 +133,7 @@ function HomePreviewSection({ catalog, language, loading, module, navigate, onAd
         </button>
       </div>
 
-      <div className={sectionConfig[module.key].className}>
+      <div className={config.className}>
         {items.map((item) => (
           isMatches ? (
             <button className="home-match-row" key={`${module.key}-${item.id}`} onClick={() => navigate(`${module.basePath}/${item.id}`)} type="button">
@@ -154,7 +156,7 @@ function HomePreviewSection({ catalog, language, loading, module, navigate, onAd
                 <CardFacts item={item} moduleKey={module.key} t={t} />
                 <div className="row-actions">
                   <button className="secondary-button" disabled={loading} onClick={() => navigate(`${module.basePath}/${item.id}`)} type="button">{t('catalog.details')}</button>
-                  <button className="icon-favorite" aria-label={t('catalog.addFavorite')} disabled={loading} onClick={() => onAddFavorite(item)} type="button"><Heart size={17} /></button>
+                  {module.favoriteType && <button className="icon-favorite" aria-label={t('catalog.addFavorite')} disabled={loading} onClick={() => onAddFavorite(item)} type="button"><Heart size={17} /></button>}
                 </div>
               </div>
             </article>

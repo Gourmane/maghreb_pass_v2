@@ -7,7 +7,11 @@ import { api, setAuthToken, unwrapPage } from './lib/api.js';
 import { buildParams, initialForms, modules, routeFromPath } from './lib/catalog.js';
 
 const AdminView = lazy(() => import('./components/admin.jsx').then((module) => ({ default: module.AdminView })));
+const MapView = lazy(() => import('./components/map.jsx').then((module) => ({ default: module.MapView })));
 const ProfileView = lazy(() => import('./components/profile.jsx').then((module) => ({ default: module.ProfileView })));
+const AdminReservationsView = lazy(() => import('./components/reservations.jsx').then((module) => ({ default: module.AdminReservationsView })));
+const MyReservationsView = lazy(() => import('./components/reservations.jsx').then((module) => ({ default: module.MyReservationsView })));
+const TripPlannerView = lazy(() => import('./components/trip-planner.jsx').then((module) => ({ default: module.TripPlannerView })));
 
 function readSession() {
   const raw = localStorage.getItem('maghrebpass_user');
@@ -26,8 +30,9 @@ function App() {
   const [route, setRoute] = useState(initialRoute);
   const [activeModule, setActiveModule] = useState(initialRoute.module || 'matches');
   const [session, setSession] = useState(readSession);
-  const [catalog, setCatalog] = useState({ matches: [], hotels: [], restaurants: [], attractions: [] });
+  const [catalog, setCatalog] = useState({ matches: [], hotels: [], restaurants: [], attractions: [], packages: [] });
   const [detailItem, setDetailItem] = useState(null);
+  const [matchNearby, setMatchNearby] = useState(null);
   const [favorites, setFavorites] = useState({ hotels: [], restaurants: [], attractions: [] });
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
@@ -95,6 +100,7 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = i18n.language;
     document.documentElement.dir = i18n.dir(i18n.language);
+    localStorage.setItem('maghrebpass_language', i18n.language);
   }, [i18n, i18n.language]);
 
   const cities = useMemo(() => {
@@ -156,9 +162,14 @@ function App() {
 
   async function loadDetail(moduleKey, id) {
     setDetailItem(null);
+    setMatchNearby(null);
     await request(async () => {
       const response = await api.get(`/${moduleKey}/${id}`);
       setDetailItem(response.data.data);
+      if (moduleKey === 'matches') {
+        const nearbyResponse = await api.get(`/matches/${id}/nearby`);
+        setMatchNearby(nearbyResponse.data);
+      }
     });
   }
 
@@ -177,6 +188,12 @@ function App() {
       ]);
       setStats(statsResponse.data);
       setUsers(unwrapPage(usersResponse));
+
+      const responses = await Promise.all(modules.map((module) => api.get(`/admin/${module.key}`).catch(() => api.get(`/${module.key}`))));
+      setCatalog((current) => modules.reduce((next, module, index) => ({
+        ...next,
+        [module.key]: unwrapPage(responses[index]),
+      }), current));
     });
   }
 
@@ -341,15 +358,36 @@ function App() {
             item={detailItem}
             language={i18n.language}
             loading={loading}
+            matchNearby={matchNearby}
             moduleKey={activeModule}
             onAddFavorite={addFavorite}
             onBack={() => navigate(currentModule.basePath)}
+            onOpenNearby={(moduleKey, item) => navigate(`/${moduleKey}/${item.id}`)}
+            session={session}
             t={t}
           />
         )}
 
         {route.view === 'favorites' && (
           <FavoritesView favorites={favorites} language={i18n.language} onRemove={removeFavorite} t={t} />
+        )}
+
+        {route.view === 'map' && (
+          <Suspense fallback={<section className="content-panel"><span>{t('messages.loading')}</span></section>}>
+            <MapView navigate={navigate} t={t} />
+          </Suspense>
+        )}
+
+        {route.view === 'trips' && (
+          <Suspense fallback={<section className="content-panel"><span>{t('messages.loading')}</span></section>}>
+            <TripPlannerView language={i18n.language} loading={loading} navigate={navigate} session={session} t={t} />
+          </Suspense>
+        )}
+
+        {route.view === 'my-reservations' && (
+          <Suspense fallback={<section className="content-panel"><span>{t('messages.loading')}</span></section>}>
+            {!session.user ? <ProfileView authForm={authForm} authMode="login" loading={loading} onAuthFormChange={setAuthForm} onAuthModeChange={() => navigate('/login')} onForgotPassword={forgotPassword} onProfileChange={setProfileForm} onProfileSubmit={submitProfile} onSubmit={submitAuth} profileForm={profileForm} session={session} t={t} /> : <MyReservationsView t={t} />}
+          </Suspense>
         )}
 
         {route.view === 'profile' && (
@@ -398,6 +436,7 @@ function App() {
                 isAdmin={isAdmin}
                 loading={loading}
                 modules={modules}
+                navigate={navigate}
                 onDelete={deleteAdminItem}
                 onEdit={editAdminItem}
                 onFormChange={setAdminForm}
@@ -412,9 +451,21 @@ function App() {
           </Suspense>
         )}
 
+        {route.view === 'admin-reservations' && (
+          <Suspense fallback={<section className="content-panel"><span>{t('messages.loading')}</span></section>}>
+            {!session.user ? (
+              <ProfileView allowRegister={false} authForm={authForm} authMode="login" loading={loading} onAuthFormChange={setAuthForm} onAuthModeChange={() => navigate('/login')} onForgotPassword={forgotPassword} onProfileChange={setProfileForm} onProfileSubmit={submitProfile} profileForm={profileForm} session={session} t={t} onSubmit={submitAuth} />
+            ) : isAdmin ? (
+              <AdminReservationsView t={t} />
+            ) : (
+              <section className="content-panel locked"><h2>{t('admin.lockedTitle')}</h2><p>{t('admin.lockedBody')}</p></section>
+            )}
+          </Suspense>
+        )}
+
       </main>
 
-      <AppFooter changeLanguage={changeLanguage} i18n={i18n} navigate={navigate} t={t} />
+      <AppFooter changeLanguage={changeLanguage} i18n={i18n} navigate={navigate} session={session} t={t} />
     </div>
   );
 }

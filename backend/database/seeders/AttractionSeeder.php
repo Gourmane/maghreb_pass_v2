@@ -22,7 +22,22 @@ class AttractionSeeder extends Seeder
             ['Medina de Fes', 'Medina classee au patrimoine mondial, connue pour ses souks et monuments.', 'World heritage medina known for souks and monuments.', 'Fes', 'Fes el Bali', 'Medina', 0, 'Toute la journee', ['https://upload.wikimedia.org/wikipedia/commons/1/1e/A%C3%AFt_Benhaddou.jpg']],
         ];
 
+        $geo = [
+            'Mosquee Hassan II' => [33.6084, -7.6326, 4.8, true, 90],
+            'Ancienne Medina de Casablanca' => [33.5993, -7.6176, 4.1, false, 120],
+            'Jardin Majorelle' => [31.6417, -8.0030, 4.7, true, 90],
+            'Palais Bahia' => [31.6218, -7.9818, 4.6, true, 90],
+            'Kasbah des Oudayas' => [34.0316, -6.8361, 4.7, true, 90],
+            'Tour Hassan' => [34.0241, -6.8229, 4.6, true, 60],
+            'Grottes d Hercule' => [35.7590, -5.9398, 4.4, true, 60],
+            'Cap Spartel' => [35.7919, -5.9224, 4.5, false, 60],
+            'Plage d Agadir' => [30.4142, -9.6067, 4.4, true, 120],
+            'Medina de Fes' => [34.0625, -4.9830, 4.8, true, 180],
+        ];
+
         foreach ($attractions as [$name, $descriptionFr, $descriptionEn, $city, $address, $category, $entryPrice, $openingHours, $photos]) {
+            [$latitude, $longitude, $rating, $isFeatured, $duration] = $geo[$name];
+
             Attraction::updateOrCreate(
                 ['name' => $name],
                 [
@@ -33,6 +48,13 @@ class AttractionSeeder extends Seeder
                     'category' => $category,
                     'entry_price' => $entryPrice,
                     'opening_hours' => $openingHours,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'map_url' => "https://www.openstreetmap.org/?mlat={$latitude}&mlon={$longitude}#map=16/{$latitude}/{$longitude}",
+                    'is_featured' => $isFeatured,
+                    'rating' => $rating,
+                    'recommended_duration_minutes' => $duration,
+                    'image_url' => $photos[0],
                     'photos' => $photos,
                 ],
             );

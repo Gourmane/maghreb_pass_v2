@@ -146,6 +146,7 @@ button:disabled {
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 a:focus-visible {
   outline: var(--focus-ring);
   outline-offset: 3px;
@@ -198,7 +199,8 @@ a {
 }
 
 .app-shell:has(.home-page) .nav-tabs button,
-.app-shell:has(.home-page) .icon-button {
+.app-shell:has(.home-page) .icon-button,
+.app-shell:has(.home-page) .language-switcher button {
   color: color-mix(in srgb, var(--text-on-dark) 86%, var(--text-on-dark-muted));
 }
 
@@ -208,9 +210,15 @@ a {
 }
 
 .app-shell:has(.home-page) .icon-button,
+.app-shell:has(.home-page) .language-switcher,
 .app-shell:has(.home-page) .ghost-button {
   background: color-mix(in srgb, var(--navy) 74%, transparent);
   border-color: color-mix(in srgb, var(--surface) 16%, transparent);
+}
+
+.app-shell:has(.home-page) .language-switcher button.active {
+  background: var(--red);
+  color: var(--text-on-dark);
 }
 
 .app-shell:has(.home-page) .nav-tabs svg {
@@ -333,6 +341,33 @@ a {
 .header-actions {
   justify-content: flex-end;
   gap: 10px;
+}
+
+.language-switcher {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.language-switcher button {
+  min-width: 42px;
+  min-height: 34px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--type-small);
+  font-weight: var(--weight-semibold);
+}
+
+.language-switcher button.active {
+  background: var(--red);
+  color: var(--text-on-dark);
 }
 
 .icon-button,
@@ -1218,7 +1253,8 @@ p {
 }
 
 input,
-select {
+select,
+textarea {
   min-height: 44px;
   width: 100%;
   border: 1px solid var(--line);
@@ -1229,6 +1265,11 @@ select {
   box-shadow: var(--shadow-xs);
   font-size: var(--type-ui);
   line-height: 1.35;
+}
+
+textarea {
+  min-height: 112px;
+  resize: vertical;
 }
 
 .filters input,
@@ -1410,9 +1451,136 @@ select {
 
 .stack-view,
 .profile-grid,
-.admin-grid {
+.admin-grid,
+.planner-grid {
   display: grid;
   gap: 22px;
+}
+
+.trip-planner {
+  display: grid;
+  gap: 22px;
+}
+
+.planner-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.22fr);
+  align-items: center;
+  gap: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--green) 12%, var(--surface)) 0%, var(--surface) 58%),
+    var(--surface);
+}
+
+.planner-hero p {
+  max-width: 76ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.planner-meter {
+  display: grid;
+  place-items: center;
+  min-height: 132px;
+  border: 1px solid color-mix(in srgb, var(--green) 32%, var(--line));
+  border-radius: var(--radius-xl);
+  background: var(--surface-soft-green);
+  text-align: center;
+}
+
+.planner-meter strong {
+  color: var(--green-dark);
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: var(--leading-tight);
+}
+
+.planner-meter span,
+.planner-dates {
+  color: var(--muted);
+  font-size: var(--type-ui);
+}
+
+.planner-grid {
+  grid-template-columns: minmax(280px, 0.34fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+.planner-sidebar {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 20px;
+}
+
+.compact-head {
+  margin-bottom: 0;
+}
+
+.two-column-fields,
+.planner-source-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.trip-selector {
+  display: grid;
+  gap: 8px;
+}
+
+.planner-board {
+  display: grid;
+  gap: 20px;
+}
+
+.trip-item-form {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--soft) 56%, var(--surface));
+}
+
+.planner-schedule-row {
+  grid-template-columns: minmax(74px, 0.18fr) minmax(110px, 0.22fr) minmax(180px, 1fr) auto;
+  align-items: end;
+}
+
+.itinerary-days {
+  display: grid;
+  gap: 18px;
+}
+
+.itinerary-day {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.day-marker {
+  position: sticky;
+  top: 100px;
+  display: grid;
+  min-height: 50px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--gold) 42%, var(--line));
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft-gold);
+  color: var(--green-dark);
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  text-align: center;
+}
+
+.itinerary-row span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
 }
 
 .profile-grid {
@@ -1616,6 +1784,306 @@ select {
 
 .detail-actions {
   margin-top: 6px;
+}
+
+.reservation-form-panel {
+  grid-column: 1 / -1;
+}
+
+.match-nearby {
+  grid-column: 1 / -1;
+}
+
+.nearby-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.nearby-column {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.nearby-column h3 {
+  font-size: var(--type-card-title);
+  line-height: var(--leading-tight);
+}
+
+.nearby-row {
+  align-items: flex-start;
+}
+
+.nearby-row .secondary-button {
+  flex: 0 0 auto;
+}
+
+.reservation-message {
+  grid-column: 1 / -1;
+}
+
+.reservation-row {
+  align-items: flex-start;
+}
+
+.reservation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.status-pill {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 7px 11px;
+  font-size: var(--type-small);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+}
+
+.status-pill.pending {
+  border-color: color-mix(in srgb, var(--gold) 45%, var(--line));
+  background: var(--surface-soft-gold);
+  color: var(--green-dark);
+}
+
+.status-pill.confirmed {
+  border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+  background: var(--surface-soft-green);
+  color: var(--green-dark);
+}
+
+.status-pill.rejected,
+.status-pill.cancelled {
+  border-color: color-mix(in srgb, var(--red) 38%, var(--line));
+  background: var(--surface-soft-red);
+  color: var(--red-dark);
+}
+
+.reservation-filter {
+  min-width: 220px;
+}
+
+.admin-reservation-link {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.map-page {
+  display: grid;
+  gap: 22px;
+}
+
+.map-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.45fr);
+  gap: 22px;
+  align-items: end;
+  padding: clamp(24px, 4vw, 42px);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-panel);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--surface) 96%, var(--white-solid)), color-mix(in srgb, var(--gold) 10%, var(--surface))),
+    radial-gradient(circle at 100% 10%, rgba(11, 107, 67, 0.1), transparent 22rem);
+  box-shadow: var(--shadow);
+}
+
+.map-hero h2 {
+  max-width: 16ch;
+}
+
+.map-hero p:not(.section-kicker) {
+  max-width: 66ch;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.map-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.map-controls label {
+  display: grid;
+  gap: 7px;
+  color: var(--ink-soft);
+  font-size: var(--type-small);
+  font-weight: var(--weight-semibold);
+  line-height: 1.25;
+}
+
+.map-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.map-canvas,
+.map-sidebar {
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.map-canvas {
+  position: relative;
+  min-height: min(68vh, 680px);
+}
+
+.leaflet-map {
+  width: 100%;
+  height: 100%;
+  min-height: min(68vh, 680px);
+  background: var(--soft);
+}
+
+.map-loading {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 500;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 9px 12px;
+  box-shadow: var(--shadow-hover);
+  font-size: var(--type-ui);
+  font-weight: var(--weight-semibold);
+}
+
+.map-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 18px;
+}
+
+.map-summary {
+  display: grid;
+  gap: 2px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft-green);
+  color: var(--green-dark);
+}
+
+.map-summary strong {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
+.map-summary span {
+  font-size: var(--type-small);
+  font-weight: var(--weight-semibold);
+}
+
+.map-legend,
+.map-results {
+  display: grid;
+  gap: 10px;
+}
+
+.map-legend span,
+.map-results button {
+  display: flex;
+  align-items: center;
+}
+
+.map-legend span {
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: var(--type-ui);
+  font-weight: var(--weight-semibold);
+}
+
+.map-results button {
+  gap: 10px;
+  width: 100%;
+  min-height: 62px;
+  justify-content: flex-start;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 10px;
+  text-align: left;
+}
+
+.map-results button:hover {
+  border-color: color-mix(in srgb, var(--red) 34%, var(--line));
+  box-shadow: var(--shadow-hover);
+}
+
+.map-result-dot {
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.map-results strong,
+.map-results small {
+  display: block;
+  line-height: 1.25;
+}
+
+.map-results strong {
+  font-size: var(--type-ui);
+}
+
+.map-results small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: var(--type-caption);
+}
+
+.map-empty {
+  min-height: 150px;
+}
+
+.map-popup {
+  display: grid;
+  gap: 6px;
+  min-width: 190px;
+}
+
+.map-popup img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.map-popup strong,
+.map-popup span {
+  line-height: 1.25;
+}
+
+.map-popup span {
+  color: var(--muted);
+}
+
+.map-popup button {
+  min-height: 36px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--red);
+  color: var(--text-on-dark);
+  font-size: var(--type-small);
+  font-weight: var(--weight-semibold);
 }
 
 .experience-cta {
@@ -1822,6 +2290,10 @@ select {
   .admin-grid,
   .detail-layout,
   .hero-band,
+  .map-hero,
+  .map-shell,
+  .planner-grid,
+  .planner-hero,
   .experience-cta,
   .home-hero,
   .home-cta {
@@ -1892,8 +2364,25 @@ select {
     max-width: none;
   }
 
+  .map-sidebar {
+    order: -1;
+  }
+
+  .planner-sidebar,
+  .day-marker {
+    position: static;
+  }
+
+  .planner-schedule-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .filters .field {
     width: calc(50% - 5px);
+  }
+
+  .nearby-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .detail-media .match-media {
@@ -2100,10 +2589,34 @@ select {
     width: 100%;
   }
 
+  .map-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .map-canvas,
+  .leaflet-map {
+    min-height: 460px;
+  }
+
   .catalog-grid,
   .match-card,
   .match-card .card-body {
     grid-template-columns: 1fr;
+  }
+
+  .nearby-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .two-column-fields,
+  .planner-source-row,
+  .planner-schedule-row,
+  .itinerary-day {
+    grid-template-columns: 1fr;
+  }
+
+  .planner-meter {
+    min-height: 108px;
   }
 
   .match-card .row-actions {

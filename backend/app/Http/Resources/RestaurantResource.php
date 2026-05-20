@@ -20,6 +20,13 @@ class RestaurantResource extends JsonResource
             'price_range' => $this->price_range,
             'phone' => $this->phone,
             'whatsapp' => $this->whatsapp,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'map_url' => $this->map_url,
+            'is_featured' => $this->is_featured,
+            'rating' => $this->rating,
+            'opening_hours' => $this->opening_hours,
+            'image_url' => $this->image_url,
             'photos' => $this->photos ?? [],
         ];
     }

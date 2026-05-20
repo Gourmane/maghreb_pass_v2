@@ -20,7 +20,17 @@ class MatchSeeder extends Seeder
             ['Brésil', 'BRA', 'https://flagcdn.com/w320/br.png', 'Argentine', 'ARG', 'https://flagcdn.com/w320/ar.png', null, null, '2030-06-21', '20:00', 'Stade Moulay Abdellah', 'Rabat', 'Groupe D', 'group', 'upcoming'],
         ];
 
+        $stadiums = [
+            'Grand Stade Hassan II' => [33.5248, -7.6501],
+            'Stade Moulay Abdellah' => [33.9581, -6.8896],
+            'Grand Stade de Tanger' => [35.7419, -5.8584],
+            'Grand Stade de Marrakech' => [31.7069, -7.9809],
+            'Stade de Marrakech' => [31.7069, -7.9809],
+        ];
+
         foreach ($matches as [$teamHome, $teamHomeCode, $teamHomeFlag, $teamAway, $teamAwayCode, $teamAwayFlag, $scoreHome, $scoreAway, $date, $time, $stadium, $city, $group, $phase, $status]) {
+            [$latitude, $longitude] = $stadiums[$stadium];
+
             FootballMatch::updateOrCreate(
                 [
                     'team_home' => $teamHome,
@@ -36,6 +46,9 @@ class MatchSeeder extends Seeder
                     'score_away' => $scoreAway,
                     'match_time' => $time,
                     'stadium' => $stadium,
+                    'stadium_latitude' => $latitude,
+                    'stadium_longitude' => $longitude,
+                    'map_url' => "https://www.openstreetmap.org/?mlat={$latitude}&mlon={$longitude}#map=16/{$latitude}/{$longitude}",
                     'city' => $city,
                     'group_name' => $group,
                     'phase' => $phase,

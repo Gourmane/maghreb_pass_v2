@@ -1,4 +1,4 @@
-import { Heart, Home, Hotel, Languages, LogIn, LogOut, User } from 'lucide-react';
+import { CalendarCheck, Heart, Home, Hotel, LogIn, LogOut, Map, NotebookTabs, User } from 'lucide-react';
 
 export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActive, route, session, activeModule, modules, t }) {
   return (
@@ -23,15 +23,31 @@ export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActi
             </button>
           );
         })}
+        <button aria-current={route.view === 'map' ? 'page' : undefined} className={route.view === 'map' ? 'active' : ''} onClick={() => navigate('/map')} type="button">
+          <Map size={16} />
+          {t('nav.map')}
+        </button>
         <button aria-current={route.view === 'favorites' ? 'page' : undefined} className={route.view === 'favorites' ? 'active' : ''} onClick={() => navigate('/favorites')} type="button">{t('nav.favorites')}</button>
+        {session.user && (
+          <button aria-current={route.view === 'trips' ? 'page' : undefined} className={route.view === 'trips' ? 'active' : ''} onClick={() => navigate('/trips')} type="button">
+            <NotebookTabs size={16} />
+            {t('nav.trips')}
+          </button>
+        )}
+        {session.user && (
+          <button aria-current={route.view === 'my-reservations' ? 'page' : undefined} className={route.view === 'my-reservations' ? 'active' : ''} onClick={() => navigate('/my-reservations')} type="button">
+            <CalendarCheck size={16} />
+            {t('nav.reservations')}
+          </button>
+        )}
         <button aria-current={route.view === 'profile' ? 'page' : undefined} className={route.view === 'profile' ? 'active' : ''} onClick={() => navigate(session.user ? '/profile' : '/login')} type="button"><User size={16} />{t('nav.profile')}</button>
       </nav>
 
       <div className="header-actions">
-        <button aria-label={t('a11y.changeLanguage')} className="icon-button" onClick={() => changeLanguage(i18n.language === 'fr' ? 'en' : 'fr')} title={t('a11y.changeLanguage')} type="button">
-          <Languages size={18} />
-          <span>{i18n.language.toUpperCase()}</span>
-        </button>
+        <div aria-label={t('a11y.changeLanguage')} className="language-switcher" role="group">
+          <button aria-pressed={i18n.language === 'fr'} className={i18n.language === 'fr' ? 'active' : ''} onClick={() => changeLanguage('fr')} type="button">FR</button>
+          <button aria-pressed={i18n.language === 'en'} className={i18n.language === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')} type="button">EN</button>
+        </div>
         {session.user ? (
           <button className="ghost-button" onClick={onLogout} type="button"><LogOut size={17} />{t('auth.logout')}</button>
         ) : (
@@ -46,7 +62,7 @@ export function HeroBand({ navigate, session, t }) {
   return (
     <section className="hero-band">
       <div className="hero-copy">
-        <p className="eyebrow">World Cup Morocco 2030</p>
+        <p className="eyebrow">{t('home.eyebrow')}</p>
         <h1>{t('tagline')}</h1>
         <div className="hero-actions">
           <button className="primary-button" onClick={() => navigate('/matches')} type="button">{t('catalog.matches')}</button>
@@ -54,8 +70,8 @@ export function HeroBand({ navigate, session, t }) {
         </div>
       </div>
       <div className="hero-status">
-        <span>{session.user ? session.user.name : 'Guest'}</span>
-        <strong>{session.user?.role || 'visitor'}</strong>
+        <span>{session.user ? session.user.name : t('common.guest')}</span>
+        <strong>{session.user?.role || t('common.visitor')}</strong>
       </div>
     </section>
   );
@@ -83,7 +99,7 @@ export function ExperienceCta({ session, navigate, t }) {
   );
 }
 
-export function AppFooter({ changeLanguage, i18n, navigate, t }) {
+export function AppFooter({ changeLanguage, i18n, navigate, session, t }) {
   return (
     <footer className="site-footer">
       <div className="footer-grid">
@@ -100,6 +116,9 @@ export function AppFooter({ changeLanguage, i18n, navigate, t }) {
           <button onClick={() => navigate('/hotels')} type="button">{t('catalog.hotels')}</button>
           <button onClick={() => navigate('/restaurants')} type="button">{t('catalog.restaurants')}</button>
           <button onClick={() => navigate('/attractions')} type="button">{t('catalog.attractions')}</button>
+          <button onClick={() => navigate('/map')} type="button">{t('nav.map')}</button>
+          {session.user && <button onClick={() => navigate('/trips')} type="button">{t('nav.trips')}</button>}
+          {session.user && <button onClick={() => navigate('/my-reservations')} type="button">{t('nav.reservations')}</button>}
         </div>
         <div>
           <h3>{t('footer.information')}</h3>
