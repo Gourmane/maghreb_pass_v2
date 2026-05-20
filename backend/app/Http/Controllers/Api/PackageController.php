@@ -29,7 +29,7 @@ class PackageController extends Controller
             })
             ->orderBy('city')
             ->orderBy('title_fr')
-            ->paginate($request->integer('per_page', 12));
+            ->paginate($this->perPage($request));
 
         return PackageResource::collection($packages);
     }

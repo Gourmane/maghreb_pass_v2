@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('guests');
             $table->unsignedTinyInteger('number_of_rooms');
             $table->text('message')->nullable();
-            $table->enum('status', ['pending', 'confirmed', 'rejected', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'confirmed', 'rejected', 'cancelled'])->default('pending');
             $table->timestamps();
 
             $table->index(['status', 'created_at']);
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->time('reservation_time');
             $table->unsignedTinyInteger('guests');
             $table->text('message')->nullable();
-            $table->enum('status', ['pending', 'confirmed', 'rejected', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'confirmed', 'rejected', 'cancelled'])->default('pending');
             $table->timestamps();
 
             $table->index(['status', 'created_at']);

@@ -13,31 +13,32 @@ class TouristSeeder extends Seeder
         $tourists = [
             [
                 'name' => 'Youssef Touriste',
-                'email' => 'youssef@example.com',
+                'email' => 'tourist@maghrebpass.test',
                 'preferred_language' => 'fr',
                 'avatar_url' => 'https://upload.wikimedia.org/wikipedia/commons/1/12/User_icon_2.svg',
             ],
             [
                 'name' => 'Emily Carter',
-                'email' => 'emily@example.com',
+                'email' => 'emily.carter@maghrebpass.test',
                 'preferred_language' => 'en',
                 'avatar_url' => 'https://upload.wikimedia.org/wikipedia/commons/1/12/User_icon_2.svg',
             ],
         ];
 
         foreach ($tourists as $tourist) {
-            User::updateOrCreate(
+            $user = User::updateOrCreate(
                 ['email' => $tourist['email']],
                 [
                     'name' => $tourist['name'],
                     'password' => Hash::make('password'),
-                    'role' => 'tourist',
                     'preferred_language' => $tourist['preferred_language'],
                     'avatar_url' => $tourist['avatar_url'],
                     'is_active' => true,
                     'email_verified_at' => now(),
                 ],
             );
+
+            $user->forceFill(['role' => 'tourist'])->save();
         }
     }
 }

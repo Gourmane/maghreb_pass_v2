@@ -23,7 +23,7 @@ class HotelController extends Controller
             Hotel::query()
                 ->orderBy('city')
                 ->orderBy('name')
-                ->paginate($request->integer('per_page', 15))
+                ->paginate($this->perPage($request, 15))
         );
     }
 

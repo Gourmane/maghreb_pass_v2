@@ -19,7 +19,7 @@ class PackageController extends Controller
                 ->withCount('items')
                 ->orderBy('city')
                 ->orderBy('title_fr')
-                ->paginate($request->integer('per_page', 15))
+                ->paginate($this->perPage($request, 15))
         );
     }
 

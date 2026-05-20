@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreHotelReservationRequest;
 use App\Http\Resources\HotelReservationResource;
 use App\Models\HotelReservation;
+use App\Notifications\ReservationStatusNotification;
 use Illuminate\Http\JsonResponse;
 
 class HotelReservationController extends Controller
@@ -14,9 +15,14 @@ class HotelReservationController extends Controller
     {
         $reservation = HotelReservation::create([
             ...$request->validated(),
-            'user_id' => $request->user()?->id,
+            'user_id' => $request->user()->id,
             'status' => 'pending',
+            'payment_status' => 'unpaid',
+            'paid_at' => null,
+            'payment_reference' => null,
         ])->load('hotel');
+
+        ReservationStatusNotification::sendSafely($request->user(), 'created', $reservation);
 
         return response()->json([
             'message' => 'Votre demande de reservation hotel a bien ete envoyee.',

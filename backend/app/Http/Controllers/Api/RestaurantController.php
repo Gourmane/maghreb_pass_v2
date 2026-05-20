@@ -30,7 +30,7 @@ class RestaurantController extends Controller
             })
             ->orderBy('city')
             ->orderBy('name')
-            ->paginate($request->integer('per_page', 12));
+            ->paginate($this->perPage($request));
 
         return RestaurantResource::collection($restaurants);
     }

@@ -29,7 +29,7 @@ class MatchController extends Controller
             ->when($request->filled('match_date'), fn ($query) => $query->whereDate('match_date', $request->input('match_date')))
             ->orderBy('match_date')
             ->orderBy('match_time')
-            ->paginate($request->integer('per_page', 12));
+            ->paginate($this->perPage($request));
 
         return MatchResource::collection($matches);
     }

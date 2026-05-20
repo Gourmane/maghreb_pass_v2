@@ -63,20 +63,22 @@ Route::get('/packages', [PackageController::class, 'index']);
 Route::get('/packages/{id}', [PackageController::class, 'show'])->whereNumber('id');
 
 Route::get('/map-items', MapItemController::class);
-Route::post('/hotel-reservations', [HotelReservationController::class, 'store']);
-Route::post('/restaurant-reservations', [RestaurantReservationController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/hotel-reservations', [HotelReservationController::class, 'store']);
+    Route::post('/restaurant-reservations', [RestaurantReservationController::class, 'store']);
     Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites', [FavoriteController::class, 'store']);
     Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy'])->whereNumber('id');
     Route::get('/my-reservations', [MyReservationController::class, 'index']);
     Route::put('/my-hotel-reservations/{reservation}/cancel', [MyReservationController::class, 'cancelHotel'])->whereNumber('reservation');
     Route::put('/my-restaurant-reservations/{reservation}/cancel', [MyReservationController::class, 'cancelRestaurant'])->whereNumber('reservation');
+    Route::post('/my-hotel-reservations/{reservation}/pay', [MyReservationController::class, 'payHotel'])->whereNumber('reservation');
+    Route::post('/my-restaurant-reservations/{reservation}/pay', [MyReservationController::class, 'payRestaurant'])->whereNumber('reservation');
     Route::apiResource('trips', TripController::class);
     Route::post('/trips/{trip}/items', [TripItemController::class, 'store'])->whereNumber('trip');
     Route::put('/trips/{trip}/items/{item}', [TripItemController::class, 'update'])->whereNumber('trip')->whereNumber('item');

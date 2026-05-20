@@ -16,7 +16,7 @@ export function HomePage({ catalog, language, loading, navigate, onAddFavorite, 
   return (
     <section className="home-page">
       <HomeHero navigate={navigate} t={t} />
-      <HomeSearchBar t={t} />
+      <HomeSearchBar navigate={navigate} t={t} />
       <HomeModuleTiles navigate={navigate} t={t} />
       <WhyChoose t={t} />
       {modules.map((module) => (
@@ -56,28 +56,28 @@ function HomeHero({ navigate, t }) {
   );
 }
 
-function HomeSearchBar({ t }) {
+function HomeSearchBar({ navigate, t }) {
   const fields = [
-    { icon: MapPin, title: t('catalog.city'), value: t('catalog.allCities') },
-    { icon: CalendarDays, title: t('catalog.date'), value: t('home.search.selectDate') },
-    { icon: Utensils, title: t('catalog.category'), value: t('home.search.categories') },
-    { icon: Users, title: t('home.search.guests'), value: t('home.search.adults') },
+    { icon: MapPin, path: '/map', title: t('catalog.city'), value: t('catalog.allCities') },
+    { icon: CalendarDays, path: '/matches', title: t('catalog.date'), value: t('home.search.selectDate') },
+    { icon: Utensils, path: '/restaurants', title: t('catalog.category'), value: t('home.search.categories') },
+    { icon: Users, path: '/hotels', title: t('home.search.guests'), value: t('home.search.adults') },
   ];
 
   return (
     <div className="home-search-shell" aria-label={t('catalog.filters')}>
-      {fields.map(({ icon: Icon, title, value }) => (
-        <div className="home-search-field" key={title}>
+      {fields.map(({ icon: Icon, path, title, value }) => (
+        <button className="home-search-field" key={title} onClick={() => navigate(path)} type="button">
           <span><Icon size={22} /></span>
           <div>
             <strong>{title}</strong>
             <small>{value}</small>
           </div>
-        </div>
+        </button>
       ))}
-      <div className="home-search-submit" aria-label={t('catalog.search')}>
+      <button className="home-search-submit" aria-label={t('catalog.search')} onClick={() => navigate('/matches')} type="button">
         <Search size={23} />
-      </div>
+      </button>
     </div>
   );
 }

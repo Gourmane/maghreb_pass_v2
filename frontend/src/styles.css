@@ -731,8 +731,14 @@ p {
   border-right: 1px solid var(--line);
   background: transparent;
   color: var(--ink);
-  cursor: default;
+  cursor: pointer;
   text-align: left;
+}
+
+.home-search-field:hover,
+.home-search-field:focus-visible {
+  background: color-mix(in srgb, var(--surface-soft-red) 55%, transparent);
+  outline: none;
 }
 
 .home-search-field span {
@@ -775,7 +781,7 @@ p {
   border-radius: 50%;
   background: linear-gradient(180deg, color-mix(in srgb, var(--red) 94%, var(--white-solid)), var(--red-dark));
   color: var(--text-on-dark);
-  cursor: default;
+  cursor: pointer;
   box-shadow: var(--shadow-red);
 }
 
@@ -1888,11 +1894,29 @@ textarea {
   color: var(--green-dark);
 }
 
+.status-pill.approved {
+  border-color: color-mix(in srgb, var(--blue) 42%, var(--line));
+  background: color-mix(in srgb, var(--blue) 10%, var(--surface));
+  color: var(--green-dark);
+}
+
 .status-pill.rejected,
 .status-pill.cancelled {
   border-color: color-mix(in srgb, var(--red) 38%, var(--line));
   background: var(--surface-soft-red);
   color: var(--red-dark);
+}
+
+.payment-panel {
+  border-color: color-mix(in srgb, var(--green) 28%, var(--line));
+}
+
+.payment-summary {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: var(--text-muted);
+  font-size: var(--type-small);
 }
 
 .reservation-filter {

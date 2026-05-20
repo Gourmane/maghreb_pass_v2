@@ -29,7 +29,7 @@ class AttractionController extends Controller
             })
             ->orderBy('city')
             ->orderBy('name')
-            ->paginate($request->integer('per_page', 12));
+            ->paginate($this->perPage($request));
 
         return AttractionResource::collection($attractions);
     }

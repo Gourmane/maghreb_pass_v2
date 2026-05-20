@@ -30,7 +30,7 @@ class HotelController extends Controller
             })
             ->orderBy('city')
             ->orderBy('name')
-            ->paginate($request->integer('per_page', 12));
+            ->paginate($this->perPage($request));
 
         return HotelResource::collection($hotels);
     }

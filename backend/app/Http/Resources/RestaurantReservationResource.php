@@ -24,6 +24,9 @@ class RestaurantReservationResource extends JsonResource
             'guests' => $this->guests,
             'message' => $this->message,
             'status' => $this->status,
+            'payment_status' => $this->payment_status,
+            'paid_at' => $this->paid_at?->toISOString(),
+            'payment_reference' => $this->payment_reference,
             'created_at' => $this->created_at?->toISOString(),
         ];
     }

@@ -23,7 +23,7 @@ class RestaurantController extends Controller
             Restaurant::query()
                 ->orderBy('city')
                 ->orderBy('name')
-                ->paginate($request->integer('per_page', 15))
+                ->paginate($this->perPage($request, 15))
         );
     }
 

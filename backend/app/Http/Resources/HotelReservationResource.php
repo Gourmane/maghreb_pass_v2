@@ -25,6 +25,9 @@ class HotelReservationResource extends JsonResource
             'number_of_rooms' => $this->number_of_rooms,
             'message' => $this->message,
             'status' => $this->status,
+            'payment_status' => $this->payment_status,
+            'paid_at' => $this->paid_at?->toISOString(),
+            'payment_reference' => $this->payment_reference,
             'created_at' => $this->created_at?->toISOString(),
         ];
     }

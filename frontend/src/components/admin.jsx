@@ -27,7 +27,7 @@ export function AdminView({ activeModule, adminForm, catalog, editingId, isAdmin
           <div className="stats-grid">
             {stats && Object.entries(stats).map(([key, value]) => (
               <div className="stat-tile" key={key}>
-                <span>{key}</span>
+                <span>{t(`admin.stats.${key}`, { defaultValue: key.replaceAll('_', ' ') })}</span>
                 <strong>{value}</strong>
               </div>
             ))}
@@ -80,7 +80,7 @@ export function AdminView({ activeModule, adminForm, catalog, editingId, isAdmin
   );
 }
 
-function AdminForm({ activeModule, form, loading, onChange, onReset, onSubmit, t }) {
+function AdminForm({ activeModule, form = {}, loading, onChange, onReset, onSubmit, t }) {
   return (
     <form className="form-grid" onSubmit={onSubmit}>
       {Object.keys(form).map((field) => {
@@ -194,6 +194,8 @@ function PackageItemManager({ catalog, packageId, t }) {
   }
 
   async function itemAction(item, action) {
+    if (action === 'delete' && !window.confirm(t('confirm.deletePackageItem', { name: item.item?.title || item.custom_title || t('packages.item') }))) return;
+
     setLoading(true);
     setError('');
     try {

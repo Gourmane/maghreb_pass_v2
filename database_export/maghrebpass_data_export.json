@@ -17,7 +17,7 @@
         {
             "id": 2,
             "name": "Youssef Touriste",
-            "email": "youssef@example.com",
+            "email": "tourist@maghrebpass.test",
             "email_verified_at": "2026-05-18 19:31:33",
             "password": "$2y$12$3s6HE.ZOqqXsoXIYZs7IA.5E5Vak79ujmX40ZYOd7GXhvVSBmvpzO",
             "role": "tourist",
@@ -31,7 +31,7 @@
         {
             "id": 3,
             "name": "Emily Carter",
-            "email": "emily@example.com",
+            "email": "emily.carter@maghrebpass.test",
             "email_verified_at": "2026-05-18 19:31:34",
             "password": "$2y$12$ykxf5pgAlvRqF87uTre8/OBTRpUSbH8JNMm4s6hpH84paDLhPBu82",
             "role": "tourist",

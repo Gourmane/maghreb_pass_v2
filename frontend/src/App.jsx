@@ -46,7 +46,7 @@ function App() {
     preferred_language: i18n.language,
   });
   const [profileForm, setProfileForm] = useState({ name: '', preferred_language: i18n.language, avatar_url: '' });
-  const [adminForm, setAdminForm] = useState(initialForms[activeModule]);
+  const [adminForm, setAdminForm] = useState(initialForms[activeModule] || initialForms.matches);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState('');
@@ -84,7 +84,7 @@ function App() {
   useEffect(() => {
     if (route.view === 'home') loadHomeCatalog();
     else loadModule(activeModule);
-    setAdminForm(initialForms[activeModule]);
+    setAdminForm(initialForms[activeModule] || initialForms.matches);
     setEditingId(null);
   }, [activeModule, route.view]);
 
@@ -273,7 +273,7 @@ function App() {
       if (editingId) await api.put(`/admin/${activeModule}/${editingId}`, payload);
       else await api.post(`/admin/${activeModule}`, payload);
 
-      setAdminForm(initialForms[activeModule]);
+      setAdminForm(initialForms[activeModule] || initialForms.matches);
       setEditingId(null);
       await loadModule(activeModule);
       await loadAdmin();
@@ -281,6 +281,8 @@ function App() {
   }
 
   async function deleteAdminItem(item) {
+    if (!window.confirm(t('confirm.deleteCatalog', { name: item.name || item.title_fr || item.title_en || item.team_home || t(`catalog.${activeModule}`) }))) return;
+
     await request(async () => {
       await api.delete(`/admin/${activeModule}/${item.id}`);
       await loadModule(activeModule);
@@ -296,7 +298,7 @@ function App() {
   }
 
   function editAdminItem(item) {
-    const form = { ...initialForms[activeModule] };
+    const form = { ...(initialForms[activeModule] || initialForms.matches) };
     Object.keys(form).forEach((key) => {
       if (item[key] !== undefined && item[key] !== null) form[key] = item[key];
     });
@@ -370,13 +372,14 @@ function App() {
             onAddFavorite={addFavorite}
             onBack={() => navigate(currentModule.basePath)}
             onOpenNearby={(moduleKey, item) => navigate(`/${moduleKey}/${item.id}`)}
+            navigate={navigate}
             session={session}
             t={t}
           />
         )}
 
         {route.view === 'favorites' && (
-          <FavoritesView favorites={favorites} language={i18n.language} navigate={navigate} onRemove={removeFavorite} t={t} />
+          <FavoritesView favorites={favorites} language={i18n.language} navigate={navigate} onRemove={removeFavorite} session={session} t={t} />
         )}
 
         {route.view === 'map' && (
@@ -448,7 +451,7 @@ function App() {
                 onEdit={editAdminItem}
                 onFormChange={setAdminForm}
                 onModuleChange={(key) => navigate(key === 'matches' ? '/admin/matches' : `/admin/${key}`)}
-                onReset={() => { setAdminForm(initialForms[activeModule]); setEditingId(null); }}
+                onReset={() => { setAdminForm(initialForms[activeModule] || initialForms.matches); setEditingId(null); }}
                 onSubmit={submitAdmin}
                 onToggleUser={toggleAdminUser}
                 stats={stats}

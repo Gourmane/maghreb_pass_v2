@@ -84,6 +84,8 @@ Le frontend utilise le cookie HTTP-only `maghrebpass_token`. Les clients API peu
 Authorization: Bearer <token>
 ```
 
+L'authentification de l'application est basee sur Laravel Sanctum pour une SPA React. Breeze n'est pas utilise comme systeme d'authentification applicatif.
+
 ### Favoris
 
 - `GET /api/favorites`
@@ -106,13 +108,20 @@ L'API expose les favoris avec `type` + `id`; en base, l'implementation Laravel u
 ### Reservations et trips
 
 - `GET /api/my-reservations`
-- `POST /api/hotels/{hotel}/reservations`
-- `POST /api/restaurants/{restaurant}/reservations`
-- `PUT /api/my-reservations/{type}/{id}/cancel`
+- `POST /api/hotel-reservations`
+- `POST /api/restaurant-reservations`
+- `PUT /api/my-hotel-reservations/{reservation}/cancel`
+- `PUT /api/my-restaurant-reservations/{reservation}/cancel`
+- `POST /api/my-hotel-reservations/{reservation}/pay`
+- `POST /api/my-restaurant-reservations/{reservation}/pay`
 - `apiResource /api/trips`
 - `POST /api/trips/{trip}/items`
 - `PUT /api/trips/{trip}/items/{item}`
 - `DELETE /api/trips/{trip}/items/{item}`
+
+Les reservations hotels/restaurants exigent un utilisateur authentifie. Le statut initial est `pending` et le paiement initial est `unpaid`. L'admin peut passer une demande a `approved` ou `rejected`; il ne confirme pas directement. Le touriste confirme definitivement avec le paiement simule, ce qui passe la reservation a `confirmed` avec `payment_status=paid`, `paid_at` et `payment_reference`.
+
+Le paiement est uniquement simule pour la demonstration academique. Aucune transaction reelle, aucun service Stripe/PayPal et aucun numero de carte ne sont utilises.
 
 ### Admin
 
@@ -128,7 +137,10 @@ Routes protegees par `auth:sanctum` et `role:admin`.
 - `apiResource /api/admin/attractions`
 - `apiResource /api/admin/packages`
 - `GET /api/admin/reservations`
-- `PUT /api/admin/reservations/{type}/{id}/status`
+- `PUT /api/admin/hotel-reservations/{reservation}/status`
+- `PUT /api/admin/restaurant-reservations/{reservation}/status`
+
+Les endpoints admin de statut acceptent uniquement `approved` ou `rejected`.
 
 Le toggle utilisateur refuse maintenant la desactivation de son propre compte admin et du dernier administrateur actif.
 
@@ -154,7 +166,9 @@ Les endpoints admin hotels/restaurants/attractions acceptent:
 
 ## Securite configuration
 
-Ne pas livrer `.env`. Pour un demo public ou production, garder `APP_DEBUG=false`, `SESSION_ENCRYPT=true` et generer un `APP_KEY` propre a l'environnement. `.env.example` contient des valeurs sures par defaut, que le developpement local peut surcharger dans `.env`.
+Ne pas livrer `.env`. Pour un demo public ou production, garder `APP_DEBUG=false`, `SESSION_ENCRYPT=true`, `COOKIE_SECURE=true` sous HTTPS, et generer un `APP_KEY` propre a l'environnement. `.env.example` contient des valeurs sures par defaut, que le developpement local peut surcharger dans `.env`.
+
+Pour les notifications email en local, utiliser `MAIL_MAILER=log` si aucun SMTP n'est configure. Les echecs d'envoi sont journalises sans bloquer la requete principale.
 
 ## Validation
 

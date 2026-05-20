@@ -56,7 +56,7 @@ Frontend local: `http://127.0.0.1:5173`
 
 5. Lister `GET /api/favorites`.
 6. Creer un trip via `POST /api/trips`, puis ajouter un element de la meme ville via `POST /api/trips/{id}/items`.
-7. Verifier `GET /api/my-reservations` et annuler une reservation pending si disponible.
+7. Verifier `GET /api/my-reservations`, annuler une reservation `pending` ou `approved` non payee, puis payer une reservation `approved` via le paiement simule.
 8. Supprimer le favori avec `DELETE /api/favorites/{id}`.
 
 ## 4. Parcours admin
@@ -71,23 +71,26 @@ Frontend local: `http://127.0.0.1:5173`
   - `/api/admin/restaurants`
   - `/api/admin/attractions`
   - `/api/admin/packages`
-6. Confirmer/refuser une reservation via `/api/admin/reservations/{type}/{id}/status`.
+6. Approuver/refuser une reservation pending via `/api/admin/hotel-reservations/{reservation}/status` ou `/api/admin/restaurant-reservations/{reservation}/status`.
 7. Verifier que l'admin ne peut pas desactiver son propre compte ou le dernier administrateur actif.
 
 ## 5. Points a presenter
 
 - Acces public sans compte.
-- Authentification Sanctum par token.
+- Authentification Sanctum par cookie HTTP-only ou token API.
 - Role admin protege par middleware.
 - Favoris lies a l'utilisateur connecte.
 - Favoris exposes en API avec `type` + `id`; en base, l'implementation Laravel utilise `favoriteable_type` + `favoriteable_id` pour garder une relation polymorphique equivalente au `item_type` + `item_id` du PRD.
 - Carte globale et mini-map sur les fiches geolocalisees.
-- Reservations simples hotels/restaurants.
+- Reservations hotels/restaurants reservees aux touristes connectes.
+- Workflow reservation: demande pending, approbation admin, paiement simule, confirmation finale.
+- Paiement simule uniquement; aucune transaction reelle et aucun numero de carte.
 - Packages mono-ville et trips mono-ville.
 - Trip Planner accessible via `/trip-planner`, `/trips` et `/my-trips`.
 - Donnees bilingues FR/EN.
 - Photos sous forme d'URLs ou fichiers images admin limites a 2 MB.
 - Aucune API externe requise.
+- Nearby base sur des recommandations dans la meme ville, pas sur une distance GPS reelle.
 - Derniere validation backend reference: 51 tests passes, 444 assertions.
 - Derniere validation frontend reference: build Vite reussi.
 

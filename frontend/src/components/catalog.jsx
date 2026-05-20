@@ -122,7 +122,7 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
   );
 }
 
-export function DetailView({ item, language, loading, matchNearby, moduleKey, onAddFavorite, onBack, onOpenNearby, session, t }) {
+export function DetailView({ item, language, loading, matchNearby, moduleKey, navigate, onAddFavorite, onBack, onOpenNearby, session, t }) {
   if (loading && !item) return <section className="content-panel"><EmptyState text={t('messages.loading')} /></section>;
   if (!item) return <section className="content-panel"><EmptyState text={t('catalog.empty')} /></section>;
 
@@ -142,7 +142,7 @@ export function DetailView({ item, language, loading, matchNearby, moduleKey, on
       <DetailMiniMap item={item} moduleKey={moduleKey} t={t} />
       {moduleKey === 'packages' && <PackageTimeline item={item} language={language} t={t} />}
       {moduleKey === 'matches' && <MatchNearby nearby={matchNearby} language={language} onOpenNearby={onOpenNearby} t={t} />}
-      <ReservationForm item={item} moduleKey={moduleKey} session={session} t={t} />
+      <ReservationForm item={item} moduleKey={moduleKey} navigate={navigate} session={session} t={t} />
     </section>
   );
 }
@@ -290,13 +290,26 @@ function DetailActions({ item, moduleKey, onAddFavorite, t }) {
   );
 }
 
-export function FavoritesView({ favorites, language, navigate, onRemove, t }) {
+export function FavoritesView({ favorites, language, navigate, onRemove, session, t }) {
   const groups = [
     ['hotels', favorites.hotels || []],
     ['restaurants', favorites.restaurants || []],
     ['attractions', favorites.attractions || []],
   ];
   const total = groups.reduce((count, [, items]) => count + items.length, 0);
+
+  if (!session.user) {
+    return (
+      <section className="content-panel locked">
+        <h2>{t('catalog.favoritesAuthTitle')}</h2>
+        <p>{t('catalog.favoritesAuthBody')}</p>
+        <div className="form-actions">
+          <button className="primary-button" onClick={() => navigate('/login')} type="button">{t('auth.login')}</button>
+          <button className="secondary-button" onClick={() => navigate('/register')} type="button">{t('auth.register')}</button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="stack-view">

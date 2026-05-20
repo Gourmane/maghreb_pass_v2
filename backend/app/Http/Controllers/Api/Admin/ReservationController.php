@@ -8,6 +8,7 @@ use App\Http\Resources\HotelReservationResource;
 use App\Http\Resources\RestaurantReservationResource;
 use App\Models\HotelReservation;
 use App\Models\RestaurantReservation;
+use App\Notifications\ReservationStatusNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -39,21 +40,45 @@ class ReservationController extends Controller
 
     public function updateHotelStatus(UpdateReservationStatusRequest $request, HotelReservation $reservation): JsonResponse
     {
-        $reservation->update($request->validated());
+        $status = $request->validated('status');
+
+        if ($reservation->status !== 'pending') {
+            return response()->json(['message' => 'Seules les demandes en attente peuvent etre approuvees ou refusees.'], 422);
+        }
+
+        $reservation->update([
+            'status' => $status,
+            'payment_status' => $status === 'approved' ? 'unpaid' : $reservation->payment_status,
+        ]);
+
+        $reservation->load(['hotel', 'user']);
+        ReservationStatusNotification::sendSafely($reservation->user, $status, $reservation);
 
         return response()->json([
             'message' => 'Statut de reservation hotel mis a jour.',
-            'data' => new HotelReservationResource($reservation->load(['hotel', 'user'])),
+            'data' => new HotelReservationResource($reservation),
         ]);
     }
 
     public function updateRestaurantStatus(UpdateReservationStatusRequest $request, RestaurantReservation $reservation): JsonResponse
     {
-        $reservation->update($request->validated());
+        $status = $request->validated('status');
+
+        if ($reservation->status !== 'pending') {
+            return response()->json(['message' => 'Seules les demandes en attente peuvent etre approuvees ou refusees.'], 422);
+        }
+
+        $reservation->update([
+            'status' => $status,
+            'payment_status' => $status === 'approved' ? 'unpaid' : $reservation->payment_status,
+        ]);
+
+        $reservation->load(['restaurant', 'user']);
+        ReservationStatusNotification::sendSafely($reservation->user, $status, $reservation);
 
         return response()->json([
             'message' => 'Statut de reservation restaurant mis a jour.',
-            'data' => new RestaurantReservationResource($reservation->load(['restaurant', 'user'])),
+            'data' => new RestaurantReservationResource($reservation),
         ]);
     }
 }

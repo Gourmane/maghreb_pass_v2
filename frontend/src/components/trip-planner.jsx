@@ -129,6 +129,7 @@ export function TripPlannerView({ language, loading, navigate, routeTripId, sess
 
   async function deleteTrip() {
     if (!selectedTrip) return;
+    if (!window.confirm(t('confirm.deleteTrip', { name: selectedTrip.title }))) return;
 
     await run(async () => {
       await api.delete(`/trips/${selectedTrip.id}`);
@@ -159,6 +160,7 @@ export function TripPlannerView({ language, loading, navigate, routeTripId, sess
 
   async function deleteItem(item) {
     if (!selectedTrip) return;
+    if (!window.confirm(t('confirm.deleteTripItem', { name: item.item?.title || item.custom_title || t('packages.item') }))) return;
 
     await run(async () => {
       const response = await api.delete(`/trips/${selectedTrip.id}/items/${item.id}`);

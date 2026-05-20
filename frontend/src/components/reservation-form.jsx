@@ -2,7 +2,7 @@ import { CalendarCheck } from 'lucide-react';
 import { useState } from 'react';
 import { api } from '../lib/api.js';
 
-export function ReservationForm({ item, moduleKey, session, t }) {
+export function ReservationForm({ item, moduleKey, navigate, session, t }) {
   const isHotel = moduleKey === 'hotels';
   const isRestaurant = moduleKey === 'restaurants';
   const [form, setForm] = useState(() => initialReservationForm(item, isHotel, session));
@@ -11,6 +11,24 @@ export function ReservationForm({ item, moduleKey, session, t }) {
   const [error, setError] = useState('');
 
   if (!isHotel && !isRestaurant) return null;
+
+  if (!session.user) {
+    return (
+      <section className="content-panel reservation-form-panel">
+        <div className="panel-head">
+          <div>
+            <p className="section-kicker">{t('reservations.request')}</p>
+            <h2>{isHotel ? t('reservations.hotelRequest') : t('reservations.restaurantRequest')}</h2>
+          </div>
+        </div>
+        <div className="notice">{t('reservations.loginRequired')}</div>
+        <div className="form-actions">
+          <button className="primary-button" onClick={() => navigate('/login')} type="button">{t('auth.login')}</button>
+          <button className="secondary-button" onClick={() => navigate('/register')} type="button">{t('auth.register')}</button>
+        </div>
+      </section>
+    );
+  }
 
   async function submit(event) {
     event.preventDefault();

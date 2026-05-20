@@ -22,6 +22,9 @@ class HotelReservation extends Model
         'number_of_rooms',
         'message',
         'status',
+        'payment_status',
+        'paid_at',
+        'payment_reference',
     ];
 
     protected function casts(): array
@@ -31,6 +34,7 @@ class HotelReservation extends Model
             'check_out_date' => 'date',
             'guests' => 'integer',
             'number_of_rooms' => 'integer',
+            'paid_at' => 'datetime',
         ];
     }
 

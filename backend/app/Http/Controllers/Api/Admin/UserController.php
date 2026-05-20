@@ -15,7 +15,7 @@ class UserController extends Controller
         $users = User::query()
             ->select(['id', 'name', 'email', 'role', 'preferred_language', 'is_active', 'created_at'])
             ->orderBy('created_at', 'desc')
-            ->paginate($request->integer('per_page', 15));
+            ->paginate($this->perPage($request, 15));
 
         return response()->json($users);
     }

@@ -108,8 +108,11 @@ export const initialForms = {
 
 export function routeFromPath(pathname = window.location.pathname) {
   const clean = pathname.replace(/\/+$/, '') || '/';
-  const adminMatch = clean.match(/^\/admin(?:\/(matches|hotels|restaurants|attractions|packages|users))?$/);
+  if (clean === '/admin/users') return { view: 'admin', module: 'matches' };
+  if (clean === '/admin/reservations') return { view: 'admin-reservations' };
+  const adminMatch = clean.match(/^\/admin(?:\/(matches|hotels|restaurants|attractions|packages))?$/);
   if (adminMatch) return { view: 'admin', module: adminMatch[1] || 'matches' };
+  if (clean.startsWith('/admin/')) return { view: 'admin', module: 'matches' };
   if (clean === '/') return { view: 'home' };
   if (clean === '/matches') return { view: 'public', module: 'matches' };
   if (clean === '/login') return { view: 'profile', authMode: 'login' };
@@ -121,8 +124,6 @@ export function routeFromPath(pathname = window.location.pathname) {
   if (tripDetail) return { view: 'trips', id: Number(tripDetail[1]) };
   if (clean === '/my-reservations') return { view: 'my-reservations' };
   if (clean === '/map') return { view: 'map' };
-  if (clean === '/admin/reservations') return { view: 'admin-reservations' };
-
   for (const module of modules) {
     if (clean === module.basePath) return { view: 'public', module: module.key };
     const detail = clean.match(new RegExp(`^${module.basePath}/(\\d+)$`));

@@ -21,6 +21,9 @@ class RestaurantReservation extends Model
         'guests',
         'message',
         'status',
+        'payment_status',
+        'paid_at',
+        'payment_reference',
     ];
 
     protected function casts(): array
@@ -28,6 +31,7 @@ class RestaurantReservation extends Model
         return [
             'reservation_date' => 'date',
             'guests' => 'integer',
+            'paid_at' => 'datetime',
         ];
     }
 

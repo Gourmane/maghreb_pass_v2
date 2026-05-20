@@ -16,9 +16,9 @@ MaghrebPass Advanced V2.5 est l’évolution avancée du MVP MaghrebPass.
 
 La première version permettait aux touristes de consulter les matchs, les hôtels, les restaurants et les attractions, de filtrer les contenus et de gérer leurs favoris.
 
-La version avancée transforme MaghrebPass en une plateforme de planification touristique plus complète, mais toujours gratuite, réaliste et simple à développer. L’utilisateur peut visualiser les lieux sur une carte interactive, envoyer des demandes de réservation, découvrir des suggestions autour des matchs, consulter des packages touristiques et organiser son séjour avec un Trip Planner simple.
+La version avancée transforme MaghrebPass en une plateforme de planification touristique plus complète, mais toujours gratuite, réaliste et simple à développer. Le visiteur peut visualiser les lieux sur une carte interactive, découvrir des suggestions autour des matchs et consulter des packages touristiques. Le touriste authentifié peut envoyer des demandes de réservation, suivre leur statut, confirmer une demande approuvée via une étape de validation démo et organiser son séjour avec un Trip Planner simple.
 
-L’objectif principal est de passer d’un simple catalogue touristique à un **Smart Travel Planner** adapté aux visiteurs de la Coupe du Monde au Maroc, sans API payante, sans paiement en ligne et sans système de réservation externe.
+L’objectif principal est de passer d’un simple catalogue touristique à un **Smart Travel Planner** adapté aux visiteurs de la Coupe du Monde au Maroc, sans API payante, sans paiement en ligne réel et sans système de réservation externe.
 
 ---
 
@@ -103,7 +103,7 @@ Comment envoyer une demande de réservation ?
 |---|---|---|
 | Carte interactive | Afficher hôtels, restaurants, attractions et éventuellement matchs sur une carte | Must |
 | Réservations simples | Permettre aux touristes d’envoyer des demandes de réservation | Must |
-| Gestion admin des réservations | L’admin peut confirmer ou refuser les demandes | Must |
+| Gestion admin des réservations | L’admin peut approuver ou refuser les demandes | Must |
 | Packages touristiques | Créer des plans prêts à l’emploi combinant hôtel, restaurant, attraction et match | Must |
 | Suggestions autour des matchs | Proposer des lieux dans la même ville que le match | Must |
 | Favoris standardisés | Utiliser une structure polymorphique `item_type` + `item_id` | Must |
@@ -122,11 +122,15 @@ Gratuite
 Simple à développer
 Avancée mais réaliste
 Compatible avec le MVP
-Sans paiement en ligne
+Sans paiement en ligne réel
 Sans API externe obligatoire
 Sans système de réservation réel
 Sans application mobile native
 ```
+
+Le système ne propose pas de paiement en ligne réel. Une étape de confirmation/paiement simulé est incluse uniquement pour la démonstration académique, sans transaction bancaire, sans carte et sans prestataire externe comme Stripe ou PayPal.
+
+Le projet est une démonstration académique et non un SaaS de production. Les contenus catalogue sont alimentés manuellement par l’administrateur ou par des seeders/données de démonstration. Les images sont gérées via URL ou upload admin selon les écrans existants. Les workflows sensibles, notamment la confirmation/paiement, restent simulés pour la démonstration.
 
 ---
 
@@ -184,13 +188,13 @@ Le visiteur peut :
 - Voir la carte interactive
 - Voir les packages publics
 - Voir les suggestions autour d’un match
-- Envoyer une demande de réservation avec nom, email et téléphone
+- Accéder aux pages de connexion et d’inscription avant de réserver
 
 Limite :
 
 ```txt
-Un visiteur non connecté ne peut pas consulter le statut de sa réservation depuis la plateforme.
-Après l’envoi, il voit une page de confirmation simple.
+Un visiteur non connecté ne peut pas envoyer de demande de réservation.
+Il doit créer un compte ou se connecter comme touriste avant de soumettre une réservation.
 ```
 
 ### 8.2 Touriste connecté
@@ -202,7 +206,8 @@ Le touriste connecté peut :
 - Voir ses favoris
 - Envoyer des demandes de réservation
 - Consulter le statut de ses réservations
-- Annuler une demande de réservation si elle est encore `pending`
+- Annuler une demande de réservation si elle est encore autorisée
+- Effectuer une confirmation/paiement simulé après approbation admin
 - Créer plusieurs trips
 - Ajouter des hôtels, restaurants, attractions ou matchs dans son planning
 - Modifier les éléments de son trip
@@ -216,9 +221,9 @@ L’administrateur peut :
 - Gérer les hôtels
 - Gérer les restaurants
 - Gérer les attractions
-- Gérer les utilisateurs
+- Consulter les statistiques utilisateurs et activer/désactiver des comptes depuis le dashboard
 - Gérer les réservations
-- Confirmer/refuser les réservations
+- Approuver/refuser les réservations
 - Gérer les packages
 - Gérer les éléments des packages
 - Visualiser les statistiques du dashboard
@@ -251,7 +256,8 @@ Le module d’authentification reste basé sur Laravel Breeze.
 - Le middleware `admin` vérifie que l’utilisateur connecté possède `role = admin`.
 - Les favoris, trips et réservations personnelles nécessitent une authentification.
 - Un visiteur non connecté peut consulter les contenus publics.
-- Un visiteur non connecté peut envoyer une demande de réservation avec ses informations.
+- Un visiteur non connecté doit créer un compte ou se connecter avant de soumettre une réservation.
+- Les réservations appartiennent toujours à un touriste authentifié afin de permettre le suivi, les statuts, l’annulation autorisée, la sécurité de propriété et une gestion admin claire.
 
 ### Premier administrateur
 
@@ -572,9 +578,11 @@ Aucun lieu géolocalisé disponible pour cette ville.
 
 ### 11.1 Objectif
 
-Permettre aux touristes d’envoyer des demandes de réservation sans intégrer un vrai système externe.
+Permettre aux touristes authentifiés d’envoyer des demandes de réservation sans intégrer un vrai système externe.
 
 Cette approche est réaliste car le projet ne dispose pas d’API officielle d’hôtels ou de restaurants.
+
+Le choix d’exiger une authentification est intentionnel : il permet de rattacher chaque réservation à son propriétaire, de consulter les statuts dans l’espace touriste, d’annuler une demande lorsque les règles le permettent et de simplifier le traitement côté administrateur.
 
 ### 11.2 Principe
 
@@ -587,32 +595,22 @@ Touriste envoie une demande
 ↓
 Admin reçoit la demande
 ↓
-Admin confirme ou refuse
+Admin approuve ou refuse
 ↓
 Touriste connecté consulte le statut
+↓
+Si la demande est approuvée, le touriste effectue une confirmation/paiement simulé
 ↓
 Email optionnel envoyé si SMTP configuré
 ```
 
 ### 11.3 Visiteur non connecté
 
-Un visiteur non connecté peut envoyer une demande avec :
+Un visiteur non connecté peut consulter les contenus publics, mais il ne peut pas soumettre une demande de réservation. S’il tente de réserver un hôtel ou un restaurant, l’interface l’oriente vers la connexion ou l’inscription.
 
 ```txt
-full_name
-email
-phone
+Créer un compte ou se connecter est obligatoire avant d’envoyer une demande de réservation.
 ```
-
-Après l’envoi, une page de confirmation simple s’affiche :
-
-```txt
-Votre demande de réservation a bien été envoyée.
-L’administrateur va la traiter prochainement.
-Vous serez contacté par email ou téléphone.
-```
-
-Le visiteur non connecté ne peut pas consulter le statut depuis la plateforme.
 
 ### 11.4 Utilisateur connecté
 
@@ -622,7 +620,14 @@ Si l’utilisateur est connecté :
 - L’utilisateur peut modifier ces informations avant l’envoi.
 - Le champ `phone` reste obligatoire.
 - Il peut consulter ses réservations dans `/my-reservations`.
-- Il peut annuler une demande si son statut est `pending`.
+- Il peut annuler une demande si son statut et son état de paiement le permettent.
+- Après approbation admin, il peut effectuer une étape de validation démo appelée confirmation/paiement simulé.
+
+### 11.4.1 Confirmation/paiement simulé
+
+Le système ne propose aucun paiement en ligne réel. Il n’utilise ni Stripe, ni PayPal, ni carte bancaire, ni transaction bancaire, ni prestataire externe.
+
+La confirmation/paiement simulé intervient uniquement après approbation admin. Elle marque la réservation comme confirmée dans le scénario académique et génère une référence de démonstration, sans traiter d’argent réel.
 
 ---
 
@@ -632,7 +637,7 @@ Si l’utilisateur est connecté :
 
 ```sql
 id
-user_id nullable
+user_id
 hotel_id
 full_name
 email
@@ -642,7 +647,10 @@ check_out_date
 guests
 number_of_rooms
 message nullable
-status enum('pending','confirmed','rejected','cancelled')
+status enum('pending','approved','confirmed','rejected','cancelled')
+payment_status enum('unpaid','paid')
+paid_at nullable
+payment_reference nullable
 created_at
 updated_at
 ```
@@ -667,12 +675,13 @@ message : nullable, string, max:1000
 |---|---|---|
 | HRES-01 | Formulaire demande réservation hôtel | Must |
 | HRES-02 | Lier demande à un hôtel | Must |
-| HRES-03 | Lier demande à un utilisateur si connecté | Should |
+| HRES-03 | Lier demande au touriste authentifié | Must |
 | HRES-04 | Statut par défaut `pending` | Must |
-| HRES-05 | Admin confirme/refuse | Must |
-| HRES-06 | Utilisateur connecté voit ses réservations | Should |
-| HRES-07 | Utilisateur connecté annule une demande `pending` | Should |
+| HRES-05 | Admin approuve/refuse | Must |
+| HRES-06 | Touriste connecté voit ses réservations | Must |
+| HRES-07 | Touriste connecté annule une demande autorisée | Should |
 | HRES-08 | Champ `number_of_rooms` obligatoire | Must |
+| HRES-09 | Confirmation/paiement simulé après approbation | Must |
 
 ### Route d’annulation
 
@@ -688,7 +697,7 @@ PUT /api/my-hotel-reservations/{id}/cancel
 
 ```sql
 id
-user_id nullable
+user_id
 restaurant_id
 full_name
 email
@@ -697,7 +706,10 @@ reservation_date
 reservation_time
 guests
 message nullable
-status enum('pending','confirmed','rejected','cancelled')
+status enum('pending','approved','confirmed','rejected','cancelled')
+payment_status enum('unpaid','paid')
+paid_at nullable
+payment_reference nullable
 created_at
 updated_at
 ```
@@ -723,9 +735,10 @@ message : nullable, string, max:1000
 | RRES-02 | Lier demande à un restaurant | Must |
 | RRES-03 | Choisir date, heure, nombre de personnes | Must |
 | RRES-04 | Statut par défaut `pending` | Must |
-| RRES-05 | Admin confirme/refuse | Must |
-| RRES-06 | Utilisateur connecté voit ses demandes | Should |
-| RRES-07 | Utilisateur connecté annule une demande `pending` | Should |
+| RRES-05 | Admin approuve/refuse | Must |
+| RRES-06 | Touriste connecté voit ses demandes | Must |
+| RRES-07 | Touriste connecté annule une demande autorisée | Should |
+| RRES-08 | Confirmation/paiement simulé après approbation | Must |
 
 ### Route d’annulation
 
@@ -774,6 +787,7 @@ Cancelled
 
 ```txt
 pending
+approved
 confirmed
 rejected
 cancelled
@@ -783,8 +797,10 @@ cancelled
 
 ```txt
 Le statut initial est pending.
-Seul l’admin peut confirmer ou refuser.
-Un utilisateur connecté peut annuler uniquement ses propres demandes pending.
+Seul l’admin peut approuver ou refuser.
+Le statut approved permet au touriste de lancer la confirmation/paiement simulé.
+La confirmation simulée transforme la demande approved en confirmed et payment_status paid.
+Un utilisateur connecté peut annuler uniquement ses propres demandes pending ou approved non payées.
 Une réservation confirmed, rejected ou cancelled est affichée en lecture seule côté utilisateur.
 ```
 
@@ -792,7 +808,7 @@ Une réservation confirmed, rejected ou cancelled est affichée en lecture seule
 
 ## 11.9 Emails optionnels
 
-Le système peut envoyer un email automatique quand l’admin confirme ou refuse une réservation.
+Le système peut envoyer un email automatique quand l’admin approuve, confirme via validation simulée ou refuse une réservation.
 
 Cette fonctionnalité utilise :
 
@@ -815,19 +831,16 @@ Si l’email n’est pas configuré, la réservation reste fonctionnelle.
 
 ## 11.10 Endpoints réservations
 
-### Public
+### Auth
 
 ```txt
 POST /api/hotel-reservations
 POST /api/restaurant-reservations
-```
-
-### Auth
-
-```txt
 GET /api/my-reservations
 PUT /api/my-hotel-reservations/{id}/cancel
 PUT /api/my-restaurant-reservations/{id}/cancel
+POST /api/my-hotel-reservations/{id}/pay
+POST /api/my-restaurant-reservations/{id}/pay
 ```
 
 ### Admin
@@ -1285,11 +1298,12 @@ auth()->user()->role === 'admin'
 /admin/hotels
 /admin/restaurants
 /admin/attractions
-/admin/users
 /admin/reservations
 /admin/packages
 /admin/packages/:id/items
 ```
+
+La gestion utilisateur n’est pas un module CRUD frontend autonome. Les statistiques utilisateurs, la liste des comptes et l’activation/désactivation simple sont accessibles depuis le dashboard `/admin`. Le chemin `/admin/users`, s’il est saisi directement, doit revenir vers une vue admin sûre au lieu d’ouvrir un module CRUD inexistant.
 
 ### 15.4 Page `/admin/reservations`
 
@@ -1320,11 +1334,10 @@ Statut
 Actions
 ```
 
-Si `user_id` est null, la réservation est considérée comme une demande visiteur.
-
-L’admin identifie le demandeur avec :
+Chaque réservation est rattachée à un touriste authentifié. L’admin identifie le demandeur avec :
 
 ```txt
+user_id
 full_name
 email
 phone
@@ -1339,7 +1352,7 @@ phone
 | ADMIN-03 | CRUD hôtels | Must |
 | ADMIN-04 | CRUD restaurants | Must |
 | ADMIN-05 | CRUD attractions | Must |
-| ADMIN-06 | Gestion utilisateurs | Should |
+| ADMIN-06 | Liste utilisateurs et activation/désactivation depuis le dashboard | Should |
 | ADMIN-07 | Gestion demandes de réservation | Must |
 | ADMIN-08 | Confirmation/refus réservation | Must |
 | ADMIN-09 | CRUD packages | Must |
@@ -1565,9 +1578,6 @@ GET /api/map-items?city=Casablanca&type=all
 
 GET /api/packages
 GET /api/packages/{id}
-
-POST /api/hotel-reservations
-POST /api/restaurant-reservations
 ```
 
 ### Auth
@@ -1581,8 +1591,12 @@ POST /api/favorites
 DELETE /api/favorites/{id}
 
 GET /api/my-reservations
+POST /api/hotel-reservations
+POST /api/restaurant-reservations
 PUT /api/my-hotel-reservations/{id}/cancel
 PUT /api/my-restaurant-reservations/{id}/cancel
+POST /api/my-hotel-reservations/{id}/pay
+POST /api/my-restaurant-reservations/{id}/pay
 
 GET /api/trips
 POST /api/trips
@@ -1659,7 +1673,7 @@ GET/POST/PUT/DELETE /api/admin/packages/{package}/items
 | Hôtels admin | `/admin/hotels` |
 | Restaurants admin | `/admin/restaurants` |
 | Attractions admin | `/admin/attractions` |
-| Utilisateurs admin | `/admin/users` |
+| Utilisateurs dans dashboard | `/admin` |
 | Réservations admin | `/admin/reservations` |
 | Packages admin | `/admin/packages` |
 | Éléments package | `/admin/packages/:id/items` |
@@ -1674,10 +1688,13 @@ GET/POST/PUT/DELETE /api/admin/packages/{package}/items
 Une réservation est toujours une demande.
 Elle n’est jamais confirmée automatiquement.
 Le statut initial est pending.
-Seul l’admin peut confirmer ou refuser.
-Un utilisateur non connecté peut envoyer une demande avec email/téléphone.
+Seul l’admin peut approuver ou refuser.
+Un utilisateur non connecté ne peut pas envoyer de demande de réservation.
+Un touriste doit être connecté pour envoyer une demande avec ses informations.
 Un utilisateur connecté peut voir ses demandes.
-Un utilisateur connecté peut annuler ses demandes pending.
+Un utilisateur connecté peut annuler ses demandes pending ou approved non payées.
+Après approbation admin, le touriste peut effectuer une confirmation/paiement simulé.
+Aucune transaction réelle n’est effectuée : pas de Stripe, PayPal, carte bancaire, banque ou prestataire externe.
 Toutes les demandes sont validées côté backend avec Laravel Form Requests.
 ```
 
@@ -2103,7 +2120,7 @@ La version avancée de MaghrebPass transforme l’application initiale en un vé
 
 Elle permet aux visiteurs de la Coupe du Monde de consulter les matchs, découvrir les lieux proches, visualiser les hôtels, restaurants et attractions sur une carte interactive, envoyer des demandes de réservation et organiser leur séjour à travers des packages ou un planning personnalisé.
 
-Cette version reste réaliste et gratuite, car elle n’utilise pas de paiement en ligne ni d’API externe obligatoire.
+Cette version reste réaliste et gratuite, car elle n’utilise pas de paiement en ligne réel ni d’API externe obligatoire. L’étape de confirmation/paiement simulé existe uniquement pour la démonstration académique après approbation admin.
 ```
 
 ---

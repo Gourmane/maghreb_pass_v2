@@ -21,7 +21,7 @@ class MatchController extends Controller
             FootballMatch::query()
                 ->orderBy('match_date')
                 ->orderBy('match_time')
-                ->paginate($request->integer('per_page', 15))
+                ->paginate($this->perPage($request, 15))
         );
     }
 

@@ -22,10 +22,10 @@ class AuthController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => $request->input('password'),
-            'role' => 'tourist',
             'preferred_language' => $request->input('preferred_language', 'fr'),
             'is_active' => true,
         ]);
+        $user->forceFill(['role' => 'tourist'])->save();
 
         $token = $user->createToken('maghrebpass-api-token')->plainTextToken;
 
@@ -108,7 +108,7 @@ class AuthController extends Controller
                 60 * 24 * 7,
                 '/',
                 null,
-                false,
+                filter_var(env('COOKIE_SECURE', false), FILTER_VALIDATE_BOOLEAN),
                 true,
                 false,
                 'Lax'
