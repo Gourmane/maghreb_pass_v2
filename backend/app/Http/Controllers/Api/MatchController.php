@@ -69,7 +69,7 @@ class MatchController extends Controller
                 Attraction::query()->where('city', $city)->orderByDesc('is_featured')->orderBy('name')->limit($limit)->get()
             )->resolve($request),
             'packages' => PackageResource::collection(
-                TravelPackage::query()->withCount('items')->where('is_active', true)->where('city', $city)->orderBy('title')->limit($limit)->get()
+                TravelPackage::query()->withCount('items')->where('is_active', true)->where('city', $city)->orderBy('title_fr')->limit($limit)->get()
             )->resolve($request),
         ]);
     }

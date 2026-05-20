@@ -1786,6 +1786,35 @@ textarea {
   margin-top: 6px;
 }
 
+.detail-map-panel {
+  grid-column: 1 / -1;
+}
+
+.detail-mini-map {
+  overflow: hidden;
+  min-height: 260px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--soft);
+}
+
+.detail-mini-map .leaflet-map {
+  min-height: 260px;
+}
+
+.favorites-planner-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.favorites-planner-cta p {
+  max-width: 64ch;
+  margin: 0;
+  color: var(--muted);
+}
+
 .reservation-form-panel {
   grid-column: 1 / -1;
 }
@@ -2587,6 +2616,11 @@ textarea {
   .filters .field,
   .filters .primary-button {
     width: 100%;
+  }
+
+  .favorites-planner-cta {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .map-controls {

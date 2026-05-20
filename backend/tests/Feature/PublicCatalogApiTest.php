@@ -140,7 +140,7 @@ class PublicCatalogApiTest extends TestCase
         Restaurant::create($this->restaurantPayload(['city' => 'Casablanca']));
         Attraction::create($this->attractionPayload(['city' => 'Casablanca']));
         TravelPackage::create($this->packagePayload(['city' => 'Casablanca']));
-        TravelPackage::create($this->packagePayload(['title' => 'Hidden Plan', 'city' => 'Casablanca', 'is_active' => false]));
+        TravelPackage::create($this->packagePayload(['title_fr' => 'Plan cache', 'title_en' => 'Hidden Plan', 'city' => 'Casablanca', 'is_active' => false]));
 
         $this->getJson("/api/matches/{$match->id}/nearby")
             ->assertOk()
@@ -213,7 +213,8 @@ class PublicCatalogApiTest extends TestCase
     private function packagePayload(array $overrides = []): array
     {
         return array_merge([
-            'title' => 'Casablanca Weekend',
+            'title_fr' => 'Weekend Casablanca',
+            'title_en' => 'Casablanca Weekend',
             'description_fr' => 'Programme touristique.',
             'description_en' => 'Travel program.',
             'city' => 'Casablanca',

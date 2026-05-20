@@ -7,6 +7,7 @@ use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\Trip;
 use App\Models\TripItem;
+use App\Models\TravelPackage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -119,6 +120,46 @@ class TripPlannerApiTest extends TestCase
             'day_number' => 1,
         ])->assertOk()
             ->assertJsonPath('data.items.0.item.title', 'Dar Tajine');
+    }
+
+    public function test_user_can_only_add_same_city_catalog_items_to_trip(): void
+    {
+        $user = User::factory()->create();
+        $trip = Trip::create(['user_id' => $user->id, 'title' => 'Casablanca day', 'city' => 'Casablanca']);
+        $casablancaHotel = Hotel::create($this->hotelPayload(['city' => 'Casablanca']));
+        $rabatHotel = Hotel::create($this->hotelPayload(['name' => 'Rabat Hotel', 'city' => 'Rabat']));
+        $casablancaPackage = TravelPackage::create([
+            'title_fr' => 'Plan Casablanca',
+            'title_en' => 'Casablanca Plan',
+            'description_fr' => 'Programme local.',
+            'description_en' => 'Local plan.',
+            'city' => 'Casablanca',
+            'currency' => 'MAD',
+            'is_active' => true,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->postJson("/api/trips/{$trip->id}/items", [
+            'item_type' => 'hotel',
+            'item_id' => $casablancaHotel->id,
+            'day_number' => 1,
+        ])->assertOk()
+            ->assertJsonPath('data.items.0.item.title', 'Hotel Atlas');
+
+        $this->postJson("/api/trips/{$trip->id}/items", [
+            'item_type' => 'package',
+            'item_id' => $casablancaPackage->id,
+            'day_number' => 2,
+        ])->assertOk()
+            ->assertJsonPath('data.items.1.item.title', 'Plan Casablanca');
+
+        $this->postJson("/api/trips/{$trip->id}/items", [
+            'item_type' => 'hotel',
+            'item_id' => $rabatHotel->id,
+            'day_number' => 1,
+        ])->assertStatus(422)
+            ->assertJsonValidationErrors(['item_id']);
     }
 
     public function test_user_cannot_mutate_another_users_trip(): void

@@ -32,7 +32,7 @@ const typeToModule = {
 
 const moduleToType = Object.fromEntries(Object.entries(typeToModule).map(([type, moduleKey]) => [moduleKey, type]));
 
-export function TripPlannerView({ language, loading, navigate, session, t }) {
+export function TripPlannerView({ language, loading, navigate, routeTripId, session, t }) {
   const [trips, setTrips] = useState([]);
   const [selectedTripId, setSelectedTripId] = useState('');
   const [tripForm, setTripForm] = useState(blankTrip);
@@ -63,6 +63,12 @@ export function TripPlannerView({ language, loading, navigate, session, t }) {
   useEffect(() => {
     if (selectedTrip && !selectedTripId) setSelectedTripId(String(selectedTrip.id));
   }, [selectedTrip, selectedTripId]);
+
+  useEffect(() => {
+    if (routeTripId && trips.some((trip) => String(trip.id) === String(routeTripId))) {
+      setSelectedTripId(String(routeTripId));
+    }
+  }, [routeTripId, trips]);
 
   if (!session.user) {
     return (
@@ -350,7 +356,7 @@ function groupItemsByDay(items) {
 function buildCatalogOptions(catalog, language, t) {
   return modules.flatMap((module) => (catalog[module.key] || []).map((item) => ({
     value: `${moduleToType[module.key]}:${item.id}`,
-    label: `${t(`catalog.${module.key}`)} - ${titleFor(item, module.key)}${item.city ? ` (${item.city})` : ''}`,
+    label: `${t(`catalog.${module.key}`)} - ${titleFor(item, module.key, language)}${item.city ? ` (${item.city})` : ''}`,
     description: descriptionFor(item, module.key, language),
   })));
 }

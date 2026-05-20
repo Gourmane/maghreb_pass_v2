@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title_fr');
+            $table->string('title_en');
             $table->text('description_fr');
             $table->text('description_en');
             $table->string('city');

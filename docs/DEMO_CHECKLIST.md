@@ -1,6 +1,6 @@
-# Checklist de demonstration - MaghrebPass MVP
+# Checklist de demonstration - MaghrebPass Advanced V2.5
 
-Objectif: presenter rapidement les fonctionnalites backend du MVP avec des donnees locales.
+Objectif: presenter rapidement les fonctionnalites V2.5 avec des donnees locales.
 
 ## 1. Preparation
 
@@ -34,13 +34,15 @@ Frontend local: `http://127.0.0.1:5173`
   - `GET /api/hotels`
   - `GET /api/restaurants`
   - `GET /api/attractions`
+  - `GET /api/packages`
+  - `GET /api/map-items?city=Casablanca`
 - Verifier un filtre par ville:
   - `GET /api/hotels?city=Rabat`
   - `GET /api/restaurants?city=Tanger`
 
 ## 3. Parcours touriste
 
-1. Se connecter avec `tourist@maghrebpass.test` / `password`.
+1. Se connecter avec `tourist@maghrebpass.test` / `password` en demo local uniquement.
 2. Copier le token Bearer.
 3. Appeler `GET /api/auth/me`.
 4. Ajouter un favori:
@@ -53,11 +55,13 @@ Frontend local: `http://127.0.0.1:5173`
 ```
 
 5. Lister `GET /api/favorites`.
-6. Supprimer le favori avec `DELETE /api/favorites/{id}`.
+6. Creer un trip via `POST /api/trips`, puis ajouter un element de la meme ville via `POST /api/trips/{id}/items`.
+7. Verifier `GET /api/my-reservations` et annuler une reservation pending si disponible.
+8. Supprimer le favori avec `DELETE /api/favorites/{id}`.
 
 ## 4. Parcours admin
 
-1. Se connecter avec `admin@maghrebpass.test` / `password`.
+1. Se connecter avec `admin@maghrebpass.test` / `password` en demo local uniquement.
 2. Copier le token Bearer.
 3. Afficher `GET /api/admin/stats`.
 4. Afficher `GET /api/admin/users`.
@@ -66,6 +70,9 @@ Frontend local: `http://127.0.0.1:5173`
   - `/api/admin/hotels`
   - `/api/admin/restaurants`
   - `/api/admin/attractions`
+  - `/api/admin/packages`
+6. Confirmer/refuser une reservation via `/api/admin/reservations/{type}/{id}/status`.
+7. Verifier que l'admin ne peut pas desactiver son propre compte ou le dernier administrateur actif.
 
 ## 5. Points a presenter
 
@@ -73,10 +80,19 @@ Frontend local: `http://127.0.0.1:5173`
 - Authentification Sanctum par token.
 - Role admin protege par middleware.
 - Favoris lies a l'utilisateur connecte.
+- Favoris exposes en API avec `type` + `id`; en base, l'implementation Laravel utilise `favoriteable_type` + `favoriteable_id` pour garder une relation polymorphique equivalente au `item_type` + `item_id` du PRD.
+- Carte globale et mini-map sur les fiches geolocalisees.
+- Reservations simples hotels/restaurants.
+- Packages mono-ville et trips mono-ville.
+- Trip Planner accessible via `/trip-planner`, `/trips` et `/my-trips`.
 - Donnees bilingues FR/EN.
 - Photos sous forme d'URLs ou fichiers images admin limites a 2 MB.
 - Aucune API externe requise.
+- Derniere validation backend reference: 51 tests passes, 444 assertions.
+- Derniere validation frontend reference: build Vite reussi.
 
 ## 6. Limites a annoncer
 
 - La compression image n'est pas implementee; la limite backend de 2 MB est appliquee.
+- Les comptes `password` sont des comptes seed locaux uniquement.
+- `database_export/maghrebpass_data_export.json` contient les donnees catalogue exportees; les packages, reservations et trips de demo sont recrees par seeders.

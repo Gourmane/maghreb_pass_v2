@@ -6,7 +6,7 @@ Date: 2026-05-20
 
 Phase 8 executee avec succes.
 
-- Backend: 43 tests passes, 472 assertions.
+- Backend: 51 tests passes, 444 assertions.
 - Frontend: build de production Vite valide.
 - Routes API: 72 routes exposees par `php artisan route:list --path=api`.
 - Responsive: smoke test desktop et mobile valide, sans overflow horizontal detecte.
@@ -19,7 +19,7 @@ Phase 8 executee avec succes.
 | Middleware admin | OK | `AdminApiTest` |
 | Admin | OK | `AdminApiTest`, `PackageApiTest`, `ReservationApiTest` |
 | Favoris | OK | `FavoriteApiTest`, `AcceptanceCriteriaTest` |
-| Migration favoris si necessaire | OK | Table et flux favoris couverts par tests |
+| Migration favoris si necessaire | OK | Table et flux favoris couverts par tests; implementation polymorphique Laravel via `favoriteable_type` + `favoriteable_id`, exposee en API comme `type` + `id` |
 | Reservations | OK | `ReservationApiTest` |
 | Validations backend | OK | Feature tests + Form Requests |
 | Annulation | OK | `ReservationApiTest` |

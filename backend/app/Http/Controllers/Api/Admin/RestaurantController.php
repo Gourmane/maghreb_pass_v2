@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Api\Admin\Concerns\HandlesPhotoUploads;
+use App\Http\Controllers\Api\Admin\Concerns\ProtectsCatalogItemDeletion;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpsertRestaurantRequest;
 use App\Http\Resources\RestaurantResource;
-use App\Models\PackageItem;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -15,6 +15,7 @@ use Illuminate\Http\Response;
 class RestaurantController extends Controller
 {
     use HandlesPhotoUploads;
+    use ProtectsCatalogItemDeletion;
 
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -47,11 +48,7 @@ class RestaurantController extends Controller
 
     public function destroy(Restaurant $restaurant): Response
     {
-        abort_if(
-            PackageItem::where('item_type', 'restaurant')->where('item_id', $restaurant->id)->exists(),
-            409,
-            'Ce restaurant est utilise dans un package.'
-        );
+        $this->abortIfCatalogItemIsUsed('restaurant', $restaurant->id);
 
         $restaurant->delete();
 

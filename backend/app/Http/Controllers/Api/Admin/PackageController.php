@@ -18,7 +18,7 @@ class PackageController extends Controller
             TravelPackage::query()
                 ->withCount('items')
                 ->orderBy('city')
-                ->orderBy('title')
+                ->orderBy('title_fr')
                 ->paginate($request->integer('per_page', 15))
         );
     }

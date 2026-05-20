@@ -62,7 +62,9 @@ class TripItemResource extends JsonResource
 
         if ($model instanceof TravelPackage) {
             return [
-                'title' => $model->title,
+                'title' => $model->title_fr,
+                'title_fr' => $model->title_fr,
+                'title_en' => $model->title_en,
                 'description_fr' => $model->description_fr,
                 'description_en' => $model->description_en,
                 'city' => $model->city,

@@ -1,6 +1,6 @@
-# MaghrebPass MVP - Backend Laravel
+# MaghrebPass Advanced V2.5 - Backend Laravel
 
-Backend API REST pour le MVP MaghrebPass: matchs, hotels, restaurants, attractions, favoris et administration.
+Backend API REST pour MaghrebPass Advanced V2.5: matchs, hotels, restaurants, attractions, carte, reservations, packages, favoris, trip planner et administration.
 
 ## Prerequis
 
@@ -9,7 +9,7 @@ Backend API REST pour le MVP MaghrebPass: matchs, hotels, restaurants, attractio
 - Extension PHP `pdo_mysql` activee
 - Serveur MySQL 8 compatible avec une base `maghreb_pass`
 
-Le MVP fonctionne sans API externe. La base applicative cible est MySQL, comme demande dans le PRD.
+L'application fonctionne sans API externe. La base applicative cible est MySQL, comme demande dans le PRD.
 
 ## Installation locale
 
@@ -37,6 +37,8 @@ DB_PASSWORD=
 
 ## Comptes de demo
 
+Ces comptes sont reserves au demo local apres seed. Ne pas les deployer comme identifiants publics.
+
 | Role | Email | Mot de passe |
 | --- | --- | --- |
 | Admin | `admin@maghrebpass.test` | `password` |
@@ -56,6 +58,9 @@ DB_PASSWORD=
 - `GET /api/restaurants/{id}`
 - `GET /api/attractions`
 - `GET /api/attractions/{id}`
+- `GET /api/map-items`
+- `GET /api/packages`
+- `GET /api/packages/{id}`
 
 Filtres publics utiles:
 
@@ -96,6 +101,19 @@ Payload d'ajout:
 
 Types acceptes: `hotel`, `restaurant`, `attraction`.
 
+L'API expose les favoris avec `type` + `id`; en base, l'implementation Laravel utilise `favoriteable_type` + `favoriteable_id` pour conserver une relation polymorphique equivalente au `item_type` + `item_id` du PRD.
+
+### Reservations et trips
+
+- `GET /api/my-reservations`
+- `POST /api/hotels/{hotel}/reservations`
+- `POST /api/restaurants/{restaurant}/reservations`
+- `PUT /api/my-reservations/{type}/{id}/cancel`
+- `apiResource /api/trips`
+- `POST /api/trips/{trip}/items`
+- `PUT /api/trips/{trip}/items/{item}`
+- `DELETE /api/trips/{trip}/items/{item}`
+
 ### Admin
 
 Routes protegees par `auth:sanctum` et `role:admin`.
@@ -108,6 +126,11 @@ Routes protegees par `auth:sanctum` et `role:admin`.
 - `apiResource /api/admin/hotels`
 - `apiResource /api/admin/restaurants`
 - `apiResource /api/admin/attractions`
+- `apiResource /api/admin/packages`
+- `GET /api/admin/reservations`
+- `PUT /api/admin/reservations/{type}/{id}/status`
+
+Le toggle utilisateur refuse maintenant la desactivation de son propre compte admin et du dernier administrateur actif.
 
 Les endpoints admin hotels/restaurants/attractions acceptent:
 
@@ -122,8 +145,16 @@ Les endpoints admin hotels/restaurants/attractions acceptent:
 - 10 hotels
 - 10 restaurants
 - 10 attractions
+- packages touristiques
+- reservations et trips de demo selon les seeders disponibles
 - 1 admin
 - 2 touristes
+
+`database_export/maghrebpass_data_export.json` documente les donnees catalogue exportees. Les packages, reservations et trips de demo sont recrees par seeders, pas par cet export JSON.
+
+## Securite configuration
+
+Ne pas livrer `.env`. Pour un demo public ou production, garder `APP_DEBUG=false`, `SESSION_ENCRYPT=true` et generer un `APP_KEY` propre a l'environnement. `.env.example` contient des valeurs sures par defaut, que le developpement local peut surcharger dans `.env`.
 
 ## Validation
 
@@ -131,7 +162,7 @@ Les endpoints admin hotels/restaurants/attractions acceptent:
 php artisan test
 ```
 
-Etat courant: 26 tests, 155 assertions.
+Etat courant: 51 tests, 444 assertions.
 
 ## Demo
 

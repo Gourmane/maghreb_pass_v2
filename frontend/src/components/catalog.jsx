@@ -1,4 +1,6 @@
-import { ExternalLink, Heart, MapPin, Phone, Trash2 } from 'lucide-react';
+import 'leaflet/dist/leaflet.css';
+import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet';
+import { CalendarPlus, ExternalLink, Heart, MapPin, Phone, Trash2 } from 'lucide-react';
 import { CardFacts, EmptyState, Field, Media, ModuleRail } from './common.jsx';
 import { descriptionFor, titleFor } from '../lib/catalog.js';
 import { ReservationForm } from './reservation-form.jsx';
@@ -26,7 +28,7 @@ export function PublicCatalog({ activeModule, catalog, cities, currentModule, fi
               <div className="card-body">
                 <div>
                   <p className="meta"><MapPin size={14} /> {item.city || item.stadium}</p>
-                  <h3>{titleFor(item, activeModule)}</h3>
+                  <h3>{titleFor(item, activeModule, language)}</h3>
                   <p>{descriptionFor(item, activeModule, language)}</p>
                 </div>
                 <CardFacts item={item} moduleKey={activeModule} t={t} />
@@ -132,14 +134,55 @@ export function DetailView({ item, language, loading, matchNearby, moduleKey, on
       </div>
       <article className="content-panel detail-panel">
         <p className="meta"><MapPin size={14} /> {item.city || item.stadium}</p>
-        <h2>{titleFor(item, moduleKey)}</h2>
+        <h2>{titleFor(item, moduleKey, language)}</h2>
         <p>{descriptionFor(item, moduleKey, language)}</p>
         <CardFacts item={item} moduleKey={moduleKey} t={t} />
         <DetailActions item={item} moduleKey={moduleKey} onAddFavorite={onAddFavorite} t={t} />
       </article>
+      <DetailMiniMap item={item} moduleKey={moduleKey} t={t} />
       {moduleKey === 'packages' && <PackageTimeline item={item} language={language} t={t} />}
       {moduleKey === 'matches' && <MatchNearby nearby={matchNearby} language={language} onOpenNearby={onOpenNearby} t={t} />}
       <ReservationForm item={item} moduleKey={moduleKey} session={session} t={t} />
+    </section>
+  );
+}
+
+function DetailMiniMap({ item, moduleKey, t }) {
+  if (!['hotels', 'restaurants', 'attractions'].includes(moduleKey)) return null;
+
+  const latitude = Number(item.latitude);
+  const longitude = Number(item.longitude);
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+
+  return (
+    <section className="content-panel detail-map-panel">
+      <div className="panel-head">
+        <div>
+          <p className="section-kicker">{item.city}</p>
+          <h2>{t('catalog.location')}</h2>
+        </div>
+        {item.map_url && (
+          <a className="secondary-button" href={item.map_url} rel="noreferrer" target="_blank">
+            <ExternalLink size={16} />{t('catalog.openMap')}
+          </a>
+        )}
+      </div>
+      <div className="detail-mini-map" aria-label={t('catalog.location')}>
+        <MapContainer center={[latitude, longitude]} zoom={15} scrollWheelZoom={false} dragging={false} className="leaflet-map">
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <CircleMarker
+            center={[latitude, longitude]}
+            pathOptions={{ color: '#0b6b43', fillColor: '#c90d16', fillOpacity: 0.82, weight: 2 }}
+            radius={10}
+          >
+            <Popup>{item.name}</Popup>
+          </CircleMarker>
+        </MapContainer>
+      </div>
     </section>
   );
 }
@@ -170,7 +213,7 @@ function MatchNearby({ language, nearby, onOpenNearby, t }) {
                 {items.map((nearbyItem) => (
                   <div className="list-row nearby-row" key={`${group}-${nearbyItem.id}`}>
                     <div>
-                      <strong>{titleFor(nearbyItem, group)}</strong>
+                      <strong>{titleFor(nearbyItem, group, language)}</strong>
                       <span>{descriptionFor(nearbyItem, group, language) || nearbyItem.city}</span>
                     </div>
                     <button className="secondary-button" onClick={() => onOpenNearby(group, nearbyItem)} type="button">
@@ -207,7 +250,9 @@ function PackageTimeline({ item, language, t }) {
           <div className="table-list">
             {items.map((packageItem) => {
               const summary = packageItem.item || {};
-              const title = summary.title || packageItem.custom_title || t('catalog.empty');
+              const title = language === 'en'
+                ? summary.title_en || summary.title || packageItem.custom_title || t('catalog.empty')
+                : summary.title_fr || summary.title || packageItem.custom_title || t('catalog.empty');
               const description = language === 'en' ? summary.description_en : summary.description_fr;
               return (
                 <div className="list-row" key={packageItem.id}>
@@ -245,15 +290,26 @@ function DetailActions({ item, moduleKey, onAddFavorite, t }) {
   );
 }
 
-export function FavoritesView({ favorites, language, onRemove, t }) {
+export function FavoritesView({ favorites, language, navigate, onRemove, t }) {
   const groups = [
     ['hotels', favorites.hotels || []],
     ['restaurants', favorites.restaurants || []],
     ['attractions', favorites.attractions || []],
   ];
+  const total = groups.reduce((count, [, items]) => count + items.length, 0);
 
   return (
     <section className="stack-view">
+      <div className="content-panel favorites-planner-cta">
+        <div>
+          <p className="section-kicker">{t('nav.favorites')}</p>
+          <h2>{t('catalog.planFavoritesTitle')}</h2>
+          <p>{t('catalog.planFavoritesBody')}</p>
+        </div>
+        <button className="primary-button" disabled={!total} onClick={() => navigate('/trip-planner')} type="button">
+          <CalendarPlus size={16} />{t('catalog.openPlanner')}
+        </button>
+      </div>
       {groups.map(([group, items]) => (
         <div className="content-panel" key={group}>
           <div className="panel-head"><h2>{t(`catalog.${group}`)}</h2></div>

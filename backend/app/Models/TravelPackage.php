@@ -13,7 +13,8 @@ class TravelPackage extends Model
     protected $table = 'packages';
 
     protected $fillable = [
-        'title',
+        'title_fr',
+        'title_en',
         'description_fr',
         'description_en',
         'city',

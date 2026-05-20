@@ -20,14 +20,15 @@ class PackageController extends Controller
                 $search = '%'.$request->input('search').'%';
 
                 $query->where(function ($query) use ($search) {
-                    $query->where('title', 'like', $search)
+                    $query->where('title_fr', 'like', $search)
+                        ->orWhere('title_en', 'like', $search)
                         ->orWhere('description_fr', 'like', $search)
                         ->orWhere('description_en', 'like', $search)
                         ->orWhere('city', 'like', $search);
                 });
             })
             ->orderBy('city')
-            ->orderBy('title')
+            ->orderBy('title_fr')
             ->paginate($request->integer('per_page', 12));
 
         return PackageResource::collection($packages);

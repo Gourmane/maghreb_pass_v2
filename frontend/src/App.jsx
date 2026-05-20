@@ -288,6 +288,13 @@ function App() {
     }, t('messages.saved'));
   }
 
+  async function toggleAdminUser(user) {
+    await request(async () => {
+      await api.put(`/admin/users/${user.id}/toggle`);
+      await loadAdmin();
+    }, t('messages.saved'));
+  }
+
   function editAdminItem(item) {
     const form = { ...initialForms[activeModule] };
     Object.keys(form).forEach((key) => {
@@ -369,7 +376,7 @@ function App() {
         )}
 
         {route.view === 'favorites' && (
-          <FavoritesView favorites={favorites} language={i18n.language} onRemove={removeFavorite} t={t} />
+          <FavoritesView favorites={favorites} language={i18n.language} navigate={navigate} onRemove={removeFavorite} t={t} />
         )}
 
         {route.view === 'map' && (
@@ -380,7 +387,7 @@ function App() {
 
         {route.view === 'trips' && (
           <Suspense fallback={<section className="content-panel"><span>{t('messages.loading')}</span></section>}>
-            <TripPlannerView language={i18n.language} loading={loading} navigate={navigate} session={session} t={t} />
+            <TripPlannerView language={i18n.language} loading={loading} navigate={navigate} routeTripId={route.id} session={session} t={t} />
           </Suspense>
         )}
 
@@ -443,6 +450,7 @@ function App() {
                 onModuleChange={(key) => navigate(key === 'matches' ? '/admin/matches' : `/admin/${key}`)}
                 onReset={() => { setAdminForm(initialForms[activeModule]); setEditingId(null); }}
                 onSubmit={submitAdmin}
+                onToggleUser={toggleAdminUser}
                 stats={stats}
                 t={t}
                 users={users}

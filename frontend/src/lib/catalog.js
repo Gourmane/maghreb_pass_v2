@@ -93,7 +93,8 @@ export const initialForms = {
     photos: ['https://upload.wikimedia.org/wikipedia/commons/2/25/Marrakech_Majorelle_Garden_317.JPG'],
   },
   packages: {
-    title: 'Casablanca Match Weekend',
+    title_fr: 'Weekend match a Casablanca',
+    title_en: 'Casablanca Match Weekend',
     description_fr: 'Programme pret a suivre avec hotel, restaurant, attraction et temps libre.',
     description_en: 'Ready-to-follow plan with hotel, restaurant, attraction, and free time.',
     city: 'Casablanca',
@@ -115,7 +116,9 @@ export function routeFromPath(pathname = window.location.pathname) {
   if (clean === '/register') return { view: 'profile', authMode: 'register' };
   if (clean === '/profile') return { view: 'profile' };
   if (clean === '/favorites') return { view: 'favorites' };
-  if (clean === '/trips') return { view: 'trips' };
+  if (clean === '/trips' || clean === '/my-trips' || clean === '/trip-planner') return { view: 'trips' };
+  const tripDetail = clean.match(/^\/trips\/(\d+)$/);
+  if (tripDetail) return { view: 'trips', id: Number(tripDetail[1]) };
   if (clean === '/my-reservations') return { view: 'my-reservations' };
   if (clean === '/map') return { view: 'map' };
   if (clean === '/admin/reservations') return { view: 'admin-reservations' };
@@ -129,9 +132,11 @@ export function routeFromPath(pathname = window.location.pathname) {
   return { view: 'public', module: 'matches' };
 }
 
-export function titleFor(item, moduleKey) {
+export function titleFor(item, moduleKey, language = 'fr') {
   if (moduleKey === 'matches') return `${item.team_home} vs ${item.team_away}`;
-  if (moduleKey === 'packages') return item.title || item.name;
+  if (moduleKey === 'packages') return language === 'en'
+    ? item.title_en || item.title || item.name
+    : item.title_fr || item.title || item.name;
   return item.name;
 }
 

@@ -95,6 +95,59 @@ class AdminApiTest extends TestCase
             ->assertJsonCount(2, 'data');
     }
 
+    public function test_admin_can_toggle_user_activation(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $tourist = User::factory()->create(['role' => 'tourist', 'is_active' => true]);
+
+        Sanctum::actingAs($admin);
+
+        $this->putJson("/api/admin/users/{$tourist->id}/toggle")
+            ->assertOk()
+            ->assertJsonPath('user.id', $tourist->id)
+            ->assertJsonPath('user.is_active', false);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $tourist->id,
+            'is_active' => false,
+        ]);
+    }
+
+    public function test_admin_cannot_disable_own_account(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin', 'is_active' => true]);
+        User::factory()->create(['role' => 'admin', 'is_active' => true]);
+
+        Sanctum::actingAs($admin);
+
+        $this->putJson("/api/admin/users/{$admin->id}/toggle")
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['user']);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $admin->id,
+            'is_active' => true,
+        ]);
+    }
+
+    public function test_admin_cannot_disable_last_active_admin(): void
+    {
+        $inactiveAdmin = User::factory()->create(['role' => 'admin', 'is_active' => false]);
+        $lastActiveAdmin = User::factory()->create(['role' => 'admin', 'is_active' => true]);
+
+        Sanctum::actingAs($inactiveAdmin);
+
+        $this->putJson("/api/admin/users/{$lastActiveAdmin->id}/toggle")
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['user']);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $lastActiveAdmin->id,
+            'is_active' => true,
+        ]);
+    }
+
+
     private function matchPayload(array $overrides = []): array
     {
         return array_merge([

@@ -1,6 +1,8 @@
-# Exemples API - MaghrebPass MVP
+# Exemples API - MaghrebPass Advanced V2.5
 
 Remplacer `BASE_URL` par `http://localhost:8000/api`.
+
+Les identifiants `password` ci-dessous sont reserves au demo local apres seed.
 
 ## Health
 
@@ -33,6 +35,8 @@ curl "http://localhost:8000/api/matches?city=Casablanca"
 curl "http://localhost:8000/api/hotels?city=Rabat"
 curl "http://localhost:8000/api/restaurants?city=Tanger"
 curl "http://localhost:8000/api/attractions?city=Fes"
+curl "http://localhost:8000/api/packages?city=Casablanca"
+curl "http://localhost:8000/api/map-items?city=Casablanca"
 ```
 
 ## Favoris
@@ -57,6 +61,16 @@ curl http://localhost:8000/api/favorites ^
 curl http://localhost:8000/api/admin/stats ^
   -H "Accept: application/json" ^
   -H "Authorization: Bearer TOKEN_ADMIN"
+```
+
+## Trip planner
+
+```bash
+curl -X POST http://localhost:8000/api/trips ^
+  -H "Accept: application/json" ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer TOKEN_TOURISTE" ^
+  -d "{\"title\":\"Casablanca match week\",\"city\":\"Casablanca\"}"
 ```
 
 ## Creation hotel admin avec URL photo

@@ -22,7 +22,7 @@ class TripItemController extends Controller
         $this->ensureOwnsTrip($request, $trip);
         $this->ensureLimit($trip);
 
-        $data = $this->validatedItemData($request);
+        $data = $this->validatedItemData($request, $trip);
         $data['trip_id'] = $trip->id;
         $data['sort_order'] ??= ($trip->items()->where('day_number', $data['day_number'])->max('sort_order') ?? 0) + 1;
 
@@ -36,7 +36,7 @@ class TripItemController extends Controller
         $this->ensureOwnsTrip($request, $trip);
         $this->ensureTripItem($trip, $item);
 
-        $item->update($this->validatedItemData($request));
+        $item->update($this->validatedItemData($request, $trip));
 
         return new TripResource($trip->load('items')->loadCount('items'));
     }
@@ -51,7 +51,7 @@ class TripItemController extends Controller
         return new TripResource($trip->load('items')->loadCount('items'));
     }
 
-    private function validatedItemData(UpsertTripItemRequest $request): array
+    private function validatedItemData(UpsertTripItemRequest $request, Trip $trip): array
     {
         $data = $request->validated();
 
@@ -61,17 +61,21 @@ class TripItemController extends Controller
             return $data;
         }
 
-        $exists = match ($data['item_type']) {
-            'hotel' => Hotel::whereKey($data['item_id'])->exists(),
-            'restaurant' => Restaurant::whereKey($data['item_id'])->exists(),
-            'attraction' => Attraction::whereKey($data['item_id'])->exists(),
-            'match' => FootballMatch::whereKey($data['item_id'])->exists(),
-            'package' => TravelPackage::whereKey($data['item_id'])->exists(),
+        $item = match ($data['item_type']) {
+            'hotel' => Hotel::find($data['item_id']),
+            'restaurant' => Restaurant::find($data['item_id']),
+            'attraction' => Attraction::find($data['item_id']),
+            'match' => FootballMatch::find($data['item_id']),
+            'package' => TravelPackage::find($data['item_id']),
             default => false,
         };
 
-        if (! $exists) {
+        if (! $item) {
             throw ValidationException::withMessages(['item_id' => 'Element introuvable.']);
+        }
+
+        if ($trip->city && $item->city && $item->city !== $trip->city) {
+            throw ValidationException::withMessages(['item_id' => 'Element hors de la ville du trip.']);
         }
 
         $data['custom_title'] = null;

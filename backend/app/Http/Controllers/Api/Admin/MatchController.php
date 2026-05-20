@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Admin\Concerns\ProtectsCatalogItemDeletion;
 use App\Http\Requests\Api\UpsertMatchRequest;
 use App\Http\Resources\MatchResource;
 use App\Models\FootballMatch;
-use App\Models\PackageItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class MatchController extends Controller
 {
+    use ProtectsCatalogItemDeletion;
+
     public function index(Request $request): AnonymousResourceCollection
     {
         return MatchResource::collection(
@@ -42,11 +44,7 @@ class MatchController extends Controller
 
     public function destroy(FootballMatch $match): Response
     {
-        abort_if(
-            PackageItem::where('item_type', 'match')->where('item_id', $match->id)->exists(),
-            409,
-            'Ce match est utilise dans un package.'
-        );
+        $this->abortIfCatalogItemIsUsed('match', $match->id);
 
         $match->delete();
 

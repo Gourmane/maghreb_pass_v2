@@ -29,7 +29,7 @@ export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActi
         </button>
         <button aria-current={route.view === 'favorites' ? 'page' : undefined} className={route.view === 'favorites' ? 'active' : ''} onClick={() => navigate('/favorites')} type="button">{t('nav.favorites')}</button>
         {session.user && (
-          <button aria-current={route.view === 'trips' ? 'page' : undefined} className={route.view === 'trips' ? 'active' : ''} onClick={() => navigate('/trips')} type="button">
+        <button aria-current={route.view === 'trips' ? 'page' : undefined} className={route.view === 'trips' ? 'active' : ''} onClick={() => navigate('/my-trips')} type="button">
             <NotebookTabs size={16} />
             {t('nav.trips')}
           </button>
@@ -117,7 +117,7 @@ export function AppFooter({ changeLanguage, i18n, navigate, session, t }) {
           <button onClick={() => navigate('/restaurants')} type="button">{t('catalog.restaurants')}</button>
           <button onClick={() => navigate('/attractions')} type="button">{t('catalog.attractions')}</button>
           <button onClick={() => navigate('/map')} type="button">{t('nav.map')}</button>
-          {session.user && <button onClick={() => navigate('/trips')} type="button">{t('nav.trips')}</button>}
+          {session.user && <button onClick={() => navigate('/my-trips')} type="button">{t('nav.trips')}</button>}
           {session.user && <button onClick={() => navigate('/my-reservations')} type="button">{t('nav.reservations')}</button>}
         </div>
         <div>

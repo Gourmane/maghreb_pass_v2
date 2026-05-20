@@ -19,7 +19,7 @@ class PackageItemController extends Controller
     public function store(UpsertPackageItemRequest $request, TravelPackage $package): PackageResource
     {
         $this->ensureLimit($package);
-        $data = $this->validatedItemData($request);
+        $data = $this->validatedItemData($request, $package);
         $data['package_id'] = $package->id;
         $data['sort_order'] ??= ($package->items()->where('day_number', $data['day_number'])->max('sort_order') ?? 0) + 1;
 
@@ -31,7 +31,7 @@ class PackageItemController extends Controller
     public function update(UpsertPackageItemRequest $request, TravelPackage $package, PackageItem $item): PackageResource
     {
         $this->ensurePackageItem($package, $item);
-        $item->update($this->validatedItemData($request));
+        $item->update($this->validatedItemData($request, $package));
 
         return new PackageResource($package->load('items')->loadCount('items'));
     }
@@ -70,7 +70,7 @@ class PackageItemController extends Controller
         return new PackageResource($package->load('items')->loadCount('items'));
     }
 
-    private function validatedItemData(UpsertPackageItemRequest $request): array
+    private function validatedItemData(UpsertPackageItemRequest $request, TravelPackage $package): array
     {
         $data = $request->validated();
 
@@ -80,16 +80,20 @@ class PackageItemController extends Controller
             return $data;
         }
 
-        $exists = match ($data['item_type']) {
-            'hotel' => Hotel::whereKey($data['item_id'])->exists(),
-            'restaurant' => Restaurant::whereKey($data['item_id'])->exists(),
-            'attraction' => Attraction::whereKey($data['item_id'])->exists(),
-            'match' => FootballMatch::whereKey($data['item_id'])->exists(),
+        $item = match ($data['item_type']) {
+            'hotel' => Hotel::find($data['item_id']),
+            'restaurant' => Restaurant::find($data['item_id']),
+            'attraction' => Attraction::find($data['item_id']),
+            'match' => FootballMatch::find($data['item_id']),
             default => false,
         };
 
-        if (! $exists) {
+        if (! $item) {
             throw ValidationException::withMessages(['item_id' => 'Element introuvable.']);
+        }
+
+        if ($package->city && $item->city && $item->city !== $package->city) {
+            throw ValidationException::withMessages(['item_id' => 'Element hors de la ville du package.']);
         }
 
         $data['custom_title'] = null;

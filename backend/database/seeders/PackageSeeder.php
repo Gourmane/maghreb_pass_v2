@@ -15,7 +15,8 @@ class PackageSeeder extends Seeder
     {
         $packages = [
             [
-                'title' => 'Casablanca Match Weekend',
+                'title_fr' => 'Weekend match a Casablanca',
+                'title_en' => 'Casablanca Match Weekend',
                 'description_fr' => 'Un programme compact pour vivre un match a Casablanca avec hotel, table marocaine et visite culturelle.',
                 'description_en' => 'A compact plan to enjoy a match in Casablanca with a hotel, Moroccan dining, and a cultural visit.',
                 'city' => 'Casablanca',
@@ -25,12 +26,14 @@ class PackageSeeder extends Seeder
                 'items' => [
                     ['hotel', 'Four Seasons Hotel Casablanca', 1],
                     ['custom', 'Arrivee et installation', 1, 'Check-in, repos et preparation pour le match.'],
+                    ['match', 'Grand Stade Hassan II', 1],
                     ['restaurant', 'La Sqala', 1],
                     ['attraction', 'Mosquee Hassan II', 2],
                 ],
             ],
             [
-                'title' => 'Marrakech Culture Escape',
+                'title_fr' => 'Echappee culturelle a Marrakech',
+                'title_en' => 'Marrakech Culture Escape',
                 'description_fr' => 'Deux jours a Marrakech entre hebergement premium, palais, jardin et cuisine locale.',
                 'description_en' => 'Two days in Marrakech with premium stay, palaces, gardens, and local cuisine.',
                 'city' => 'Marrakech',
@@ -51,7 +54,7 @@ class PackageSeeder extends Seeder
             unset($data['items']);
 
             $package = TravelPackage::updateOrCreate(
-                ['title' => $data['title']],
+                ['title_en' => $data['title_en']],
                 array_merge($data, ['currency' => 'MAD', 'is_active' => true])
             );
 

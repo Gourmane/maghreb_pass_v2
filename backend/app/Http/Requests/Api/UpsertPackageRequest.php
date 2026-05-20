@@ -14,7 +14,8 @@ class UpsertPackageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title_fr' => ['required', 'string', 'max:255'],
+            'title_en' => ['required', 'string', 'max:255'],
             'description_fr' => ['required', 'string'],
             'description_en' => ['required', 'string'],
             'city' => ['required', 'string', 'max:255'],

@@ -151,7 +151,7 @@ function HomePreviewSection({ catalog, language, loading, module, navigate, onAd
             <article className="home-preview-card" key={`${module.key}-${item.id}`}>
               <Media item={item} moduleKey={module.key} />
               <div>
-                <h3>{titleFor(item, module.key)}</h3>
+                <h3>{titleFor(item, module.key, language)}</h3>
                 <p>{descriptionFor(item, module.key, language)}</p>
                 <CardFacts item={item} moduleKey={module.key} t={t} />
                 <div className="row-actions">

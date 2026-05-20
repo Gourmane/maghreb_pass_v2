@@ -1,10 +1,10 @@
-import { ArrowDown, ArrowUp, Plus, Shield, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, Plus, Shield, Trash2, UserCheck, UserX } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../lib/api.js';
 import { Field, ModuleRail } from './common.jsx';
 import { adminFieldLabel, emailField, numberOrEmpty, numericField, titleFor, urlField } from '../lib/catalog.js';
 
-export function AdminView({ activeModule, adminForm, catalog, editingId, isAdmin, loading, modules, navigate, onDelete, onEdit, onFormChange, onModuleChange, onReset, onSubmit, stats, t, users }) {
+export function AdminView({ activeModule, adminForm, catalog, editingId, isAdmin, loading, modules, navigate, onDelete, onEdit, onFormChange, onModuleChange, onReset, onSubmit, onToggleUser, stats, t, users }) {
   if (!isAdmin) {
     return (
       <section className="content-panel locked">
@@ -37,7 +37,11 @@ export function AdminView({ activeModule, adminForm, catalog, editingId, isAdmin
             {users.map((user) => (
               <div className="compact-row" key={user.id}>
                 <span>{user.name}</span>
-                <strong>{user.is_active ? t(`options.role.${user.role}`, { defaultValue: user.role }) : t('common.disabled')}</strong>
+                <strong>{user.is_active ? t('common.active') : t('common.disabled')} - {t(`options.role.${user.role}`, { defaultValue: user.role })}</strong>
+                <button className="secondary-button" disabled={loading} onClick={() => onToggleUser(user)} type="button">
+                  {user.is_active ? <UserX size={16} /> : <UserCheck size={16} />}
+                  {user.is_active ? t('admin.deactivateUser') : t('admin.activateUser')}
+                </button>
               </div>
             ))}
           </div>
@@ -212,7 +216,7 @@ function PackageItemManager({ catalog, packageId, t }) {
       <div className="panel-head">
         <div>
           <p className="section-kicker">{t('packages.items')}</p>
-          <h2>{packageDetail?.title || t('packages.selectPackage')}</h2>
+          <h2>{packageDetail?.title_fr || packageDetail?.title || t('packages.selectPackage')}</h2>
         </div>
       </div>
       {error && <div className="notice error">{error}</div>}

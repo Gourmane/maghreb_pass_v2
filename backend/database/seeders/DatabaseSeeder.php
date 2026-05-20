@@ -17,10 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             TouristSeeder::class,
-            MatchSeeder::class,
-            HotelSeeder::class,
-            RestaurantSeeder::class,
-            AttractionSeeder::class,
+            CatalogJsonSeeder::class,
             PackageSeeder::class,
             ReservationSeeder::class,
         ]);
