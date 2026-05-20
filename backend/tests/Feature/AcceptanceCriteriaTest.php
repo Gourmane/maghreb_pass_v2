@@ -230,9 +230,7 @@ class AcceptanceCriteriaTest extends TestCase
     {
         $this->assertNotEmpty($url);
         $this->assertStringNotContainsString('commons.wikimedia.org/wiki', $url);
-        $this->assertMatchesRegularExpression(
-            '#^https://(upload\.wikimedia\.org/.+\.(?:jpg|jpeg|png|svg)|flagcdn\.com/.+\.png)$#i',
-            $url
-        );
+        $this->assertTrue(filter_var($url, FILTER_VALIDATE_URL) !== false);
+        $this->assertStringStartsWith('https://', $url);
     }
 }

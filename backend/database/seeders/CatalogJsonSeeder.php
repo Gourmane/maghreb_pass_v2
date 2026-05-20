@@ -108,10 +108,7 @@ class CatalogJsonSeeder extends Seeder
         ];
 
         foreach ($hotels as $hotel) {
-            $photos = $this->directPhotos(
-                $this->normalizePhotos($hotel['photos'] ?? []),
-                $fallbackPhotos[$hotel['name']] ?? []
-            );
+            $photos = $this->catalogPhotos($hotel, $fallbackPhotos[$hotel['name']] ?? []);
             [$latitude, $longitude, $rating, $isFeatured] = $geo[$hotel['name']] ?? [null, null, null, false];
 
             Hotel::updateOrCreate(
@@ -170,10 +167,7 @@ class CatalogJsonSeeder extends Seeder
         ];
 
         foreach ($restaurants as $restaurant) {
-            $photos = $this->directPhotos(
-                $this->normalizePhotos($restaurant['photos'] ?? []),
-                $fallbackPhotos[$restaurant['name']] ?? []
-            );
+            $photos = $this->catalogPhotos($restaurant, $fallbackPhotos[$restaurant['name']] ?? []);
             [$latitude, $longitude, $rating, $isFeatured] = $geo[$restaurant['name']] ?? [null, null, null, false];
 
             Restaurant::updateOrCreate(
@@ -229,10 +223,7 @@ class CatalogJsonSeeder extends Seeder
         ];
 
         foreach ($attractions as $attraction) {
-            $photos = $this->directPhotos(
-                $this->normalizePhotos($attraction['photos'] ?? []),
-                $fallbackPhotos[$attraction['name']] ?? []
-            );
+            $photos = $this->catalogPhotos($attraction, $fallbackPhotos[$attraction['name']] ?? []);
             [$latitude, $longitude, $rating, $isFeatured, $duration] = $geo[$attraction['name']] ?? [null, null, null, false, null];
 
             Attraction::updateOrCreate(
@@ -269,6 +260,17 @@ class CatalogJsonSeeder extends Seeder
         return is_array($photos) ? array_values(array_filter($photos)) : [];
     }
 
+    private function catalogPhotos(array $item, array $fallbackPhotos): array
+    {
+        $photos = $this->normalizePhotos($item['photos'] ?? []);
+
+        if (! empty($item['image_url'])) {
+            array_unshift($photos, $item['image_url']);
+        }
+
+        return $this->directPhotos(array_values(array_unique($photos)), $fallbackPhotos);
+    }
+
     private function directPhotos(array $photos, array $fallbackPhotos): array
     {
         $directPhotos = array_values(array_filter($photos, fn (string $url): bool => $this->isAcceptedDirectImageUrl($url)));
@@ -278,7 +280,8 @@ class CatalogJsonSeeder extends Seeder
 
     private function isAcceptedDirectImageUrl(string $url): bool
     {
-        return preg_match('#^https://(upload\.wikimedia\.org/.+\.(?:jpg|jpeg|png|svg)|flagcdn\.com/.+\.png)$#i', $url) === 1;
+        return filter_var($url, FILTER_VALIDATE_URL) !== false
+            && str_starts_with($url, 'https://');
     }
 
     private function normalizeTime(string $time): string

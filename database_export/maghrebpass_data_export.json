@@ -236,7 +236,8 @@
             "email": "contact@example.test",
             "photos": "[\"https://media-cdn.tripadvisor.com/media/photo-s/2c/2e/9e/fa/cblhotelexterior.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://media-cdn.tripadvisor.com/media/photo-s/2c/2e/9e/fa/cblhotelexterior.jpg"
         },
         {
             "id": 2,
@@ -252,9 +253,10 @@
             "website_url": "https://www.barcelo.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://bokun.s3.amazonaws.com/ea5df725-a387-4629-a6b4-9a1c25081219.jpeg\"]",
+            "photos": "[\"https://bokun.s3.amazonaws.com/ea5df725-a387-4629-a6b4-9a1c25081219.jpeg\",\"https://upload.wikimedia.org/wikipedia/commons/6/6f/Hassan_II_Mosque_Casablanca_Morocco.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/0/06/The_Open_Area_of_Hassan_II_Mosque_-_Casablanca_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://bokun.s3.amazonaws.com/ea5df725-a387-4629-a6b4-9a1c25081219.jpeg"
         },
         {
             "id": 3,
@@ -270,9 +272,10 @@
             "website_url": "https://www.mamounia.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://mamounia.com/media/cache/jadro_resize/rc/difNncDL1776666281/jadroRoot/medias/611cca0f424ac/couv-2.jpg\"]",
+            "photos": "[\"https://mamounia.com/media/cache/jadro_resize/rc/difNncDL1776666281/jadroRoot/medias/611cca0f424ac/couv-2.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/8/8a/Bahia_Palace_Marrakech_Front_Courtyard_2009_LL.JPG\",\"https://upload.wikimedia.org/wikipedia/commons/2/25/Marrakech_Majorelle_Garden_317.JPG\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://mamounia.com/media/cache/jadro_resize/rc/difNncDL1776666281/jadroRoot/medias/611cca0f424ac/couv-2.jpg"
         },
         {
             "id": 4,
@@ -288,9 +291,10 @@
             "website_url": "https://movenpick.accor.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/9e/49/70/spa-suite-swimming-pool.jpg?w=900&h=500&s=1\"]",
+            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/9e/49/70/spa-suite-swimming-pool.jpg?w=900&h=500&s=1\",\"https://upload.wikimedia.org/wikipedia/commons/8/8a/Bahia_Palace_Marrakech_Front_Courtyard_2009_LL.JPG\",\"https://upload.wikimedia.org/wikipedia/commons/b/b1/Marrakech_Menara.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/9e/49/70/spa-suite-swimming-pool.jpg?w=900&h=500&s=1"
         },
         {
             "id": 5,
@@ -306,9 +310,10 @@
             "website_url": "https://all.accor.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://images.trvl-media.com/lodging/1000000/70000/68700/68642/7c7117b1.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill\"]",
+            "photos": "[\"https://images.trvl-media.com/lodging/1000000/70000/68700/68642/7c7117b1.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill\",\"https://upload.wikimedia.org/wikipedia/commons/a/ae/Kasbah_of_the_Udayas_-_rabat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Morocco.svg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://images.trvl-media.com/lodging/1000000/70000/68700/68642/7c7117b1.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
         },
         {
             "id": 6,
@@ -324,9 +329,10 @@
             "website_url": "https://www.onomohotel.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://images.trvl-media.com/lodging/14000000/13280000/13273600/13273551/27396b88.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill\"]",
+            "photos": "[\"https://images.trvl-media.com/lodging/14000000/13280000/13273600/13273551/27396b88.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill\",\"https://upload.wikimedia.org/wikipedia/commons/a/ae/Kasbah_of_the_Udayas_-_rabat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Morocco.svg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://images.trvl-media.com/lodging/14000000/13280000/13273600/13273551/27396b88.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
         },
         {
             "id": 7,
@@ -342,9 +348,10 @@
             "website_url": "https://www.hilton.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://images.trvl-media.com/lodging/18000000/17270000/17262400/17262392/fb86f0ec.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill\"]",
+            "photos": "[\"https://images.trvl-media.com/lodging/18000000/17270000/17262400/17262392/fb86f0ec.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill\",\"https://upload.wikimedia.org/wikipedia/commons/3/35/Chefchaouen_Morocco.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/9/9c/A_view_of_one_of_the_many_blue-painted_streets_in_Chefchaouen,_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://images.trvl-media.com/lodging/18000000/17270000/17262400/17262392/fb86f0ec.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
         },
         {
             "id": 8,
@@ -360,9 +367,10 @@
             "website_url": "https://acollectionhotels.com/fr/our-destinations/tanger/business/marina-bay-tanger",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://y.cdrst.com/foto/hotel-sf/13932131/granderesp/foto-hotel-13931687.jpg\"]",
+            "photos": "[\"https://y.cdrst.com/foto/hotel-sf/13932131/granderesp/foto-hotel-13931687.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/3/35/Chefchaouen_Morocco.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/9/9c/A_view_of_one_of_the_many_blue-painted_streets_in_Chefchaouen,_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://y.cdrst.com/foto/hotel-sf/13932131/granderesp/foto-hotel-13931687.jpg"
         },
         {
             "id": 9,
@@ -378,9 +386,10 @@
             "website_url": "https://www.riu.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/654052610.jpg?k=b674a573110201f9eb8f8dde4817a99337a411b10d873bf7c585d1ba9eaa82fd&o=\"]",
+            "photos": "[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/654052610.jpg?k=b674a573110201f9eb8f8dde4817a99337a411b10d873bf7c585d1ba9eaa82fd&o=\",\"https://upload.wikimedia.org/wikipedia/commons/2/24/Ouzoud_Waterfalls_Morocco.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/1/1e/A%C3%AFt_Benhaddou.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/654052610.jpg?k=b674a573110201f9eb8f8dde4817a99337a411b10d873bf7c585d1ba9eaa82fd&o="
         },
         {
             "id": 10,
@@ -396,9 +405,10 @@
             "website_url": "https://www.palaisfaraj.com/",
             "phone": "+212 500 000 000",
             "email": "contact@example.test",
-            "photos": "[\"https://www.palaisfaraj.com/images/history-welcome-general-v3.webp\"]",
+            "photos": "[\"https://www.palaisfaraj.com/images/history-welcome-general-v3.webp\",\"https://upload.wikimedia.org/wikipedia/commons/1/1e/A%C3%AFt_Benhaddou.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/2/24/Ouzoud_Waterfalls_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://www.palaisfaraj.com/images/history-welcome-general-v3.webp"
         }
     ],
     "restaurants": [
@@ -413,9 +423,10 @@
             "price_range": "gastronomique",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a0/cf/cd/rick-s-cafe.jpg?w=900&h=-1&s=1\"]",
+            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a0/cf/cd/rick-s-cafe.jpg?w=900&h=-1&s=1\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a0/cf/cd/rick-s-cafe.jpg?w=900&h=-1&s=1"
         },
         {
             "id": 2,
@@ -428,9 +439,10 @@
             "price_range": "moyen",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://sqala.ma/wp-content/uploads/2021/03/DSC4518-scaled.jpg\"]",
+            "photos": "[\"https://sqala.ma/wp-content/uploads/2021/03/DSC4518-scaled.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://sqala.ma/wp-content/uploads/2021/03/DSC4518-scaled.jpg"
         },
         {
             "id": 3,
@@ -443,9 +455,10 @@
             "price_range": "moyen",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://www.marrakech-riad.co.uk/wp-content/uploads/2015/07/nomad.jpg\"]",
+            "photos": "[\"https://www.marrakech-riad.co.uk/wp-content/uploads/2015/07/nomad.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/2/25/Marrakech_Majorelle_Garden_317.JPG\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://www.marrakech-riad.co.uk/wp-content/uploads/2015/07/nomad.jpg"
         },
         {
             "id": 4,
@@ -458,9 +471,10 @@
             "price_range": "gastronomique",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://www.kechtrip.com/media/cache/frontDetailProduit/uploads/images/loisirs/loisir_46/5b00e462a5e0b58e90f8cd93bd5c044a.jpeg\"]",
+            "photos": "[\"https://www.kechtrip.com/media/cache/frontDetailProduit/uploads/images/loisirs/loisir_46/5b00e462a5e0b58e90f8cd93bd5c044a.jpeg\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/8/8a/Bahia_Palace_Marrakech_Front_Courtyard_2009_LL.JPG\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://www.kechtrip.com/media/cache/frontDetailProduit/uploads/images/loisirs/loisir_46/5b00e462a5e0b58e90f8cd93bd5c044a.jpeg"
         },
         {
             "id": 5,
@@ -473,9 +487,10 @@
             "price_range": "moyen",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://ledhow.com/wp-content/uploads/2024/08/4.jpg\"]",
+            "photos": "[\"https://ledhow.com/wp-content/uploads/2024/08/4.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://ledhow.com/wp-content/uploads/2024/08/4.jpg"
         },
         {
             "id": 6,
@@ -488,9 +503,10 @@
             "price_range": "moyen",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/e0/25/88/eingang-mit-tageskarte.jpg?w=1200&h=1200&s=1\"]",
+            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/e0/25/88/eingang-mit-tageskarte.jpg?w=1200&h=1200&s=1\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/e0/25/88/eingang-mit-tageskarte.jpg?w=1200&h=1200&s=1"
         },
         {
             "id": 7,
@@ -503,9 +519,10 @@
             "price_range": "gastronomique",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/49/18/8a/el-morocco-club.jpg?w=900&h=500&s=1\"]",
+            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/49/18/8a/el-morocco-club.jpg?w=900&h=500&s=1\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/49/18/8a/el-morocco-club.jpg?w=900&h=500&s=1"
         },
         {
             "id": 8,
@@ -518,9 +535,10 @@
             "price_range": "moyen",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/70/b6/29/photo0jpg.jpg?w=900&h=500&s=1\"]",
+            "photos": "[\"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/70/b6/29/photo0jpg.jpg?w=900&h=500&s=1\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/70/b6/29/photo0jpg.jpg?w=900&h=500&s=1"
         },
         {
             "id": 9,
@@ -533,9 +551,10 @@
             "price_range": "gastronomique",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://d2wbaszx2bpbs9.cloudfront.net/photos/ChIJX_jt3sa2sw0RbXgzMEyHl80/1750264563655_4_4CBFB3FB.jpeg\"]",
+            "photos": "[\"https://d2wbaszx2bpbs9.cloudfront.net/photos/ChIJX_jt3sa2sw0RbXgzMEyHl80/1750264563655_4_4CBFB3FB.jpeg\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://d2wbaszx2bpbs9.cloudfront.net/photos/ChIJX_jt3sa2sw0RbXgzMEyHl80/1750264563655_4_4CBFB3FB.jpeg"
         },
         {
             "id": 10,
@@ -548,9 +567,10 @@
             "price_range": "budget",
             "phone": "+212 500 000 001",
             "whatsapp": "+212 600 000 001",
-            "photos": "[\"https://i1.wp.com/www.etfoodvoyage.com/wp-content/uploads/2019/01/Fez-Cafe-Clock-01.jpg?fit=697%2C465&ssl=1\"]",
+            "photos": "[\"https://i1.wp.com/www.etfoodvoyage.com/wp-content/uploads/2019/01/Fez-Cafe-Clock-01.jpg?fit=697%2C465&ssl=1\",\"https://upload.wikimedia.org/wikipedia/commons/5/5a/Moroccan_tajine_with_meat.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/4/4d/Tajines_in_a_pottery_shop_in_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://i1.wp.com/www.etfoodvoyage.com/wp-content/uploads/2019/01/Fez-Cafe-Clock-01.jpg?fit=697%2C465&ssl=1"
         }
     ],
     "attractions": [
@@ -564,9 +584,10 @@
             "category": "Mosquee",
             "entry_price": "130.00",
             "opening_hours": "09:00-18:00",
-            "photos": "[\"https://www.barcelo.com/guia-turismo/wp-content/uploads/2022/10/mezquita-hassan-ii.jpg\"]",
+            "photos": "[\"https://www.barcelo.com/guia-turismo/wp-content/uploads/2022/10/mezquita-hassan-ii.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/6/6f/Hassan_II_Mosque_Casablanca_Morocco.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/0/06/The_Open_Area_of_Hassan_II_Mosque_-_Casablanca_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://www.barcelo.com/guia-turismo/wp-content/uploads/2022/10/mezquita-hassan-ii.jpg"
         },
         {
             "id": 2,
@@ -578,9 +599,10 @@
             "category": "Medina",
             "entry_price": "0.00",
             "opening_hours": "Toute la journee",
-            "photos": "[\"https://www.shutterstock.com/image-photo/casablanca-morocco-april-18-2025-600nw-2697230419.jpg\"]",
+            "photos": "[\"https://www.shutterstock.com/image-photo/casablanca-morocco-april-18-2025-600nw-2697230419.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/6/6f/Hassan_II_Mosque_Casablanca_Morocco.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/0/06/The_Open_Area_of_Hassan_II_Mosque_-_Casablanca_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://www.shutterstock.com/image-photo/casablanca-morocco-april-18-2025-600nw-2697230419.jpg"
         },
         {
             "id": 3,
@@ -592,9 +614,10 @@
             "category": "Musee",
             "entry_price": "150.00",
             "opening_hours": "08:00-18:30",
-            "photos": "[\"https://mnarcastle.ma/wp-content/uploads/2025/09/jardin-majorelle-marrakech-maroc.jpg\"]",
+            "photos": "[\"https://mnarcastle.ma/wp-content/uploads/2025/09/jardin-majorelle-marrakech-maroc.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/2/25/Marrakech_Majorelle_Garden_317.JPG\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://mnarcastle.ma/wp-content/uploads/2025/09/jardin-majorelle-marrakech-maroc.jpg"
         },
         {
             "id": 4,
@@ -606,9 +629,10 @@
             "category": "Patrimoine historique",
             "entry_price": "70.00",
             "opening_hours": "09:00-17:00",
-            "photos": "[\"https://palaisbahia.com/wp-content/uploads/elementor/thumbs/menara-garden-marrakech--r6ma5bui9gyxd5s823m0vsf3frj8qhtylun8rd883k.webp\"]",
+            "photos": "[\"https://palaisbahia.com/wp-content/uploads/elementor/thumbs/menara-garden-marrakech--r6ma5bui9gyxd5s823m0vsf3frj8qhtylun8rd883k.webp\",\"https://upload.wikimedia.org/wikipedia/commons/8/8a/Bahia_Palace_Marrakech_Front_Courtyard_2009_LL.JPG\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://palaisbahia.com/wp-content/uploads/elementor/thumbs/menara-garden-marrakech--r6ma5bui9gyxd5s823m0vsf3frj8qhtylun8rd883k.webp"
         },
         {
             "id": 5,
@@ -620,9 +644,10 @@
             "category": "Patrimoine historique",
             "entry_price": "0.00",
             "opening_hours": "Toute la journee",
-            "photos": "[\"https://lopinion.ma/media/uploads/82031804-58964627.jpg\"]",
+            "photos": "[\"https://lopinion.ma/media/uploads/82031804-58964627.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/a/ae/Kasbah_of_the_Udayas_-_rabat.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://lopinion.ma/media/uploads/82031804-58964627.jpg"
         },
         {
             "id": 6,
@@ -634,9 +659,10 @@
             "category": "Patrimoine historique",
             "entry_price": "0.00",
             "opening_hours": "Toute la journee",
-            "photos": "[\"https://images.trvl-media.com/place/6114800/9cbd00f1-c248-4ce6-936d-5698f58a1cb5.jpg\"]",
+            "photos": "[\"https://images.trvl-media.com/place/6114800/9cbd00f1-c248-4ce6-936d-5698f58a1cb5.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/a/ae/Kasbah_of_the_Udayas_-_rabat.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://images.trvl-media.com/place/6114800/9cbd00f1-c248-4ce6-936d-5698f58a1cb5.jpg"
         },
         {
             "id": 7,
@@ -648,9 +674,10 @@
             "category": "Autre",
             "entry_price": "60.00",
             "opening_hours": "10:00-18:00",
-            "photos": "[\"https://images.ctfassets.net/syr7ndzvgzl0/41kM9Cyhqk4RfD8HUjuNpA/4ed89b0cc438830eb8fdb9f08224b76c/Design_sans_titre__11_.png\"]",
+            "photos": "[\"https://images.ctfassets.net/syr7ndzvgzl0/41kM9Cyhqk4RfD8HUjuNpA/4ed89b0cc438830eb8fdb9f08224b76c/Design_sans_titre__11_.png\",\"https://upload.wikimedia.org/wikipedia/commons/6/6b/Caves_of_Hercules.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://images.ctfassets.net/syr7ndzvgzl0/41kM9Cyhqk4RfD8HUjuNpA/4ed89b0cc438830eb8fdb9f08224b76c/Design_sans_titre__11_.png"
         },
         {
             "id": 8,
@@ -662,9 +689,10 @@
             "category": "Plage",
             "entry_price": "0.00",
             "opening_hours": "Toute la journee",
-            "photos": "[\"https://images.trvl-media.com/place/6157944/efde7d6c-a7a4-4db7-b9d4-e2f864a8ff96.jpg\"]",
+            "photos": "[\"https://images.trvl-media.com/place/6157944/efde7d6c-a7a4-4db7-b9d4-e2f864a8ff96.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/6/6b/Caves_of_Hercules.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://images.trvl-media.com/place/6157944/efde7d6c-a7a4-4db7-b9d4-e2f864a8ff96.jpg"
         },
         {
             "id": 9,
@@ -676,9 +704,10 @@
             "category": "Plage",
             "entry_price": "0.00",
             "opening_hours": "Toute la journee",
-            "photos": "[\"https://ims.easyvoyage.info/shutterstock_735425809_9cf906aa0c/shutterstock_735425809_9cf906aa0c.jpg\"]",
+            "photos": "[\"https://ims.easyvoyage.info/shutterstock_735425809_9cf906aa0c/shutterstock_735425809_9cf906aa0c.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/2/24/Ouzoud_Waterfalls_Morocco.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://ims.easyvoyage.info/shutterstock_735425809_9cf906aa0c/shutterstock_735425809_9cf906aa0c.jpg"
         },
         {
             "id": 10,
@@ -690,9 +719,10 @@
             "category": "Medina",
             "entry_price": "0.00",
             "opening_hours": "Toute la journee",
-            "photos": "[\"https://www.barcelo.com/guia-turismo/wp-content/uploads/2023/09/medina-de-fez.jpg\"]",
+            "photos": "[\"https://www.barcelo.com/guia-turismo/wp-content/uploads/2023/09/medina-de-fez.jpg\",\"https://upload.wikimedia.org/wikipedia/commons/1/1e/A%C3%AFt_Benhaddou.jpg\"]",
             "created_at": "2026-05-18 19:31:34",
-            "updated_at": "2026-05-18 19:31:34"
+            "updated_at": "2026-05-18 19:31:34",
+            "image_url": "https://www.barcelo.com/guia-turismo/wp-content/uploads/2023/09/medina-de-fez.jpg"
         }
     ],
     "favorites": [
