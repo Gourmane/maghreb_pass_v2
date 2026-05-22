@@ -71,6 +71,7 @@ Ces identifiants sont reserves au demo local apres seed. Ne pas les utiliser pou
 - [PHASE_12_RISK_MITIGATIONS.md](PHASE_12_RISK_MITIGATIONS.md)
 - [Checklist demo](docs/DEMO_CHECKLIST.md)
 - [Exemples API](docs/API_EXAMPLES.md)
+- [Developer guide](docs/DEVELOPER_GUIDE.md)
 - [Backend README](backend/README.md)
 - [Frontend README](frontend/README.md)
 
