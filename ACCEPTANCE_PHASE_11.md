@@ -1,30 +1,49 @@
-# Phase 11 - Criteres d'acceptation MVP
+# Criteres d'acceptation - MaghrebPass Advanced V2.5
 
-Statut execute le 2026-05-18.
+Statut mis a jour le 2026-05-23.
+
+Ce fichier est une note d'acceptation du projet courant. La source de verite reste le code dans `backend`, `frontend` et les tests.
 
 ## Criteres valides
 
-- Visiteur: consultation publique des matchs, hotels, restaurants et attractions sans compte.
-- Utilisateur: inscription, connexion, deconnexion, reset password, profil et gestion des favoris.
-- Administrateur: acces protege par role admin et CRUD sur les contenus principaux.
-- FR/EN: interface React avec selecteur, contenus `description_fr`/`description_en` et `preferred_language`.
-- Photos: URLs et fichiers images admin acceptes, stockes sur disque `public` et retournes par les pages de detail API.
-- Filtres: ville minimum sur les quatre modules, plus groupe/phase/date, etoiles/prix, cuisine/gamme et categorie.
-- Frontend: routes PRD `/matches`, `/hotels/:id`, `/restaurants/:id`, `/attractions/:id`, `/login`, `/register`, `/profile`, `/favorites` et `/admin/*`.
-- Donnees demo: 8 matchs, 10 hotels, 10 restaurants, 10 attractions, 1 admin et 2 touristes.
-- API externe: aucune API externe n'est necessaire pour executer le backend MVP.
+- Visiteur: consultation publique des matchs, hotels, restaurants, attractions, packages, carte et details sans compte.
+- Auth: inscription, connexion, deconnexion, reset password, profil et cookie HTTP-only `maghrebpass_token` via Laravel Sanctum.
+- Roles: `tourist` et `admin`.
+- Touriste: favoris, reservations hotels/restaurants, annulation autorisee selon etat, paiement simule apres approbation admin, Trip Planner.
+- Administrateur: acces protege par role admin, statistiques, utilisateurs, reservations, CRUD catalogue, packages et items.
+- FR/EN: interface React bilingue avec `react-i18next` et donnees bilingues.
+- Photos: URLs et fichiers images admin acceptes avec limite stricte de 2 MB.
+- Filtres: ville et filtres specifiques par module selon les endpoints publics.
+- Donnees demo: 8 matchs, 10 hotels, 10 restaurants, 10 attractions, packages, reservations, 1 admin et 2 touristes.
+- API externe: aucune API payante n'est necessaire pour executer le projet.
 
 ## Limites restantes
 
-- MySQL doit etre demarre localement avec la base `maghreb_pass` avant `php artisan migrate:fresh --seed`.
-- La compression image n'est pas ajoutee; la limite stricte de 2 MB reste appliquee.
+- La base MySQL locale `advenced_maghrebpass_v2` doit exister avant `php artisan migrate:fresh --seed`.
+- Les reservations exigent un compte `tourist`; les visiteurs non connectes sont invites a se connecter.
+- Le paiement est une simulation academique, pas une integration de paiement reel.
+- La compression image n'est pas ajoutee; la limite backend de 2 MB reste appliquee.
 
 ## Commandes de validation
 
 ```bash
 cd backend
-php artisan test
-
-cd ../frontend
-npm run build
+php artisan route:list --path=api --no-ansi
+php artisan migrate:status --no-ansi
+php artisan test --no-ansi
 ```
+
+Etat confirme:
+
+- 74 routes API.
+- 54 tests passes.
+- 713 assertions.
+
+Validation frontend disponible:
+
+```bash
+cd frontend
+npm.cmd run build
+```
+
+Verifier `frontend/dist` avant/apres build car ce dossier peut etre modifie.

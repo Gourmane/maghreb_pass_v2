@@ -1,43 +1,39 @@
 # Manifeste de livraison - MaghrebPass Advanced V2.5
 
-Date de preparation: 2026-05-20
+Date de mise a jour: 2026-05-23
 
 ## Contenu livre
 
-- `backend/`: API REST Laravel Advanced V2.5.
-- `frontend/`: interface React + Vite Advanced V2.5.
-- `docs/`: checklist de demonstration et exemples d'appels API.
-- `PRD_MaghrebPass_Advanced_V2_5_Final.md`: cahier produit du projet.
-- `ACCEPTANCE_PHASE_11.md`: validation des criteres d'acceptation.
-- `PHASE_12_RISK_MITIGATIONS.md`: risques traites et mitigations appliquees.
-- `README.md`: demarrage rapide et liens projet.
+- `backend/`: API REST Laravel 12.
+- `frontend/`: interface React 19 + Vite 7.
+- `docs/`: guide developpeur, checklist demo, exemples API et rapport QA.
+- `database_export/maghrebpass_data_export.json`: donnees catalogue utilisees par le seeder.
+- `README.md`: documentation principale de demarrage.
+- `PRD_MaghrebPass_Advanced_V2_5_Final.md`: PRD avec note d'alignement implementation courante.
 
 ## Fonctionnalites backend
 
-- Consultation publique: matchs, hotels, restaurants, attractions, packages et carte.
-- Authentification Laravel Sanctum avec cookie HTTP-only `maghrebpass_token`.
-- Laravel Breeze installe cote backend (`laravel/breeze`) pour respecter la stack auth du PRD.
-- Gestion des favoris, reservations et trips pour utilisateurs connectes.
-- Profil utilisateur et demande de reinitialisation du mot de passe.
-- Administration protegee par role `admin`.
-- CRUD admin sur matchs, hotels, restaurants, attractions et packages.
-- Administration des reservations.
-- Endpoint dedie `POST /api/admin/upload`.
-- Donnees de demo avec 8 matchs, 10 hotels, 10 restaurants, 10 attractions, packages, reservations, 1 admin et 2 touristes.
+- Consultation publique: matchs, hotels, restaurants, attractions, packages, carte et suggestions nearby.
+- Authentification Laravel Sanctum avec token Bearer et cookie HTTP-only `maghrebpass_token`.
+- Roles `tourist` et `admin`.
+- Favoris pour utilisateurs connectes.
+- Reservations hotels/restaurants authentifiees, approbation/refus admin, paiement simule et confirmation.
+- Trip Planner authentifie avec items mono-ville.
+- Administration protegee: statistiques, utilisateurs, CRUD catalogue, reservations, packages, items de package et upload images.
+- Donnees de demo: 8 matchs, 10 hotels, 10 restaurants, 10 attractions, packages, reservations, 1 admin et 2 touristes.
 - Upload optionnel de photos admin avec limite de 2 MB par image.
 
 ## Fonctionnalites frontend
 
-- Pages publiques et pages detail selon le PRD: `/matches`, `/hotels/:id`, `/restaurants/:id`, `/attractions/:id`, `/packages/:id`.
+- Pages publiques: accueil, matchs, hotels, restaurants, attractions, packages, carte.
+- Pages detail pour tous les modules publics.
 - Carte globale et mini-map sur les details geolocalises.
-- Filtres par ville et filtres specifiques par module.
+- Filtres par module.
 - Connexion, inscription, deconnexion et profil.
-- Gestion des favoris avec lien vers le Trip Planner.
-- Trip Planner via `/trip-planner`, `/trips` et `/my-trips`.
-- Panneau admin avec statistiques, utilisateurs, reservations et CRUD contenus.
+- Favoris, reservations utilisateur, paiement simule et Trip Planner.
+- Panneau admin avec statistiques, utilisateurs, reservations, CRUD contenus, packages et items.
 - Interface bilingue FR/EN avec `react-i18next`.
-- Tailwind CSS installe et branche via `@tailwindcss/vite`.
-- Build de production Vite.
+- Styles projet avec Tailwind CSS via `@tailwindcss/vite`.
 
 ## Comptes de demonstration
 
@@ -49,31 +45,15 @@ Ces comptes sont reserves au demo local apres seed.
 | Touriste FR | `tourist@maghrebpass.test` | `password` |
 | Touriste EN | `emily.carter@maghrebpass.test` | `password` |
 
-## Validation effectuee
+## Installation locale
 
-Commande:
+Creer la base MySQL:
 
-```bash
-cd backend
-php artisan test
+```sql
+CREATE DATABASE advenced_maghrebpass_v2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Resultat attendu: 51 tests passes, 444 assertions.
-
-```bash
-cd frontend
-npm run build
-```
-
-Resultat attendu: build Vite reussi.
-
-## Notes d'installation
-
-Le projet est configure pour MySQL dans `backend/.env.example`, comme le PRD.
-Avant les migrations, creer une base locale `maghreb_pass` et verifier les identifiants `DB_USERNAME` / `DB_PASSWORD`.
-Pour un demo public ou production, garder `APP_DEBUG=false`, `SESSION_ENCRYPT=true`, generer un `APP_KEY` propre a l'environnement et ne jamais livrer `.env`.
-
-Commandes principales:
+Backend:
 
 ```bash
 cd backend
@@ -89,14 +69,42 @@ Frontend:
 
 ```bash
 cd frontend
-npm install
+npm.cmd install
 copy .env.example .env
-npm run dev
+npm.cmd run dev
 ```
+
+## Validation effectuee
+
+Confirme le 2026-05-23:
+
+```bash
+cd backend
+php artisan route:list --path=api --no-ansi
+php artisan migrate:status --no-ansi
+php artisan test --no-ansi
+```
+
+Resultats:
+
+- 74 routes API.
+- Migrations courantes executees.
+- 54 tests passes, 713 assertions.
+
+Le build frontend se lance avec:
+
+```bash
+cd frontend
+npm.cmd run build
+```
+
+Attention: `frontend/dist` est suivi dans le depot et peut etre reecrit par le build.
 
 ## Limites connues
 
+- Le paiement est simule uniquement; aucun paiement reel n'est branche.
+- Les reservations exigent un compte `tourist`.
+- Les suggestions nearby sont basees sur la meme ville, pas sur une distance GPS reelle.
 - La compression image n'est pas implementee; la limite backend de 2 MB est appliquee.
 - MySQL doit etre disponible sur `127.0.0.1:3306` ou adapte dans `.env`.
-- Les favoris sont exposes en API avec `type` + `id`; en base, Laravel utilise `favoriteable_type` + `favoriteable_id`.
-- `database_export/maghrebpass_data_export.json` contient les donnees catalogue exportees; packages, reservations et trips de demo sont recrees par seeders.
+- `database_export/maghrebpass_data_export.json` contient les donnees catalogue; packages et reservations sont recrees par seeders.

@@ -11,7 +11,7 @@ The project contains:
 - A Laravel 12 REST API backend.
 - A React 19 + Vite frontend.
 - MySQL persistence.
-- Laravel Sanctum authentication for the SPA.
+- Laravel Sanctum authentication for the SPA, using an HTTP-only `maghrebpass_token` cookie.
 - Public catalog features for matches, hotels, restaurants, attractions, packages, and map items.
 - Tourist features for favorites, reservations, profile management, and trip planning.
 - Admin features for catalog management, users, reservations, packages, statistics, and photo uploads.
@@ -94,7 +94,7 @@ Create the database before running Laravel migrations.
 The expected local database name in `backend/.env.example` is:
 
 ```env
-DB_DATABASE=maghreb_pass
+DB_DATABASE=advenced_maghrebpass_v2
 ```
 
 ### 5.2 Backend Setup
@@ -123,9 +123,9 @@ http://localhost:8000/api
 From `maghreb_pass/frontend` in a second terminal:
 
 ```bash
-npm install
+npm.cmd install
 copy .env.example .env
-npm run dev
+npm.cmd run dev
 ```
 
 Frontend URL:
@@ -153,7 +153,7 @@ APP_URL=http://localhost:8000
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=maghreb_pass
+DB_DATABASE=advenced_maghrebpass_v2
 DB_USERNAME=root
 DB_PASSWORD=
 SANCTUM_STATEFUL_DOMAINS=localhost:5173,127.0.0.1:5173
@@ -472,13 +472,23 @@ Run the relevant validation:
 
 ```bash
 cd backend
-php artisan test
+php artisan route:list --path=api --no-ansi
+php artisan migrate:status --no-ansi
+php artisan test --no-ansi
 ```
 
 ```bash
 cd frontend
-npm run build
+npm.cmd run build
 ```
+
+Current backend validation confirmed on 2026-05-23:
+
+- 74 API routes.
+- 54 tests passed.
+- 713 assertions.
+
+Do not run `npm.cmd run build` when you want a docs-only change unless you are ready to review generated changes in `frontend/dist`.
 
 In the change note or pull request, state:
 
@@ -527,7 +537,7 @@ Use this checklist before handing work to another developer:
 | --- | --- |
 | Backend route or business rule | `php artisan test` |
 | Database migration | migrate on a local database and run backend tests |
-| Frontend screen | `npm run build` |
+| Frontend screen | `npm.cmd run build` |
 | Auth/admin flow | test with tourist and admin roles as relevant |
 | Reservation flow | check pending, approval, and simulated payment behavior |
 | Image upload/data change | verify image URL renders in frontend |
@@ -589,3 +599,12 @@ Do not remove or move that file without updating the seeder path.
 ## 18. Maintenance Rule
 
 This guide should stay synchronized with the repository. When setup, schema, image handling, API behavior, or team workflow changes, update this file in the same change set.
+
+## 19. GitHub Push Notes
+
+Before pushing:
+
+- Treat `maghreb_pass` as the canonical project root.
+- Do not stage `.env`, `node_modules`, `vendor`, cache files, zips, PDFs, DOCX reports, or screenshots unless the delivery explicitly requires them.
+- Review `frontend/dist` carefully because a Vite build can rewrite tracked generated files.
+- Prefer the current README and this guide over old top-level audit reports in the parent folder.

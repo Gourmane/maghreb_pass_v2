@@ -1,26 +1,43 @@
-## Design Context
+## Product Context
+
+MaghrebPass Advanced V2.5 aide les visiteurs de la Coupe du Monde 2030 au Maroc a consulter des contenus touristiques, organiser un sejour simple et presenter un back-office academique complet.
 
 ### Users
-MaghrebPass sert trois profils principaux : visiteurs touristiques qui consultent librement les matchs, hotels, restaurants et attractions ; touristes connectes qui gerent leurs favoris et leur profil ; administrateurs qui alimentent manuellement tout le contenu via un back-office.
 
-Le contexte d'usage est pratique et rapide : preparer un sejour au Maroc pendant la Coupe du Monde 2030, comparer des options par ville, consulter des details fiables, puis garder les lieux utiles en favoris. L'interface doit rester comprehensible pour des utilisateurs francophones et anglophones, y compris ceux qui ne connaissent pas encore les villes marocaines.
+- Visiteur: consulte les matchs, hotels, restaurants, attractions, packages, carte et details publics.
+- Touriste connecte: gere profil, favoris, reservations hotels/restaurants et trips.
+- Administrateur: gere les utilisateurs, contenus catalogue, reservations, packages, items de package et images.
+
+### Current Product Behavior
+
+- L'authentification utilise Laravel Sanctum avec cookie HTTP-only `maghrebpass_token`.
+- Les roles applicatifs sont `tourist` et `admin`.
+- Les reservations exigent un compte touriste.
+- Le paiement est simule apres approbation admin et sert uniquement a confirmer une reservation dans le cadre demo.
+- Les cartes utilisent Leaflet/OpenStreetMap.
+- Les donnees sont bilingues FR/EN quand le module le requiert.
+- Aucune API externe payante ni paiement reel n'est requis.
 
 ### Brand Personality
-La personnalite a privilegier est accueillante, fiable et marocaine. L'experience doit inspirer confiance, donner envie de decouvrir le pays, et rester claire sous pression quand l'utilisateur cherche une information de voyage ou de match.
+
+La personnalite visee est accueillante, fiable et marocaine. L'interface doit inspirer confiance et rester claire pour un utilisateur qui compare rapidement des villes, prix, dates, statuts et options de sejour.
 
 ### Aesthetic Direction
-Le produit actuel utilise une direction chaude et culturelle : fond clair, surfaces creme, rouge marocain, vert, touches dorees, iconographie lucide, photographie du Maroc et motifs subtils. Cette direction doit rester lisible et fonctionnelle, sans tomber dans une page marketing lourde.
 
-Les interfaces publiques peuvent etre plus immersives et visuelles, avec des images reelles de lieux, hotels, restaurants et attractions. Les interfaces admin doivent etre plus denses, calmes et operationnelles : tableaux, formulaires, statuts, actions rapides, validation visible.
+Le produit utilise une direction chaude et culturelle: fond clair, surfaces creme, rouge marocain, vert, touches dorees, iconographie lucide, photographie du Maroc et motifs subtils.
+
+Les interfaces publiques peuvent etre plus visuelles. Les interfaces admin doivent rester plus denses et operationnelles: tableaux, formulaires, statuts, actions rapides et validation visible.
 
 ### Design Principles
-- Prioriser la clarte de voyage : ville, date, prix, statut, contact et action principale doivent etre visibles sans effort.
-- Garder une identite marocaine sobre : rouge, vert, or et photos reelles doivent soutenir le contenu, pas le decorer gratuitement.
-- Respecter le MVP sans API externe : ne pas introduire de promesses de reservation, carte interactive, paiement, avis ou notifications.
-- Concevoir bilingue par defaut : textes courts, libelles faciles a traduire, composants robustes aux longueurs FR/EN.
-- Differencier public et admin : experience publique expressive et accueillante ; back-office compact, fiable et rapide a utiliser.
+
+- Prioriser la clarte de voyage: ville, date, prix, statut, contact et action principale doivent etre visibles rapidement.
+- Garder une identite marocaine sobre: rouge, vert, or et photos doivent soutenir le contenu.
+- Presenter le paiement comme une simulation demo, pas comme un paiement reel.
+- Concevoir bilingue par defaut avec textes courts et robustes aux longueurs FR/EN.
+- Differencier public et admin: experience publique accueillante, back-office compact et fiable.
 
 ### Open Questions
-- Niveau d'accessibilite vise explicitement, par exemple WCAG AA.
+
+- Niveau d'accessibilite cible explicite, par exemple WCAG AA.
 - Preference officielle pour mode clair uniquement ou ajout futur d'un mode sombre.
-- References visuelles souhaitees ou anti-references a eviter.
+- Strategie de deploiement public si le projet est publie hors environnement local.

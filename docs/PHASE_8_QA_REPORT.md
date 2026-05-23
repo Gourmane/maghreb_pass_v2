@@ -1,48 +1,45 @@
-# Phase 8 - QA finale
+# Rapport QA - MaghrebPass Advanced V2.5
 
-Date: 2026-05-20
+Date de mise a jour: 2026-05-23
 
 ## Synthese
 
-Phase 8 executee avec succes.
+Verification backend courante:
 
-- Backend: 51 tests passes, 444 assertions.
-- Frontend: build de production Vite valide.
-- Routes API: 72 routes exposees par `php artisan route:list --path=api`.
-- Responsive: smoke test desktop et mobile valide, sans overflow horizontal detecte.
+- Routes API: 74 routes exposees par `php artisan route:list --path=api --no-ansi`.
+- Migrations: les migrations courantes sont executees dans l'environnement local verifie.
+- Tests backend: 54 tests passes, 713 assertions.
 
-## Checklist PRD
+Le build frontend n'a pas ete relance pendant cette passe documentaire, car `frontend/dist` est suivi dans le depot et peut etre reecrit par `npm.cmd run build`.
 
-| Controle | Statut | Couverture |
-| --- | --- | --- |
-| Auth | OK | `AuthApiTest`, `AcceptanceCriteriaTest` |
-| Middleware admin | OK | `AdminApiTest` |
-| Admin | OK | `AdminApiTest`, `PackageApiTest`, `ReservationApiTest` |
-| Favoris | OK | `FavoriteApiTest`, `AcceptanceCriteriaTest` |
-| Migration favoris si necessaire | OK | Table et flux favoris couverts par tests; implementation polymorphique Laravel via `favoriteable_type` + `favoriteable_id`, exposee en API comme `type` + `id` |
-| Reservations | OK | `ReservationApiTest` |
-| Validations backend | OK | Feature tests + Form Requests |
-| Annulation | OK | `ReservationApiTest` |
-| Packages | OK | `PackageApiTest` |
-| Suppression element utilise | OK | `PackageApiTest` |
-| Map | OK | `PublicCatalogApiTest` |
-| Trip planner | OK | `TripPlannerApiTest` |
-| Responsive | OK | Browser smoke test 1366x768 et 390x844 |
-| Build frontend | OK | `npm run build` |
-| Routes API | OK | `php artisan route:list --path=api` |
-| Non-regression MVP | OK | `AcceptanceCriteriaTest` |
+## Couverture principale
+
+| Controle | Couverture |
+| --- | --- |
+| Auth et profil | `AuthApiTest`, `AcceptanceCriteriaTest` |
+| Middleware admin | `AdminApiTest` |
+| Admin catalogue/utilisateurs | `AdminApiTest`, `PackageApiTest`, `ReservationApiTest` |
+| Favoris | `FavoriteApiTest`, `AcceptanceCriteriaTest` |
+| Reservations | `ReservationApiTest` |
+| Paiement simule | `ReservationApiTest` |
+| Packages | `PackageApiTest` |
+| Suppression element utilise | `PackageApiTest` |
+| Map et nearby | `PublicCatalogApiTest` |
+| Trip planner | `TripPlannerApiTest` |
+| Donnees demo | `AcceptanceCriteriaTest` |
 
 ## Commandes executees
 
 ```bash
 cd backend
-composer test
-php artisan route:list --path=api
-
-cd frontend
-npm run build
+php artisan route:list --path=api --no-ansi
+php artisan migrate:status --no-ansi
+php artisan test --no-ansi
 ```
 
-## Correctif QA applique
+## Notes QA
 
-Le build frontend signalait que `reservations.jsx` etait importe a la fois statiquement et dynamiquement. Le formulaire public de reservation a ete deplace dans `src/components/reservation-form.jsx`, ce qui conserve le lazy loading des vues de gestion des reservations et supprime l'avertissement Vite.
+- Les reservations sont volontairement authentifiees: un visiteur non connecte ne peut pas creer une reservation.
+- Le paiement est une simulation de confirmation apres approbation admin.
+- Les favoris sont exposes par l'API avec `type` + `id`, tandis que la base utilise une relation polymorphique Laravel.
+- Pour une validation frontend, executer `npm.cmd run build` puis verifier les changements generes dans `frontend/dist`.
