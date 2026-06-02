@@ -1,8 +1,21 @@
+import { useEffect, useState } from 'react';
 import { CalendarCheck, Heart, Home, Hotel, LogIn, LogOut, Map, NotebookTabs, User } from 'lucide-react';
 
 export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActive, route, session, activeModule, modules, t }) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isHome = route.view === 'home';
+
   return (
-    <header className="topbar">
+    <header className={`topbar ${isHome ? 'is-home' : 'is-inner'} ${isScrolled ? 'is-scrolled' : ''}`}>
       <button className="brand" onClick={() => navigate('/')} type="button">
         <img className="brand-mark" src="/assets/maghrebpass-logo.png" alt="" />
         <span>{t('appName')}</span>
