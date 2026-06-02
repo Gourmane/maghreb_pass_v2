@@ -54,6 +54,7 @@ function App() {
 
   const currentModule = modules.find((module) => module.key === activeModule);
   const isAdmin = session.user?.role === 'admin';
+  const showGlobalMessage = route.view !== 'home' && (notice || error);
 
   useEffect(() => {
     const onPop = () => {
@@ -329,7 +330,7 @@ function App() {
       />
 
       <main className="page-main">
-        {(notice || error) && <div aria-live="polite" className={`notice ${error ? 'error' : ''}`} role={error ? 'alert' : 'status'}>{error || notice}</div>}
+        {showGlobalMessage && <div aria-live="polite" className={`notice ${error ? 'error' : ''}`} role={error ? 'alert' : 'status'}>{error || notice}</div>}
 
         {route.view === 'home' && (
           <HomePage
