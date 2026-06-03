@@ -49,9 +49,6 @@ function HomeHero({ navigate, t }) {
           <button className="secondary-button" onClick={() => navigate('/matches')} type="button"><CalendarCheck size={16} />{t('home.exploreMatches')}</button>
         </div>
       </div>
-      <div className="home-hero-visual" aria-hidden="true">
-        <div className="hero-ribbon" />
-      </div>
     </section>
   );
 }

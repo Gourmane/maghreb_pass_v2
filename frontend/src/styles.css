@@ -286,6 +286,8 @@ a {
 }
 
 .app-shell:has(.home-page) .topbar.is-scrolled .language-switcher button {
+  width: 36px;
+  height: 28px;
   min-height: 28px;
   min-width: 36px;
   font-size: 0.7rem;
@@ -404,6 +406,7 @@ a {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
@@ -412,14 +415,22 @@ a {
 }
 
 .language-switcher button {
+  display: inline-flex;
+  width: 42px;
   min-width: 42px;
+  height: 34px;
   min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted);
   font-size: var(--type-small);
   font-weight: var(--weight-semibold);
+  line-height: 1;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .language-switcher button.active {
@@ -706,19 +717,6 @@ p {
   background-size: 62px 62px;
 }
 
-.home-hero::after {
-  position: absolute;
-  right: -7%;
-  bottom: 15%;
-  width: min(780px, 58vw);
-  height: 112px;
-  border-radius: 999px 0 0 999px;
-  background: linear-gradient(90deg, rgba(255, 253, 249, 0), rgba(222, 22, 32, 0.92) 20%, rgba(175, 9, 18, 0.98) 72%, rgba(11, 107, 67, 0.78));
-  box-shadow: 0 26px 64px rgba(104, 9, 13, 0.46);
-  content: "";
-  transform: rotate(-12deg);
-}
-
 .home-hero-copy {
   position: relative;
   z-index: 1;
@@ -805,24 +803,6 @@ p {
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   color: var(--ink);
   backdrop-filter: blur(14px);
-}
-
-.home-hero-visual {
-  position: relative;
-  z-index: 1;
-  min-height: 100%;
-}
-
-.hero-ribbon {
-  position: absolute;
-  right: -2%;
-  bottom: 25%;
-  width: min(690px, 48vw);
-  height: 88px;
-  border-radius: 999px 0 0 999px;
-  background: linear-gradient(90deg, rgba(255, 253, 249, 0), rgba(242, 43, 52, 0.82), rgba(159, 7, 15, 0.96));
-  filter: blur(1px);
-  transform: rotate(-12deg);
 }
 
 .home-search-shell {
@@ -1090,9 +1070,9 @@ p {
 
 .home-match-row {
   display: grid;
-  grid-template-columns: 118px minmax(330px, 1.1fr) minmax(220px, 0.9fr) 86px 28px;
+  grid-template-columns: 104px minmax(0, 1fr) minmax(128px, 0.34fr) 64px 28px;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
   min-height: 86px;
   border: 1px solid color-mix(in srgb, var(--line) 82%, var(--surface));
   border-radius: 18px;
@@ -1119,19 +1099,29 @@ p {
 
 .home-match-teams {
   display: grid;
-  grid-template-columns: max-content 34px max-content;
+  grid-template-columns: max-content 38px max-content;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  column-gap: 18px;
+  width: 100%;
   min-width: 0;
 }
 
 .home-team-badge {
   display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
+  grid-template-columns: 38px max-content;
   align-items: center;
   gap: 10px;
+  max-width: 100%;
   min-width: 0;
+}
+
+.home-team-badge:first-child {
+  justify-self: end;
+}
+
+.home-team-badge:last-child {
+  justify-self: start;
 }
 
 .home-team-badge img,
@@ -1147,6 +1137,7 @@ p {
 
 .home-team-badge strong {
   min-width: 0;
+  max-width: 118px;
   overflow: hidden;
   color: var(--ink);
   font-size: 0.95rem;
@@ -1158,8 +1149,9 @@ p {
 
 .match-versus {
   display: grid;
-  width: 34px;
-  height: 34px;
+  justify-self: center;
+  width: 38px;
+  height: 38px;
   place-items: center;
   border-radius: 50%;
   background: color-mix(in srgb, var(--navy) 8%, var(--surface));
@@ -2456,20 +2448,30 @@ textarea {
 }
 
 .footer-language {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
 }
 
-.footer-language button {
-  min-width: 48px;
-  min-height: 44px;
+.site-footer .footer-language button {
+  display: inline-flex;
+  width: 58px;
+  height: 52px;
+  min-width: 58px;
+  min-height: 52px;
+  align-items: center;
   justify-content: center;
+  padding: 0;
   border: 1px solid color-mix(in srgb, var(--surface) 26%, transparent) !important;
   border-radius: var(--radius-sm);
+  background: transparent;
   color: var(--text-on-dark) !important;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  text-align: center;
 }
 
-.footer-language button.active {
+.site-footer .footer-language button.active {
   background: var(--red) !important;
   border-color: var(--red) !important;
 }
@@ -2544,10 +2546,6 @@ textarea {
     min-height: 660px;
   }
 
-  .home-hero-visual {
-    min-height: 260px;
-  }
-
   .home-search-shell {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2576,8 +2574,31 @@ textarea {
   }
 
   .home-match-row {
-    grid-template-columns: 96px minmax(280px, 1.1fr) minmax(150px, 0.9fr) 70px 24px;
-    gap: 12px;
+    grid-template-columns: 92px minmax(0, 1fr) 54px 22px;
+    gap: 8px 12px;
+  }
+
+  .home-match-teams {
+    grid-template-columns: max-content 36px max-content;
+    justify-content: center;
+    column-gap: 14px;
+  }
+
+  .home-match-row small {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .home-match-row em {
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: center;
+  }
+
+  .home-match-row > svg {
+    grid-column: 4;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 
   .hero-status {
@@ -2764,17 +2785,19 @@ textarea {
   }
 
   .home-match-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: 1fr auto;
+    gap: 10px 12px;
   }
 
   .home-match-teams {
-    grid-template-columns: 1fr;
-    gap: 8px;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+    justify-content: center;
+    column-gap: 10px;
   }
 
   .home-team-badge {
-    grid-template-columns: 34px minmax(0, 1fr);
+    grid-template-columns: 34px max-content;
   }
 
   .home-team-badge img,
@@ -2784,14 +2807,23 @@ textarea {
   }
 
   .match-versus {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
   }
 
   .home-match-row .match-date,
-  .home-match-row em,
-  .home-match-row svg {
+  .home-match-row em {
     justify-self: start;
+  }
+
+  .home-match-row small {
+    grid-column: 1 / -1;
+  }
+
+  .home-match-row > svg {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
 
   .home-section-head {
