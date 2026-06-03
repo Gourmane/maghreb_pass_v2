@@ -5,6 +5,8 @@ import { CardFacts, EmptyState, Field, Media, ModuleRail } from './common.jsx';
 import { descriptionFor, titleFor } from '../lib/catalog.js';
 import { ReservationForm } from './reservation-form.jsx';
 
+const MATCH_GROUPS = ['Groupe A', 'Groupe B', 'Groupe C', 'Groupe D'];
+
 export function PublicCatalog({ activeModule, catalog, cities, currentModule, filters, language, loading, modules, onAddFavorite, onFilterChange, onLoad, onModuleChange, onOpenDetail, t }) {
   const items = catalog[activeModule] || [];
 
@@ -62,7 +64,10 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
       {activeModule === 'matches' && (
         <>
           <Field id="filter-group" label={t('catalog.group')} compact>
-            <input id="filter-group" value={filters.group_name} onChange={(event) => onChange((current) => ({ ...current, group_name: event.target.value }))} placeholder={t('catalog.group')} />
+            <select id="filter-group" value={filters.group_name} onChange={(event) => onChange((current) => ({ ...current, group_name: event.target.value }))}>
+              <option value="">{t('catalog.allGroups')}</option>
+              {MATCH_GROUPS.map((group) => <option key={group} value={group}>{group}</option>)}
+            </select>
           </Field>
           <Field id="filter-phase" label={t('catalog.phase')} compact>
             <select id="filter-phase" value={filters.phase} onChange={(event) => onChange((current) => ({ ...current, phase: event.target.value }))}>

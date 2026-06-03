@@ -4,10 +4,26 @@ Objectif: presenter les fonctionnalites reelles de la version courante avec les 
 
 ## 1. Preparation
 
+Sur le PC de demo:
+
+```bash
+git clone https://github.com/Gourmane/maghreb_pass_v2.git
+cd maghreb_pass_v2
+```
+
+Creer la base MySQL locale avant de lancer Laravel:
+
+```sql
+CREATE DATABASE advenced_maghrebpass_v2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
 Backend:
 
 ```bash
 cd backend
+composer install
+copy .env.example .env
+php artisan key:generate
 php artisan config:clear
 php artisan migrate:fresh --seed
 php artisan storage:link
@@ -53,9 +69,10 @@ Etat confirme le 2026-05-23:
 1. Ouvrir `http://127.0.0.1:5173`.
 2. Presenter l'accueil et la navigation principale.
 3. Ouvrir les catalogues publics: matchs, hotels, restaurants, attractions, packages.
-4. Ouvrir une fiche detail geolocalisee et montrer la mini-map.
-5. Ouvrir `/map` et filtrer par ville/type.
-6. Ouvrir un match et presenter les suggestions nearby basees sur la meme ville.
+4. Dans `/matches`, ouvrir le filtre Groupe, choisir `Groupe A`, charger la recherche et confirmer que seuls les matchs du groupe choisi sont affiches.
+5. Ouvrir une fiche detail geolocalisee et montrer la mini-map.
+6. Ouvrir `/map` et filtrer par ville/type.
+7. Ouvrir un match et presenter les suggestions nearby basees sur la meme ville.
 
 ## 4. Parcours navigateur - touriste
 

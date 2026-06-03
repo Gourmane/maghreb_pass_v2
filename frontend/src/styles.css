@@ -402,6 +402,25 @@ a {
   gap: 10px;
 }
 
+.hamburger-btn {
+  display: none;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.mobile-menu {
+  display: none;
+}
+
 .language-switcher {
   display: inline-flex;
   min-height: 44px;
@@ -2498,7 +2517,8 @@ textarea {
   .row-actions,
   .form-actions,
   .quick-actions,
-  .detail-actions {
+  .detail-actions,
+  .reservation-actions {
     align-items: stretch;
     flex-direction: column;
   }
@@ -2506,7 +2526,8 @@ textarea {
   .row-actions > *,
   .form-actions > *,
   .quick-actions > *,
-  .detail-actions > * {
+  .detail-actions > *,
+  .reservation-actions > * {
     width: 100%;
   }
 
@@ -2517,19 +2538,84 @@ textarea {
 
 @media (max-width: 940px) {
   .topbar {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: auto 1fr;
+    gap: 12px 16px;
+    align-items: center;
   }
 
-  .nav-tabs,
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   .header-actions {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 3px;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    justify-content: flex-end;
+  }
+
+  .nav-tabs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    display: none;
   }
 
   .nav-tabs button::after {
     bottom: -4px;
+  }
+
+  .hamburger-btn {
+    display: inline-flex;
+  }
+
+  .mobile-menu {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    max-height: calc(100dvh - 76px);
+    overflow-y: auto;
+    padding: 10px 0 2px;
+    overscroll-behavior: contain;
+  }
+
+  .mobile-menu.is-open {
+    display: grid;
+  }
+
+  .mobile-menu button {
+    display: inline-flex;
+    min-width: 0;
+    min-height: 44px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface) 88%, var(--white-solid));
+    color: var(--ink-nav);
+    font-size: var(--type-small);
+    font-weight: var(--weight-semibold);
+    line-height: 1.2;
+    text-align: left;
+  }
+
+  .mobile-menu button svg {
+    flex: 0 0 auto;
+  }
+
+  .mobile-menu button.active {
+    border-color: color-mix(in srgb, var(--red) 48%, var(--line));
+    background: var(--surface-soft-red);
+    color: var(--red);
+  }
+
+  .mobile-menu-login,
+  .mobile-menu-logout {
+    grid-column: 1 / -1;
   }
 
   .workspace,
@@ -2610,6 +2696,7 @@ textarea {
   .match-versus {
     width: 36px;
     height: 36px;
+    margin-left: 10px;
     font-size: 0.66rem;
   }
 
@@ -2637,7 +2724,7 @@ textarea {
 
   .module-rail {
     position: static;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -2718,46 +2805,53 @@ textarea {
   }
 
   .topbar {
-    position: static;
-    padding: 12px;
+    position: sticky;
+    top: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 10px 14px;
+    min-height: auto;
   }
 
   .brand {
-    font-size: 1.125rem;
+    font-size: 1.05rem;
   }
 
   .nav-tabs {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    width: 100%;
-  }
-
-  .nav-tabs button {
-    justify-content: center;
-    min-height: 44px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--surface) 82%, white);
-    padding: 9px 10px;
-    text-align: center;
-  }
-
-  .nav-tabs button::after {
     display: none;
   }
 
   .header-actions,
   .header-actions .ghost-button {
-    width: 100%;
+    width: auto;
+  }
+
+  .header-actions .ghost-button {
+    width: 44px;
+    min-width: 44px;
+    padding: 0;
+    gap: 0;
+    font-size: 0;
+  }
+
+  .header-actions .ghost-button svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header-actions .ghost-button span {
+    display: none;
   }
 
   .header-actions .icon-button {
     flex: 0 0 auto;
   }
 
-  .header-actions .ghost-button {
-    flex: 1 1 0;
+  .hamburger-btn {
+    display: inline-flex;
+  }
+
+  .mobile-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-band {
@@ -2884,7 +2978,7 @@ textarea {
     position: sticky;
     bottom: 10px;
     z-index: 20;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     margin-inline: -4px;
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-mobile-nav);
@@ -2957,9 +3051,16 @@ textarea {
     padding: 15px;
   }
 
-  .list-row {
+  .list-row,
+  .compact-row {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .reservation-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 8px;
   }
 
   .detail-media .match-media {
@@ -3056,17 +3157,18 @@ textarea {
 
 @media (max-width: 700px) {
   .app-shell:has(.home-page) .topbar {
-    position: static;
-    top: auto;
+    position: sticky;
+    top: 0;
     left: auto;
     width: 100%;
     min-height: auto;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: 10px 14px;
     border-radius: 0;
     background: linear-gradient(180deg, #06192a, #031020);
     transform: none;
+    z-index: 30;
   }
 
   .app-shell:has(.home-page) .brand {
@@ -3074,40 +3176,55 @@ textarea {
   }
 
   .app-shell:has(.home-page) .nav-tabs {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-  }
-
-  .app-shell:has(.home-page) .nav-tabs::-webkit-scrollbar {
     display: none;
   }
 
-  .app-shell:has(.home-page) .nav-tabs button {
-    flex: 0 0 auto;
-    justify-content: center;
-    min-width: 116px;
+  .app-shell:has(.home-page) .header-actions {
     width: auto;
-    border: 1px solid color-mix(in srgb, var(--surface) 18%, transparent);
-    border-radius: var(--radius-md);
+  }
+
+  .app-shell:has(.home-page) .header-actions .ghost-button span {
+    display: none;
+  }
+
+  .app-shell:has(.home-page) .hamburger-btn,
+  .app-shell:has(.home-page) .mobile-menu button {
+    border-color: color-mix(in srgb, var(--surface) 18%, transparent);
     background: color-mix(in srgb, var(--navy) 74%, var(--surface) 8%);
     color: var(--text-on-dark);
   }
 
-  .app-shell:has(.home-page) .nav-tabs button.active {
+  .app-shell:has(.home-page) .mobile-menu button.active {
     border-color: color-mix(in srgb, var(--red) 68%, var(--surface));
     background: color-mix(in srgb, var(--red) 18%, var(--navy));
   }
 
-  .app-shell:has(.home-page) .header-actions {
-    width: 100%;
-  }
-
   .app-shell:has(.home-page) .home-hero {
     margin-top: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .topbar {
+    gap: 8px;
+    padding-inline: 10px;
+  }
+
+  .brand span {
+    display: none;
+  }
+
+  .language-switcher {
+    min-height: 40px;
+    padding: 3px;
+  }
+
+  .language-switcher button {
+    width: 34px;
+    min-width: 34px;
+    height: 30px;
+    min-height: 30px;
+    font-size: 0.7rem;
   }
 }
 

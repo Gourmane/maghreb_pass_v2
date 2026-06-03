@@ -1,26 +1,49 @@
-import { useEffect, useState } from 'react';
-import { CalendarCheck, Heart, Home, Hotel, LogIn, LogOut, Map, NotebookTabs, User } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { CalendarCheck, Heart, Home, Hotel, LogIn, LogOut, Map, Menu, NotebookTabs, User, X } from 'lucide-react';
 
 export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActive, route, session, activeModule, modules, t }) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /* Close menu when clicking outside */
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [isMenuOpen]);
+
+  /* Close menu on route change */
+  useEffect(() => { setIsMenuOpen(false); }, [route.view]);
+
   const isHome = route.view === 'home';
 
+  const handleNavClick = (fn) => {
+    fn();
+    setIsMenuOpen(false);
+  };
+
   return (
-    <header className={`topbar ${isHome ? 'is-home' : 'is-inner'} ${isScrolled ? 'is-scrolled' : ''}`}>
+    <header ref={menuRef} className={`topbar ${isHome ? 'is-home' : 'is-inner'} ${isScrolled ? 'is-scrolled' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
+      {/* Brand */}
       <button className="brand" onClick={() => navigate('/')} type="button">
         <img className="brand-mark" src="/assets/maghrebpass-logo.png" alt="" />
         <span>{t('appName')}</span>
       </button>
 
+      {/* Desktop nav */}
       <nav className="nav-tabs" aria-label={t('a11y.mainNavigation')}>
         <button aria-current={route.view === 'home' ? 'page' : undefined} className={route.view === 'home' ? 'active' : ''} onClick={() => navigate('/')} type="button">
           <Home size={16} />
@@ -42,7 +65,7 @@ export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActi
         </button>
         <button aria-current={route.view === 'favorites' ? 'page' : undefined} className={route.view === 'favorites' ? 'active' : ''} onClick={() => navigate('/favorites')} type="button">{t('nav.favorites')}</button>
         {session.user && (
-        <button aria-current={route.view === 'trips' ? 'page' : undefined} className={route.view === 'trips' ? 'active' : ''} onClick={() => navigate('/my-trips')} type="button">
+          <button aria-current={route.view === 'trips' ? 'page' : undefined} className={route.view === 'trips' ? 'active' : ''} onClick={() => navigate('/my-trips')} type="button">
             <NotebookTabs size={16} />
             {t('nav.trips')}
           </button>
@@ -56,6 +79,7 @@ export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActi
         <button aria-current={route.view === 'profile' ? 'page' : undefined} className={route.view === 'profile' ? 'active' : ''} onClick={() => navigate(session.user ? '/profile' : '/login')} type="button"><User size={16} />{t('nav.profile')}</button>
       </nav>
 
+      {/* Right actions */}
       <div className="header-actions">
         <div aria-label={t('a11y.changeLanguage')} className="language-switcher" role="group">
           <button aria-pressed={i18n.language === 'fr'} className={i18n.language === 'fr' ? 'active' : ''} onClick={() => changeLanguage('fr')} type="button">FR</button>
@@ -65,6 +89,61 @@ export function AppHeader({ changeLanguage, i18n, navigate, onLogout, publicActi
           <button className="ghost-button" onClick={onLogout} type="button"><LogOut size={17} />{t('auth.logout')}</button>
         ) : (
           <button className="ghost-button" onClick={() => navigate('/login')} type="button"><LogIn size={17} />{t('auth.login')}</button>
+        )}
+
+        {/* Hamburger — visible mobile only */}
+        <button
+          aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={isMenuOpen}
+          className="hamburger-btn"
+          onClick={() => setIsMenuOpen((o) => !o)}
+          type="button"
+        >
+          {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      <div className={`mobile-menu ${isMenuOpen ? 'is-open' : ''}`} aria-hidden={!isMenuOpen}>
+        <button className={route.view === 'home' ? 'active' : ''} onClick={() => handleNavClick(() => navigate('/'))} type="button">
+          <Home size={18} /> {t('nav.home')}
+        </button>
+        {modules.map((module) => {
+          const Icon = module.icon;
+          const active = publicActive && activeModule === module.key;
+          return (
+            <button className={active ? 'active' : ''} key={module.key} onClick={() => handleNavClick(() => navigate(module.basePath))} type="button">
+              <Icon size={18} /> {t(`catalog.${module.key}`)}
+            </button>
+          );
+        })}
+        <button className={route.view === 'map' ? 'active' : ''} onClick={() => handleNavClick(() => navigate('/map'))} type="button">
+          <Map size={18} /> {t('nav.map')}
+        </button>
+        <button className={route.view === 'favorites' ? 'active' : ''} onClick={() => handleNavClick(() => navigate('/favorites'))} type="button">
+          {t('nav.favorites')}
+        </button>
+        {session.user && (
+          <button className={route.view === 'trips' ? 'active' : ''} onClick={() => handleNavClick(() => navigate('/my-trips'))} type="button">
+            <NotebookTabs size={18} /> {t('nav.trips')}
+          </button>
+        )}
+        {session.user && (
+          <button className={route.view === 'my-reservations' ? 'active' : ''} onClick={() => handleNavClick(() => navigate('/my-reservations'))} type="button">
+            <CalendarCheck size={18} /> {t('nav.reservations')}
+          </button>
+        )}
+        <button className={route.view === 'profile' ? 'active' : ''} onClick={() => handleNavClick(() => navigate(session.user ? '/profile' : '/login'))} type="button">
+          <User size={18} /> {t('nav.profile')}
+        </button>
+        {session.user ? (
+          <button className="mobile-menu-logout" onClick={() => { onLogout(); setIsMenuOpen(false); }} type="button">
+            <LogOut size={18} /> {t('auth.logout')}
+          </button>
+        ) : (
+          <button className="mobile-menu-login" onClick={() => handleNavClick(() => navigate('/login'))} type="button">
+            <LogIn size={18} /> {t('auth.login')}
+          </button>
         )}
       </div>
     </header>
