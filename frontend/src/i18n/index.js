@@ -238,6 +238,7 @@ const resources = {
         name: 'Nom',
         language: 'Langue preferee',
         avatarUrl: 'URL de l avatar',
+        avatarFile: 'Image du profil',
         forgotPassword: 'Mot de passe oublie',
       },
       catalog: {
@@ -664,6 +665,7 @@ const resources = {
         name: 'Name',
         language: 'Preferred language',
         avatarUrl: 'Avatar URL',
+        avatarFile: 'Profile image',
         forgotPassword: 'Forgot password',
       },
       catalog: {

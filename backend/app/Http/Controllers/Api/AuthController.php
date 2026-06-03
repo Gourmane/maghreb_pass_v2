@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -81,7 +82,15 @@ class AuthController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
     {
-        $request->user()->update($request->validated());
+        $data = $request->validated();
+        unset($data['avatar_file']);
+
+        if ($request->hasFile('avatar_file')) {
+            $path = $request->file('avatar_file')->store('uploads/avatars', 'public');
+            $data['avatar_url'] = Storage::disk('public')->url($path);
+        }
+
+        $request->user()->update($data);
 
         return response()->json([
             'message' => 'Profil mis a jour.',

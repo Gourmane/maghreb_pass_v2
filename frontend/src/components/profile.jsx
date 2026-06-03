@@ -1,4 +1,4 @@
-import { LogIn, Shield } from 'lucide-react';
+import { ImagePlus, LogIn, Shield } from 'lucide-react';
 import { Field } from './common.jsx';
 
 export function ProfileView({ allowRegister = true, authForm, authMode, loading, onAuthFormChange, onAuthModeChange, onForgotPassword, onProfileChange, onProfileSubmit, onSubmit, profileForm, session, t }) {
@@ -25,16 +25,19 @@ export function ProfileView({ allowRegister = true, authForm, authMode, loading,
             <Field id="profile-avatar" label={t('auth.avatarUrl')}>
               <input autoComplete="url" id="profile-avatar" type="url" value={profileForm.avatar_url} onChange={(event) => onProfileChange((current) => ({ ...current, avatar_url: event.target.value }))} placeholder={t('auth.avatarUrl')} />
             </Field>
+            <Field id="profile-avatar-file" label={t('auth.avatarFile')}>
+              <input accept="image/*" id="profile-avatar-file" type="file" onChange={(event) => onProfileChange((current) => ({ ...current, avatar_file: event.target.files?.[0] || null }))} />
+            </Field>
             <Field id="profile-language" label={t('auth.language')}>
               <select id="profile-language" value={profileForm.preferred_language} onChange={(event) => onProfileChange((current) => ({ ...current, preferred_language: event.target.value }))}>
                 <option value="fr">FR</option>
                 <option value="en">EN</option>
               </select>
             </Field>
-            <button aria-busy={loading} className="primary-button" disabled={loading} type="submit">{loading ? t('messages.saving') : t('admin.save')}</button>
+            <button aria-busy={loading} className="primary-button" disabled={loading} type="submit"><ImagePlus size={17} /> {loading ? t('messages.saving') : t('admin.save')}</button>
           </form>
         ) : (
-          <form className="form-grid" onSubmit={onSubmit}>
+          <form autoComplete="off" className="form-grid" onSubmit={onSubmit}>
             {allowRegister && (
               <div className="segmented">
                 <button aria-pressed={authMode === 'login'} className={authMode === 'login' ? 'active' : ''} onClick={() => onAuthModeChange('login')} type="button">{t('auth.login')}</button>
@@ -43,14 +46,14 @@ export function ProfileView({ allowRegister = true, authForm, authMode, loading,
             )}
             {authMode === 'register' && (
               <Field id="auth-name" label={t('auth.name')}>
-                <input autoComplete="name" id="auth-name" maxLength="120" required value={authForm.name} onChange={(event) => onAuthFormChange((current) => ({ ...current, name: event.target.value }))} placeholder={t('auth.name')} />
+                <input autoComplete="off" id="auth-name" maxLength="120" required value={authForm.name} onChange={(event) => onAuthFormChange((current) => ({ ...current, name: event.target.value }))} placeholder={t('auth.name')} />
               </Field>
             )}
             <Field id="auth-email" label={t('auth.email')}>
-              <input autoComplete="email" id="auth-email" required type="email" value={authForm.email} onChange={(event) => onAuthFormChange((current) => ({ ...current, email: event.target.value }))} placeholder={t('auth.email')} />
+              <input autoComplete="off" id="auth-email" required type="email" value={authForm.email} onChange={(event) => onAuthFormChange((current) => ({ ...current, email: event.target.value }))} placeholder={t('auth.email')} />
             </Field>
             <Field id="auth-password" label={t('auth.password')}>
-              <input autoComplete={authMode === 'login' ? 'current-password' : 'new-password'} id="auth-password" minLength="8" required type="password" value={authForm.password} onChange={(event) => onAuthFormChange((current) => ({ ...current, password: event.target.value, password_confirmation: event.target.value }))} placeholder={t('auth.password')} />
+              <input autoComplete="new-password" id="auth-password" minLength="8" required type="password" value={authForm.password} onChange={(event) => onAuthFormChange((current) => ({ ...current, password: event.target.value, password_confirmation: event.target.value }))} placeholder={t('auth.password')} />
             </Field>
             {authMode === 'register' && (
               <Field id="auth-language" label={t('auth.language')}>

@@ -24,6 +24,16 @@ function readSession() {
   }
 }
 
+function emptyAuthForm(language) {
+  return {
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    preferred_language: language,
+  };
+}
+
 function App() {
   const { t, i18n } = useTranslation();
   const initialRoute = routeFromPath();
@@ -38,14 +48,8 @@ function App() {
   const [users, setUsers] = useState([]);
   const [filters, setFilters] = useState({ city: '', search: '', group_name: '', phase: '', date: '', stars: '', price_range: '', category: '' });
   const [authMode, setAuthMode] = useState(initialRoute.authMode || 'login');
-  const [authForm, setAuthForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    preferred_language: i18n.language,
-  });
-  const [profileForm, setProfileForm] = useState({ name: '', preferred_language: i18n.language, avatar_url: '' });
+  const [authForm, setAuthForm] = useState(() => emptyAuthForm(i18n.language));
+  const [profileForm, setProfileForm] = useState({ name: '', preferred_language: i18n.language, avatar_url: '', avatar_file: null });
   const [adminForm, setAdminForm] = useState(initialForms[activeModule] || initialForms.matches);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -75,6 +79,7 @@ function App() {
       name: session.user?.name || '',
       preferred_language: session.user?.preferred_language || i18n.language,
       avatar_url: session.user?.avatar_url || '',
+      avatar_file: null,
     });
   }, [session, i18n.language]);
 
@@ -208,6 +213,7 @@ function App() {
     await request(async () => {
       const response = await api.post(endpoint, payload);
       setSession({ token: '', user: response.data.user });
+      setAuthForm(emptyAuthForm(response.data.user.preferred_language || i18n.language));
       i18n.changeLanguage(response.data.user.preferred_language || i18n.language);
       if (route.view === 'admin') {
         if (response.data.user.role === 'admin') navigate('/admin');
@@ -230,7 +236,20 @@ function App() {
   async function submitProfile(event) {
     event.preventDefault();
     await request(async () => {
-      const response = await api.put('/auth/profile', profileForm);
+      const payload = { ...profileForm };
+      let response;
+
+      if (payload.avatar_file) {
+        const formData = new FormData();
+        formData.append('name', payload.name);
+        formData.append('preferred_language', payload.preferred_language);
+        formData.append('avatar_file', payload.avatar_file);
+        response = await api.post('/auth/profile', formData);
+      } else {
+        delete payload.avatar_file;
+        response = await api.put('/auth/profile', payload);
+      }
+
       setSession({ token: '', user: response.data.user });
       i18n.changeLanguage(response.data.user.preferred_language);
     }, t('messages.saved'));
@@ -239,6 +258,7 @@ function App() {
   async function logout() {
     await api.post('/auth/logout').catch(() => {});
     setSession({ token: '', user: null });
+    setAuthForm(emptyAuthForm(i18n.language));
     setFavorites({ hotels: [], restaurants: [], attractions: [] });
     navigate('/');
   }

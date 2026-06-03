@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -99,6 +101,38 @@ class AuthApiTest extends TestCase
             ->assertJsonPath('user.name', 'New Name')
             ->assertJsonPath('user.preferred_language', 'en')
             ->assertJsonPath('user.avatar_url', 'https://upload.wikimedia.org/wikipedia/commons/1/12/User_icon_2.svg');
+    }
+
+    public function test_user_can_upload_profile_avatar_file(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create([
+            'name' => 'Old Name',
+            'preferred_language' => 'fr',
+            'avatar_url' => null,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->post('/api/auth/profile', [
+            'name' => 'New Name',
+            'preferred_language' => 'fr',
+            'avatar_file' => UploadedFile::fake()->createWithContent(
+                'avatar.png',
+                base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=')
+            ),
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('user.name', 'New Name');
+
+        $avatarUrl = $response->json('user.avatar_url');
+
+        $this->assertNotNull($avatarUrl);
+        $this->assertStringContainsString('/storage/uploads/avatars/', $avatarUrl);
+        Storage::disk('public')->assertExists(str_replace('/storage/', '', parse_url($avatarUrl, PHP_URL_PATH)));
     }
 
     public function test_password_reset_email_can_be_requested(): void
