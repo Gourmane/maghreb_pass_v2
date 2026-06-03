@@ -123,7 +123,6 @@ Attention: `frontend/dist` est present dans le depot et peut etre modifie par un
 - [Developer guide](docs/DEVELOPER_GUIDE.md)
 - [Backend README](backend/README.md)
 - [Frontend README](frontend/README.md)
-- [Demarrage demo sur un autre ordinateur](docs/FRIEND_DEMO_SETUP.md)
 - [Checklist demo](docs/DEMO_CHECKLIST.md)
 - [Exemples API](docs/API_EXAMPLES.md)
 - [PRD](PRD_MaghrebPass_Advanced_V2_5_Final.md)

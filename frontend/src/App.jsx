@@ -36,8 +36,7 @@ function App() {
   const [favorites, setFavorites] = useState({ hotels: [], restaurants: [], attractions: [] });
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
-  const [filterOptions, setFilterOptions] = useState({ cities: [], matches: { group_names: [], phases: [] }, hotels: { stars: [] }, restaurants: { cuisine_types: [], price_ranges: [] }, attractions: { categories: [] } });
-  const [filters, setFilters] = useState({ city: '', search: '', group_name: '', phase: '', date: '', stars: '', price_range: '', category: '', cuisine: '' });
+  const [filters, setFilters] = useState({ city: '', search: '', group_name: '', phase: '', date: '', stars: '', price_range: '', category: '' });
   const [authMode, setAuthMode] = useState(initialRoute.authMode || 'login');
   const [authForm, setAuthForm] = useState({
     name: '',
@@ -84,10 +83,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    loadFilterOptions();
-  }, []);
-
-  useEffect(() => {
     if (route.view === 'home') loadHomeCatalog();
     else loadModule(activeModule);
     setAdminForm(initialForms[activeModule] || initialForms.matches);
@@ -110,10 +105,9 @@ function App() {
   }, [i18n, i18n.language]);
 
   const cities = useMemo(() => {
-    if (filterOptions.cities?.length) return filterOptions.cities;
     const values = Object.values(catalog).flat().map((item) => item.city).filter(Boolean);
     return [...new Set(values)].sort();
-  }, [filterOptions.cities, catalog]);
+  }, [catalog]);
 
   function navigate(path, next = routeFromPath(path)) {
     window.history.pushState({}, '', path);
@@ -144,15 +138,6 @@ function App() {
       const response = await api.get('/auth/me');
       setSession({ token: '', user: response.data.user });
       i18n.changeLanguage(response.data.user.preferred_language || i18n.language);
-    } catch (err) {
-      if (![401, 419].includes(err.response?.status)) setError(err.response?.data?.message || t('messages.apiOffline'));
-    }
-  }
-
-  async function loadFilterOptions() {
-    try {
-      const response = await api.get('/filter-options');
-      setFilterOptions(response.data || { cities: [], matches: { group_names: [], phases: [] }, hotels: { stars: [] }, restaurants: { cuisine_types: [], price_ranges: [] }, attractions: { categories: [] } });
     } catch (err) {
       if (![401, 419].includes(err.response?.status)) setError(err.response?.data?.message || t('messages.apiOffline'));
     }
@@ -365,7 +350,6 @@ function App() {
             catalog={catalog}
             cities={cities}
             currentModule={currentModule}
-            filterOptions={filterOptions}
             filters={filters}
             language={i18n.language}
             loading={loading}

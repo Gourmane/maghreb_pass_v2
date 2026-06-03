@@ -183,30 +183,15 @@ export function adminFieldLabel(field, t) {
 
 export function buildParams(moduleKey, filters) {
   const params = {};
-  ['city', 'search', 'group_name', 'phase', 'date', 'stars', 'price_min', 'price_max', 'price_range', 'category', 'cuisine'].forEach((key) => {
+  ['city', 'search', 'group_name', 'phase', 'date', 'stars', 'price_min', 'price_max', 'price_range', 'category'].forEach((key) => {
     if (filters[key]) params[key === 'date' ? 'match_date' : key] = filters[key];
   });
 
-  if (moduleKey === 'matches') {
-    const { cuisine, category, search, ...rest } = params;
-    return pick(rest, ['city', 'group_name', 'phase', 'match_date']);
-  }
-  if (moduleKey === 'hotels') {
-    const { cuisine, category, search, group_name, phase, match_date, ...rest } = params;
-    return pick(rest, ['city', 'stars', 'price_min', 'price_max']);
-  }
-  if (moduleKey === 'restaurants') {
-    const { category, ...rest } = params;
-    return pick({ ...rest, cuisine_type: rest.cuisine }, ['city', 'search', 'cuisine_type', 'price_range']);
-  }
-  if (moduleKey === 'attractions') {
-    const { cuisine, search, group_name, phase, match_date, ...rest } = params;
-    return pick(rest, ['city', 'category']);
-  }
-  if (moduleKey === 'packages') {
-    const { group_name, phase, match_date, stars, price_min, price_max, price_range, category, cuisine, ...rest } = params;
-    return pick(rest, ['city', 'search']);
-  }
+  if (moduleKey === 'matches') return pick(params, ['city', 'group_name', 'phase', 'match_date']);
+  if (moduleKey === 'hotels') return pick(params, ['city', 'stars', 'price_min', 'price_max']);
+  if (moduleKey === 'restaurants') return pick(params, ['city', 'search', 'price_range']);
+  if (moduleKey === 'attractions') return pick(params, ['city', 'category']);
+  if (moduleKey === 'packages') return pick(params, ['city', 'search']);
   return {};
 }
 

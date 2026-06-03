@@ -5,7 +5,7 @@ import { CardFacts, EmptyState, Field, Media, ModuleRail } from './common.jsx';
 import { descriptionFor, titleFor } from '../lib/catalog.js';
 import { ReservationForm } from './reservation-form.jsx';
 
-export function PublicCatalog({ activeModule, catalog, cities, currentModule, filterOptions, filters, language, loading, modules, onAddFavorite, onFilterChange, onLoad, onModuleChange, onOpenDetail, t }) {
+export function PublicCatalog({ activeModule, catalog, cities, currentModule, filters, language, loading, modules, onAddFavorite, onFilterChange, onLoad, onModuleChange, onOpenDetail, t }) {
   const items = catalog[activeModule] || [];
 
   return (
@@ -18,7 +18,7 @@ export function PublicCatalog({ activeModule, catalog, cities, currentModule, fi
             <p className="section-kicker">{activeModule === 'matches' ? t('catalog.officialSchedule') : t('catalog.popularSelections')}</p>
             <h2>{t(`catalog.${activeModule}`)}</h2>
           </div>
-          <FilterBar activeModule={activeModule} cities={cities} filterOptions={filterOptions} filters={filters} loading={loading} onChange={onFilterChange} onLoad={onLoad} t={t} />
+          <FilterBar activeModule={activeModule} cities={cities} filters={filters} loading={loading} onChange={onFilterChange} onLoad={onLoad} t={t} />
         </div>
 
         <div className={`catalog-grid ${activeModule === 'matches' ? 'match-list' : ''}`}>
@@ -50,12 +50,7 @@ export function PublicCatalog({ activeModule, catalog, cities, currentModule, fi
   );
 }
 
-function FilterBar({ activeModule, cities, filterOptions, filters, loading, onChange, onLoad, t }) {
-  const matchOptions = filterOptions.matches || { group_names: [], phases: [] };
-  const hotelOptions = filterOptions.hotels || { stars: [] };
-  const restaurantOptions = filterOptions.restaurants || { cuisine_types: [], price_ranges: [] };
-  const attractionOptions = filterOptions.attractions || { categories: [] };
-
+function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t }) {
   return (
     <div aria-label={t('catalog.filters')} className="filters" role="group">
       <Field id="filter-city" label={t('catalog.city')} compact>
@@ -67,17 +62,16 @@ function FilterBar({ activeModule, cities, filterOptions, filters, loading, onCh
       {activeModule === 'matches' && (
         <>
           <Field id="filter-group" label={t('catalog.group')} compact>
-            <select id="filter-group" value={filters.group_name} onChange={(event) => onChange((current) => ({ ...current, group_name: event.target.value }))}>
-              <option value="">{t('catalog.allGroups')}</option>
-              {matchOptions.group_names.map((group) => <option key={group} value={group}>{group}</option>)}
-            </select>
+            <input id="filter-group" value={filters.group_name} onChange={(event) => onChange((current) => ({ ...current, group_name: event.target.value }))} placeholder={t('catalog.group')} />
           </Field>
           <Field id="filter-phase" label={t('catalog.phase')} compact>
             <select id="filter-phase" value={filters.phase} onChange={(event) => onChange((current) => ({ ...current, phase: event.target.value }))}>
-              <option value="">{t('catalog.allPhases')}</option>
-              {(matchOptions.phases.length ? matchOptions.phases : ['group', 'round_of_16', 'quarter', 'semi', 'final']).map((phase) => (
-                <option key={phase} value={phase}>{t(`options.phase.${phase}`)}</option>
-              ))}
+              <option value="">{t('catalog.phase')}</option>
+              <option value="group">{t('options.phase.group')}</option>
+              <option value="round_of_16">{t('options.phase.round_of_16')}</option>
+              <option value="quarter">{t('options.phase.quarter')}</option>
+              <option value="semi">{t('options.phase.semi')}</option>
+              <option value="final">{t('options.phase.final')}</option>
             </select>
           </Field>
           <Field id="filter-date" label={t('catalog.date')} compact>
@@ -88,12 +82,7 @@ function FilterBar({ activeModule, cities, filterOptions, filters, loading, onCh
       {activeModule === 'hotels' && (
         <>
           <Field id="filter-stars" label={t('catalog.stars')} compact>
-            <select id="filter-stars" value={filters.stars} onChange={(event) => onChange((current) => ({ ...current, stars: event.target.value }))}>
-              <option value="">{t('catalog.allStars')}</option>
-              {(hotelOptions.stars.length ? hotelOptions.stars : [1, 2, 3, 4, 5]).map((star) => (
-                <option key={star} value={star}>{star} {t('common.stars')}</option>
-              ))}
-            </select>
+            <input id="filter-stars" type="number" min="1" max="5" value={filters.stars} onChange={(event) => onChange((current) => ({ ...current, stars: event.target.value }))} placeholder={t('catalog.stars')} />
           </Field>
           <Field id="filter-price-min" label={t('catalog.minPrice')} compact>
             <input id="filter-price-min" type="number" min="0" value={filters.price_min} onChange={(event) => onChange((current) => ({ ...current, price_min: event.target.value }))} placeholder={t('catalog.minPrice')} />
@@ -106,27 +95,21 @@ function FilterBar({ activeModule, cities, filterOptions, filters, loading, onCh
       {activeModule === 'restaurants' && (
         <>
           <Field id="filter-cuisine" label={t('catalog.cuisine')} compact>
-            <select id="filter-cuisine" value={filters.cuisine} onChange={(event) => onChange((current) => ({ ...current, cuisine: event.target.value }))}>
-              <option value="">{t('catalog.allCuisines')}</option>
-              {restaurantOptions.cuisine_types.map((cuisine) => <option key={cuisine} value={cuisine}>{cuisine}</option>)}
-            </select>
+            <input id="filter-cuisine" value={filters.search} onChange={(event) => onChange((current) => ({ ...current, search: event.target.value }))} placeholder={t('catalog.cuisine')} />
           </Field>
           <Field id="filter-price-range" label={t('catalog.priceRange')} compact>
             <select id="filter-price-range" value={filters.price_range} onChange={(event) => onChange((current) => ({ ...current, price_range: event.target.value }))}>
-              <option value="">{t('catalog.allPriceRanges')}</option>
-              {(restaurantOptions.price_ranges.length ? restaurantOptions.price_ranges : ['budget', 'moyen', 'gastronomique']).map((range) => (
-                <option key={range} value={range}>{t(`options.priceRange.${range}`, { defaultValue: range })}</option>
-              ))}
+              <option value="">{t('catalog.priceRange')}</option>
+              <option value="budget">{t('options.priceRange.budget')}</option>
+              <option value="moyen">{t('options.priceRange.moyen')}</option>
+              <option value="gastronomique">{t('options.priceRange.gastronomique')}</option>
             </select>
           </Field>
         </>
       )}
       {activeModule === 'attractions' && (
         <Field id="filter-category" label={t('catalog.category')} compact>
-          <select id="filter-category" value={filters.category} onChange={(event) => onChange((current) => ({ ...current, category: event.target.value }))}>
-            <option value="">{t('catalog.allCategories')}</option>
-            {attractionOptions.categories.map((category) => <option key={category} value={category}>{category}</option>)}
-          </select>
+          <input id="filter-category" value={filters.category} onChange={(event) => onChange((current) => ({ ...current, category: event.target.value }))} placeholder={t('catalog.category')} />
         </Field>
       )}
       {activeModule === 'packages' && (
