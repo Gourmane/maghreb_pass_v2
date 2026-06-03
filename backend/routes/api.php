@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\AttractionController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\FilterOptionController;
 use App\Http\Controllers\Api\HotelController;
 use App\Http\Controllers\Api\HotelReservationController;
 use App\Http\Controllers\Api\MapItemController;
@@ -63,6 +64,8 @@ Route::get('/packages', [PackageController::class, 'index']);
 Route::get('/packages/{id}', [PackageController::class, 'show'])->whereNumber('id');
 
 Route::get('/map-items', MapItemController::class);
+
+Route::get('/filter-options', [FilterOptionController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
