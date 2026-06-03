@@ -82,7 +82,14 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
       {activeModule === 'hotels' && (
         <>
           <Field id="filter-stars" label={t('catalog.stars')} compact>
-            <input id="filter-stars" type="number" min="1" max="5" value={filters.stars} onChange={(event) => onChange((current) => ({ ...current, stars: event.target.value }))} placeholder={t('catalog.stars')} />
+            <select id="filter-stars" value={filters.stars} onChange={(event) => onChange((current) => ({ ...current, stars: event.target.value }))}>
+              <option value="">{t('catalog.stars')}</option>
+              <option value="1">⭐ 1</option>
+              <option value="2">⭐ 2</option>
+              <option value="3">⭐ 3</option>
+              <option value="4">⭐ 4</option>
+              <option value="5">⭐ 5</option>
+            </select>
           </Field>
           <Field id="filter-price-min" label={t('catalog.minPrice')} compact>
             <input id="filter-price-min" type="number" min="0" value={filters.price_min} onChange={(event) => onChange((current) => ({ ...current, price_min: event.target.value }))} placeholder={t('catalog.minPrice')} />
@@ -95,7 +102,15 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
       {activeModule === 'restaurants' && (
         <>
           <Field id="filter-cuisine" label={t('catalog.cuisine')} compact>
-            <input id="filter-cuisine" value={filters.search} onChange={(event) => onChange((current) => ({ ...current, search: event.target.value }))} placeholder={t('catalog.cuisine')} />
+            <select id="filter-cuisine" value={filters.search} onChange={(event) => onChange((current) => ({ ...current, search: event.target.value }))}>
+              <option value="">{t('catalog.cuisine')}</option>
+              <option value="Marocaine">Marocaine</option>
+              <option value="Marocaine moderne">Marocaine moderne</option>
+              <option value="Internationale">Internationale</option>
+              <option value="Fusion">Fusion</option>
+              <option value="Poisson">Poisson</option>
+              <option value="Fruits de mer">Fruits de mer</option>
+            </select>
           </Field>
           <Field id="filter-price-range" label={t('catalog.priceRange')} compact>
             <select id="filter-price-range" value={filters.price_range} onChange={(event) => onChange((current) => ({ ...current, price_range: event.target.value }))}>
@@ -109,7 +124,15 @@ function FilterBar({ activeModule, cities, filters, loading, onChange, onLoad, t
       )}
       {activeModule === 'attractions' && (
         <Field id="filter-category" label={t('catalog.category')} compact>
-          <input id="filter-category" value={filters.category} onChange={(event) => onChange((current) => ({ ...current, category: event.target.value }))} placeholder={t('catalog.category')} />
+          <select id="filter-category" value={filters.category} onChange={(event) => onChange((current) => ({ ...current, category: event.target.value }))}>
+            <option value="">{t('catalog.category')}</option>
+            <option value="Mosquee">Mosquée</option>
+            <option value="Medina">Médina</option>
+            <option value="Musee">Musée</option>
+            <option value="Patrimoine historique">Patrimoine historique</option>
+            <option value="Plage">Plage</option>
+            <option value="Autre">Autre</option>
+          </select>
         </Field>
       )}
       {activeModule === 'packages' && (
