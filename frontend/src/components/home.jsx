@@ -84,15 +84,21 @@ function HomeSearchBar({ navigate, t }) {
 
 function HomeModuleTiles({ navigate, t }) {
   return (
-    <div className="home-module-tiles">
-      {modules.map(({ key, icon: Icon, basePath }) => (
-        <button key={key} onClick={() => navigate(basePath)} type="button">
-          <span><Icon size={30} /></span>
-          <strong>{t(`catalog.${key}`)}</strong>
-          <small>{t(`home.moduleSub.${key}`)}</small>
-        </button>
-      ))}
-    </div>
+    <section className="home-module-showcase">
+      <div className="home-module-intro">
+        <p>{t('home.moduleIntroKicker')}</p>
+        <h2>{t('home.moduleIntroTitle')}</h2>
+      </div>
+      <div className="home-module-tiles">
+        {modules.map(({ key, icon: Icon, basePath }) => (
+          <button key={key} onClick={() => navigate(basePath)} type="button">
+            <span><Icon size={30} /></span>
+            <strong>{t(`catalog.${key}`)}</strong>
+            <small>{t(`home.moduleSub.${key}`)}</small>
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -124,7 +130,7 @@ function HomePreviewSection({ catalog, language, loading, module, navigate, onAd
   const isMatches = module.key === 'matches';
 
   return (
-    <section className="home-section">
+    <section className="home-section home-preview-section">
       <div className="home-section-head">
         <h2>{t(`home.sections.${module.key}`)}</h2>
         <button className="section-link" onClick={() => navigate(module.basePath)} type="button">

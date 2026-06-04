@@ -162,9 +162,11 @@ const resources = {
       },
       home: {
         eyebrow: 'Coupe du Monde Maroc 2030',
-        heroTitleLead: 'Vivez la Coupe du Monde au',
+        heroTitleLead: 'Matchs, sejours et villes hotes au',
         heroTitleAccent: 'Maroc',
-        heroBody: 'Planifiez vos matchs, trouvez vos hotels, choisissez vos restaurants et decouvrez les villes hotes depuis un seul espace.',
+        heroBody: 'Choisissez vos matchs, trouvez ou dormir, ou manger et quoi visiter dans une experience pensee pour les supporters au Maroc.',
+        moduleIntroKicker: 'Votre base de voyage',
+        moduleIntroTitle: 'Tout organiser. MaghrebPass fait le reste.',
         discover: 'Decouvrir',
         exploreMatches: 'Explorer les matchs',
         whyTitle: 'Pourquoi choisir MaghrebPass ?',
@@ -176,11 +178,11 @@ const resources = {
           selectDate: 'Selectionner',
         },
         moduleSub: {
-          matches: 'Calendrier et resultats',
-          hotels: 'Sejours et confort',
-          restaurants: 'Saveurs du Maroc',
-          attractions: 'Culture et decouvertes',
-          packages: 'Plans prets a suivre',
+          matches: 'Suivez les dates, horaires, stades et affiches pour organiser vos journees de match sans stress.',
+          hotels: 'Comparez les sejours proches des villes hotes avec les infos utiles pour reserver plus vite.',
+          restaurants: 'Trouvez les bonnes adresses autour des matchs, entre cuisine locale et spots pratiques.',
+          attractions: 'Decouvrez les lieux culturels, quartiers et experiences a ajouter entre deux rencontres.',
+          packages: 'Combinez matchs, hotels et sorties dans des plans simples prets pour votre voyage.',
         },
         reasons: {
           centralized: {
@@ -587,9 +589,11 @@ const resources = {
       },
       home: {
         eyebrow: 'World Cup Morocco 2030',
-        heroTitleLead: 'Experience the World Cup in',
+        heroTitleLead: 'Match days, stays, and host cities in',
         heroTitleAccent: 'Morocco',
-        heroBody: 'Plan matches, find hotels, choose restaurants, and discover host cities from one focused travel companion.',
+        heroBody: 'Choose your matches, find where to stay, where to eat, and what to explore in one travel hub built for supporters in Morocco.',
+        moduleIntroKicker: 'Your travel base',
+        moduleIntroTitle: 'Plan the trip. MaghrebPass handles the rest.',
         discover: 'Discover',
         exploreMatches: 'Explore matches',
         whyTitle: 'Why choose MaghrebPass?',
@@ -601,11 +605,11 @@ const resources = {
           selectDate: 'Select',
         },
         moduleSub: {
-          matches: 'Calendar and results',
-          hotels: 'Stays and comfort',
-          restaurants: 'Moroccan flavors',
-          attractions: 'Culture and discoveries',
-          packages: 'Ready-made plans',
+          matches: 'Track dates, kickoffs, stadiums, and fixtures so every match day is easy to plan.',
+          hotels: 'Compare stays near host cities with practical details that help you book faster.',
+          restaurants: 'Find food spots around match days, from Moroccan flavors to convenient fan stops.',
+          attractions: 'Discover cultural places, neighborhoods, and experiences to enjoy between games.',
+          packages: 'Bundle matches, stays, and city plans into ready-to-follow travel ideas.',
         },
         reasons: {
           centralized: {
